@@ -17,7 +17,18 @@ class CreateUserTable extends Migration
             $table->increments('id');            
             $table->string('name');
             $table->string('password');
-            $table->string('role');
+            $table->string('email')->nullable();
+            $table->integer('phone')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('region')->nullable();
+            $table->string('city')->nullable();
+            $table->string('site')->nullable();
+            $table->string('skype')->nullable();
+            $table->integer('balance')->nullable();
+            $table->integer('promo_order,')->default(0);
+            $table->boolean('banned')->default(0);
+            $table->enum('role', ['admin', 'manager', 'user'])
+                ->default('user');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

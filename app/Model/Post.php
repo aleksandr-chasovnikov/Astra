@@ -4,10 +4,27 @@ namespace App\Model;
 
 /**
  * @property integer   $id
- * @property string    $name
+ * @property string    $title
+ * @property string    $content
+ * @property string    $type
+ * @property string    $categories_id
+ * @property string    $promo_order
+ * @property string    $img
+ * @property string    $avatar
+ * @property string    $price
+ * @property string    $user_name
+ * @property string    $region
+ * @property string    $city
+ * @property string    $email
+ * @property string    $phone
+ * @property string    $site
+ * @property string    $skype
+ * @property string    $lifetime
  * @property string    $password
- * @property string    $role
- * @property integer   $rememberTokenName
+ * @property string    $link
+ * @property string    $hidden
+ * @property string    $meta_desc
+ * @property integer   $meta_key
  *
  * @property Article[] $articles
  * @property File[]    $files
@@ -31,10 +48,10 @@ class Post extends BaseModel
         'avatar',
         'price',
         'user_name',
+        'region',
         'city',
         'email',
         'phone',
-        'email',
         'site',
         'skype',
         'lifetime',
@@ -52,8 +69,6 @@ class Post extends BaseModel
      */
     protected $hidden = [
         'password',
-        'role',
-        'remember_token',
     ];
 
 

@@ -18,16 +18,18 @@ class CreateTablePosts extends Migration
             $table->string('title');
             $table->text('content')->nullable();
             $table->enum('type', ['offer', 'demand']);
-            $table->integer('categories_id')->unsigned()->default(1);
+            $table->integer('categories_id')
+                ->unsigned()
+                ->default(1);
             $table->integer('promo_order')->default(0);
             $table->string('img')->nullable();
             $table->string('avatar')->nullable();
             $table->integer('price')->default(0);
             $table->string('user_name')->nullable();
+            $table->string('region')->nullable();
             $table->string('city')->nullable();
             $table->string('email')->nullable();
             $table->integer('phone')->nullable();
-            $table->string('email')->nullable();
             $table->string('site')->nullable();
             $table->string('skype')->nullable();
             $table->timestamp('lifetime')->nullable();
