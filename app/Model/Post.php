@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property integer   $id
@@ -26,7 +28,7 @@ namespace App\Model;
  * @property string    $meta_desc
  * @property integer   $meta_key
  *
- * @property Article[] $articles
+ * @property Category[] $category
  * @property File[]    $files
  */
 class Post extends BaseModel
@@ -71,20 +73,19 @@ class Post extends BaseModel
         'password',
     ];
 
-
     /**
-     * Получить все статьи пользователя.
+     * @return HasOne
      */
-    public function articles()
+    public function category()
     {
-        return $this->hasMany(Article::class, 'user_id', 'id');
+        return $this->hasOne(Category::class, 'user_id', 'id');
     }
 
     /**
-     * Получить все комментарии пользователя.
+     * @return HasMany
      */
-    public function comments()
+    public function files()
     {
-        return $this->hasMany(Comment::class, 'user_email', 'email');
+        return $this->hasMany(File::class, 'user_email', 'email');
     }
 }

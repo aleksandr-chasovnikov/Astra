@@ -2,16 +2,15 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
-use App\Comment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends BaseModel
 {
     /**
-     * Получить все комментарии пользователя.
+     * @return HasMany
      */
-    public function articles()
+    public function posts()
     {
-        return $this->hasMany(Article::class, 'categories_id', 'id');
+        return $this->hasMany(Post::class, 'categories_id', 'id');
     }
 }

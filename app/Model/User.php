@@ -18,7 +18,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon   $updated_at
  * @property Carbon   $deleted_at
  *
- * @property Article[] $articles
  * @property File[]    $files
  */
 class User extends Authenticatable
