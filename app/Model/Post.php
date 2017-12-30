@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property integer   $id
@@ -33,7 +33,12 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Post extends BaseModel
 {
-    const TABLE_NAME = 'users';
+    const TABLE_NAME = 'posts';
+
+    /**
+     * @var string
+     */
+    protected $table = self::TABLE_NAME;
 
     /**
      * The attributes that are mass assignable.
@@ -74,11 +79,11 @@ class Post extends BaseModel
     ];
 
     /**
-     * @return HasOne
+     * @return BelongsTo
      */
     public function category()
     {
-        return $this->hasOne(Category::class, 'user_id', 'id');
+        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -86,6 +91,6 @@ class Post extends BaseModel
      */
     public function files()
     {
-        return $this->hasMany(File::class, 'user_email', 'email');
+        return $this->hasMany(File::class);
     }
 }
