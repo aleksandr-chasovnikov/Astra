@@ -9,13 +9,22 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @property integer   $id
+ * @property string    $role
  * @property string    $name
  * @property string    $email
  * @property string    $password
- * @property string    $role
- * @property integer   $rememberTokenName
+ * @property integer   $rememberToken
  * @property integer   $email_token
  * @property integer   $verified
+ * @property string    $phone
+ * @property string    $avatar
+ * @property string    $region
+ * @property string    $city
+ * @property string    $site
+ * @property string    $skype
+ * @property string    $balance
+ * @property string    $promo_order
+ * @property string    $banned
  *
  * @property Carbon   $created_at
  * @property Carbon   $updated_at
@@ -30,6 +39,11 @@ class User extends Authenticatable
 
     const TABLE_NAME = 'users';
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_MANAGER = 'manager';
+    const ROLE_VIP = 'vip';
+    const ROLE_USER = 'user';
+
     /**
      * @var string
      */
@@ -41,11 +55,20 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'role',
         'name',
         'email',
         'password',
         'email_token',
         'verified',
+        'phone',
+        'avatar',
+        'region',
+        'city',
+        'skype',
+        'balance',
+        'promo_order',
+        'banned',
     ];
 
     /**

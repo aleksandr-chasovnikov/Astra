@@ -20,14 +20,12 @@ class SiteController extends Controller
 	public function index()
 	{
         //Список статей
-        $articles = Article::select(['id', 'title', 'img', 'description', 'created_at'])->paginate(self::PAGINATE);
-
-        //Список категорий
-        $categories = Category::select(['id', 'name_category'])->get();
-
-        return view('index')->with(['articles' => $articles, 
-                                    'categories' => $categories,
-                                    ]);
+//        $articles = Article::select(['id', 'title', 'img', 'description', 'created_at'])->paginate(self::PAGINATE);
+//
+//        //Список категорий
+//        $categories = Category::select(['id', 'name_category'])->get();
+//
+        return view('index');
 	}
 
     /**

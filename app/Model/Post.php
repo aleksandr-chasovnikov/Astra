@@ -35,6 +35,9 @@ class Post extends BaseModel
 {
     const TABLE_NAME = 'posts';
 
+    const TYPE_OFFER = 'offer';
+    const TYPE_DEMAND = 'demand';
+
     /**
      * @var string
      */
