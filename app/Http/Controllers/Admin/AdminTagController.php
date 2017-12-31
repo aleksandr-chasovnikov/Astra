@@ -3,37 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
-use Illuminate\Http\RedirectResponse;
+use App\Tag;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use App\Category;
-use Illuminate\Routing\Redirector;
-use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class AdminCategoryController extends BaseController
+class AdminTagController extends BaseController
 {
-    //TODO Не доделаны методы данного класса
     /**
-     * @return View
+     * Показать все теги
      */
     public function index()
     {
         self::checkAdmin();
 
-        $categories = Category::withTrashed()
+        $tags = Tag::withTrashed()
             ->orderBy('id', 'desc')
             ->get();
 
-        //TODO Не сделаны вьюхи
-        return view('admin.category.index')->with([
-            'categories' => $categories,
+        return view('admin.tag.index')->with([
+            'tags' => $tags
         ]);
     }
 
     /**
-     * Сохраняет категорию
+     * Сохраняет тег
      *
-     * POST /admin/category/store
+     * POST /admin/tag/store
      *
      * @param Request $request
      *
@@ -47,15 +44,15 @@ class AdminCategoryController extends BaseController
             'title' => 'required|max:255',
         ]);
 
-        Category::create($request->all());
+        Tag::create($request->all());
 
         return redirect()->back();
     }
 
     /**
-     * Редактирует категорию
+     * Редактирует тег
      *
-     * POST /admin/category/update
+     * POST /admin/tag/update
      *
      * @param Request $request
      *
@@ -69,16 +66,16 @@ class AdminCategoryController extends BaseController
             'title' => 'required|max:255',
         ]);
 
-        Category::find($request->id)
+        Tag::find($request->id)
             ->update($request->all());
 
         return redirect()->back();
     }
 
     /**
-     * Удаляет категорию
+     * Удаляет тег
      *
-     * DELETE /admin/category/delete/{id}
+     * DELETE /admin/tag/delete/{id}
      *
      * @param $id
      *
@@ -88,16 +85,15 @@ class AdminCategoryController extends BaseController
     {
         self::checkAdmin();
 
-        Category::find($id)->delete();
+        Tag::find($id)->delete();
 
         return redirect()->back();
     }
 
-
     /**
-     * Восстанавливает категорию
+     * Восстанавливает тег
      *
-     * GET /admin/category/restore/{id}
+     * GET /admin/tag/restore/{tag}
      *
      * @param $id
      *
@@ -107,11 +103,11 @@ class AdminCategoryController extends BaseController
     {
         self::checkAdmin();
 
-        Category::withTrashed()
+        Tag::withTrashed()
             ->where('id', $id)
             ->restore();
 
         return redirect()->back();
     }
-
 }
+
