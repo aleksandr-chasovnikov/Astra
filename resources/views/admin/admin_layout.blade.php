@@ -6,15 +6,15 @@
         <div class="container">
             <div class="admin-panel">
                 <ul>
-                    @if ('adminIndex' !== Route::current()->getName())
-                        <li><a class="link" href="{{route('adminIndex')}}">Все статьи</a></li>
-                    @endif
-                    <li><a class="link" href="{{route('articleCreate')}}">Создать новую статью</a></li>
+{{--                    @if ('adminIndex' !== Route::current()->getName())--}}
+                        <li><a class="link" href="">Все статьи</a></li>
+                    {{--@endif--}}
+                    <li><a class="link" href="">Создать новую статью</a></li>
                     <br/>
-                    <li><a class="link" href="{{route('commentIndex')}}">Все комментарии</a></li>
-                    <li><a class="link" href="{{route('categoryIndex')}}">Все категории</a></li>
-                    <li><a class="link" href="{{route('tagIndex')}}">Все теги</a></li>
-                    <li><a class="link" href="{{route('userIndex')}}">Все пользователи</a></li>
+                    <li><a class="link" href="">Все комментарии</a></li>
+                    <li><a class="link" href="">Все категории</a></li>
+                    <li><a class="link" href="">Все теги</a></li>
+                    <li><a class="link" href="">Все пользователи</a></li>
 
                     <br/>
                 </ul>

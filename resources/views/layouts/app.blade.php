@@ -77,17 +77,30 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ route('login') }}">Войти</a></li>
-                <li><a href="{{ route('register') }}">Регистрация (необязательно)</a></li>
-                <li><a href="#" class="vk" title="Войти через ВКонтакте">
-                        <span class="fa fa-vk fa-lg"></span>
-                    </a>
-                </li>
-                {{--@if ( (Auth::check()) && (Auth::user()->role) == 'admin')--}}
 
-                    {{--<li><a href="{{ route('adminIndex') }}">Панель администратора</a></li>--}}
+                @if (Auth::guest())
 
-                {{--@endif--}}
+                    <li><a href="{{ route('login') }}">Войти</a></li>
+                    <li><a href="{{ route('register') }}">Регистрация (необязательно)</a></li>
+                    <li><a href="#" class="vk" title="Войти через ВКонтакте">
+                            <span class="fa fa-vk fa-lg"></span>
+                        </a>
+                    </li>
+
+                @else
+
+                    @if (isAdmin())
+
+                        <li><a href="{{ route('categoryIndex') }}">Админ-панель</a></li>
+
+                    @endif
+
+                        <li class="m_nav_item" id="moble_nav_item_6">
+                            <a href="{{ route('logout') }}" class="link link--kumya scroll">
+                                <span data-letters="Выход">Выход</span>
+                            </a>
+                        </li>
+                @endif
             </ul>
         </div>
     </div>

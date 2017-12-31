@@ -26,8 +26,11 @@
                         <td>
                             <label for="parent_id">Категории</label>
                             <select name="parent_id" id="parent_id">
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->title }}</option>
+                                <option selected disabled value="">Выберите категорию</option>
+                                @foreach($categories as $parentCategory)
+                                    @unless ($parentCategory->parent_id)
+                                        <option value="{{ $parentCategory->id }}">{{ $parentCategory->title }}</option>
+                                    @endunless
                                 @endforeach
                             </select>
                         </td>
@@ -53,23 +56,33 @@
 
                     <tr>
                         <form action="{{ route('categoryUpdate') }}" method="post" role="form">
-                            <td>
+                            <td style="min-width: 50px;">
                                 <input name="id" type="hidden" class="form-control" value="{{$category->id}}">
                                 <input style="max-width: 50px" type="numeric" class="form-control" id="id"
                                        value="{{$category->id}}"
                                        disabled>
                             </td>
-                            <td><input name="title" type="text" class="form-control" id="title"
+                            <td style="min-width: 200px;"><input name="title" type="text" class="form-control" id="title"
                                        value="{{ $category->title }}" required></td>
                             <td>
                                 <label for="parent_id">Категории</label>
                                 <select name="parent_id" id="parent_id">
+                                    <option
+                                            @unless ($category->parent_id)
+                                                selected
+                                            @endunless
+                                            disabled
+                                            value="">&nbsp;
+                                    </option>
                                     @foreach($categories as $parentCategory)
-                                        <option
-                                                @if ($parentCategory->id === $category->id)
-                                                    selected
-                                                @endif
-                                                value="{{ $parentCategory->id }}">{{ $parentCategory->title }}</option>
+                                        @unless ($parentCategory->parent_id)
+                                            <option
+                                                    @if ($parentCategory->id === $category->parent_id)
+                                                        selected
+                                                    @endif
+                                                    value="{{ $parentCategory->id }}">{{ $parentCategory->title }}
+                                            </option>
+                                        @endunless
                                     @endforeach
                                 </select>
                             </td>
@@ -116,5 +129,14 @@
                 </tbody>
 
             </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
 
 @endsection

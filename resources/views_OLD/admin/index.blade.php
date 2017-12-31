@@ -23,7 +23,7 @@
                     <a class="btn btn-warning" href="{{ route('articleUpdate',['id'=>$article->id]) }}" role="button">Редактировать</a>
                 </p>                
                 <br>            
-                <form action="{{ route('articleDelete', ['article'=>$article->id]) }}" method="post">
+                <form action="{{ route('articleDelete', ['post'=>$article->id]) }}" method="post">
                     <!-- <input type="hidden" name="_method" value="DELETE"> -->
                     {{method_field('DELETE')}}
                     {{csrf_field()}}

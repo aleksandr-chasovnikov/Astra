@@ -31,7 +31,7 @@ class SiteController extends Controller
     /**
      * Показать одну статью
      * 
-     * GET /article.{id}
+     * GET /post.{id}
      */
     public function show($id)
     {
@@ -45,7 +45,7 @@ class SiteController extends Controller
         //Список категорий
         $categories = Category::select(['id', 'name_category'])->get();
 
-        return view('article')->with(['article' => $article, 
+        return view('post')->with(['post' => $article,
                                     'categories' => $categories,
                                     'comments' => $comments,
                                     ]);
