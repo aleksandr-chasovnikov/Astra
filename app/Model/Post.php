@@ -1,35 +1,43 @@
 <?php
 
 namespace App\Model;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property integer   $id
- * @property string    $title
- * @property string    $content
- * @property string    $type
- * @property string    $categories_id
- * @property string    $promo_order
- * @property string    $img
- * @property string    $avatar
- * @property string    $price
- * @property string    $user_name
- * @property string    $region
- * @property string    $city
- * @property string    $email
- * @property string    $phone
- * @property string    $site
- * @property string    $skype
- * @property string    $lifetime
- * @property string    $password
- * @property string    $link
- * @property string    $hidden
- * @property string    $meta_desc
- * @property integer   $meta_key
+ * @property integer    $id
+ * @property string     $title
+ * @property string     $content
+ * @property string     $type
+ * @property integer    $categories_id
+ * @property integer    $promo_order
+ * @property string     $img
+ * @property string     $avatar
+ * @property string     $price
+ * @property string     $user_name
+ * @property string     $region
+ * @property string     $city
+ * @property string     $email
+ * @property integer    $phone
+ * @property string     $site
+ * @property string     $skype
+ * @property string     $password
+ * @property string     $link
+ * @property boolean    $hidden
+ * @property integer    $viewed
+ * @property string     $meta_desc
+ * @property string     $meta_key
+ *
+ *
+ * @property Carbon     $end_lifetime
+ * @property Carbon     $created_at
+ * @property Carbon     $updated_at
+ * @property Carbon     $deleted_at
  *
  * @property Category[] $category
- * @property File[]    $files
+ * @property File[]     $files
  */
 class Post extends BaseModel
 {
@@ -64,10 +72,11 @@ class Post extends BaseModel
         'phone',
         'site',
         'skype',
-        'lifetime',
+        'end_lifetime',
         'password',
         'link',
         'hidden',
+        'viewed',
         'meta_desc',
         'meta_key',
     ];

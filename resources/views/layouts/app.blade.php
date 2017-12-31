@@ -7,11 +7,12 @@
     <title>{{ config('app.name', 'Astra') }}</title>
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/fontawesome/fontawesome-all.css') }}" rel="stylesheet" media="all">
-    <script src="https://funpay.ru/180/js/jquery.min.js"></script>
-    <script src="https://funpay.ru/180/js/bootstrap.min.js"></script>
-    <script src="https://funpay.ru/180/js/main.min.js"></script>
-    <meta name="description" content="На бирже FunPay вы можете купить золото, адену, кинары, монеты, серебро, кредиты и другие игровые деньги и ценности напрямую у других игроков, а также продать свои.">
-    <script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"FunPay","url":"https:\/\/funpay.ru\/"}]</script></head>
+    {{--<script src="https://funpay.ru/180/js/jquery.min.js"></script>--}}
+    {{--<script src="https://funpay.ru/180/js/bootstrap.min.js"></script>--}}
+    {{--<script src="https://funpay.ru/180/js/main.min.js"></script>--}}
+    <meta name="description" content="На сайте {{ config('app.name', 'Astra') }} вы можете дать объявление без регистрации и бесплатно.">
+    {{--<script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"FunPay","url":"https:\/\/funpay.ru\/"}]</script>--}}
+</head>
 <body>
 <!--suppress ALL -->
 
@@ -76,9 +77,9 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://funpay.ru/account/login">Войти</a></li>
-                <li><a href="https://funpay.ru/account/register">Зарегистрироваться</a></li>
-                <li><a href="https://funpay.ru/account/login?gate=vk" class="vk" title="Войти через ВКонтакте">
+                <li><a href="{{ route('login') }}">Войти</a></li>
+                <li><a href="{{ route('register') }}">Регистрация (необязательно)</a></li>
+                <li><a href="#" class="vk" title="Войти через ВКонтакте">
                         <span class="fa fa-vk fa-lg"></span>
                     </a>
                 </li>

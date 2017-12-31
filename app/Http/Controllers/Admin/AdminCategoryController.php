@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseController;
+use App\Model\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Category;
-use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AdminCategoryController extends BaseController
 {
-    //TODO Не доделаны методы данного класса
     /**
      * @return View
      */
@@ -24,7 +22,6 @@ class AdminCategoryController extends BaseController
             ->orderBy('id', 'desc')
             ->get();
 
-        //TODO Не сделаны вьюхи
         return view('admin.category.index')->with([
             'categories' => $categories,
         ]);
@@ -47,7 +44,8 @@ class AdminCategoryController extends BaseController
             'title' => 'required|max:255',
         ]);
 
-        Category::create($request->all());
+        Category::query()
+            ->create($request->all());
 
         return redirect()->back();
     }
@@ -92,7 +90,6 @@ class AdminCategoryController extends BaseController
 
         return redirect()->back();
     }
-
 
     /**
      * Восстанавливает категорию

@@ -24,7 +24,7 @@ class CreateTablePosts extends Migration
             $table->integer('promo_order')->default(0);
             $table->string('img')->nullable();
             $table->string('avatar')->nullable();
-            $table->integer('price')->default(0);
+            $table->string('price')->default(0);
             $table->string('user_name')->nullable();
             $table->string('region')->nullable();
             $table->string('city')->nullable();
@@ -32,10 +32,11 @@ class CreateTablePosts extends Migration
             $table->integer('phone')->nullable();
             $table->string('site')->nullable();
             $table->string('skype')->nullable();
-            $table->timestamp('lifetime')->nullable();
+            $table->timestamp('end_lifetime')->nullable();
             $table->string('password')->nullable();
             $table->string('link')->nullable();
             $table->boolean('hidden')->default(0);
+            $table->integer('viewed')->default(0);
             $table->string('meta_desc')->nullable();
             $table->string('meta_key')->nullable();
             $table->timestamps();

@@ -12,6 +12,7 @@
                 <li>
                     <a href="https://vk.com/funpay" class="logo vk" title="Группа ВКонтакте"
                        rel="nofollow" target="_blank"></a>
+                    <a href="{{ route('categoryIndex') }}">Категории</a>
                     <div class="count"><a href="https://vk.com/funpay" rel="nofollow"
                                           target="_blank">16 135 отзывов</a></div>
                 </li>
@@ -48,7 +49,7 @@
             <form action="https://funpay.ru/games/promoFilter" method="post"
                   class="promo-games-filter">
                 <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Поиск игры"
+                    <input type="text" name="query" class="form-control" placeholder="Поиск"
                            autocomplete="off">
                     <span class="input-group-btn">
       <button type="submit" class="btn btn-default">Найти</button>

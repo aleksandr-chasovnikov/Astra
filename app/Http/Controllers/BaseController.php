@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
-use App\Category;
-use App\Comment;
-use App\File;
-use App\Tag;
-use Carbon\Carbon;
+use App\Model\Category;
+use App\Model\File;
+use App\Model\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class BaseController extends Controller
@@ -30,7 +26,7 @@ class BaseController extends Controller
      */
     public static function checkAdmin()
     {
-        if (\Auth::check() && isAdmin()) {
+        if (Auth::check() && isAdmin()) {
             return true;
         }
 
@@ -44,20 +40,8 @@ class BaseController extends Controller
      */
     protected function showCategories()
     {
-        return Category::select(['id', 'title'])
-            ->orderBy('title')
-            ->where('status', true)
-            ->get();
-    }
-
-    /**
-     * Возращает список тегов
-     *
-     * @return Tag[] | Collection
-     */
-    protected function showTags()
-    {
-        return Tag::select()
+        return Category::query()
+            ->select(['id', 'title'])
             ->orderBy('title')
             ->where('status', true)
             ->get();
@@ -71,35 +55,36 @@ class BaseController extends Controller
      *
      * @return Builder
      */
-    protected function allArticles($tagId = null, $categoryId = null)
+    protected function allPosts($tagId = null, $categoryId = null)
     {
-        $articles = Article::latest()
+        $posts = Post::query()
+            ->latest()
 //            ->where('published_at', '<=', Carbon::now()) //TODO Реализовать постепенную самопубликацию по устанновленным датам
             ->where('status', true);
 
         if (!empty($categoryId)) {
-            $articles = $articles->where('categories_id', $categoryId);
+            $posts = $posts->where('categories_id', $categoryId);
         }
 
         if (!empty($tagId)) {
-            $articles = $articles->whereHas('tags', function(Builder $builder) use ($tagId) {
+            $posts = $posts->whereHas('tags', function(Builder $builder) use ($tagId) {
                 $builder->where('tag_id', $tagId);
             });
         }
 
-        return $articles;
+        return $posts;
     }
 
     /**
      * Возращает три последние статьи
      *
-     * @param Builder $articles
+     * @param Builder $posts
      *
-     * @return Article[] | Collection
+     * @return Post[] | Collection
      */
-    protected function recentArticles(Builder $articles)
+    protected function recentPosts(Builder $posts)
     {
-        return $articles->orderBy('created_at', 'desc')
+        return $posts->orderBy('created_at', 'desc')
             ->limit(3)
             ->get();
     }
@@ -107,13 +92,13 @@ class BaseController extends Controller
     /**
      * Возращает три самые популярные статьи
      *
-     * @param Builder $articles
+     * @param Builder $posts
      *
-     * @return Article[] | Collection
+     * @return Post[] | Collection
      */
-    protected function popularArticles(Builder $articles)
+    protected function popularPosts(Builder $posts)
     {
-        return $articles->orderBy('viewed', 'desc')
+        return $posts->orderBy('viewed', 'desc')
             ->limit(3)
             ->get();
     }
@@ -127,21 +112,9 @@ class BaseController extends Controller
      */
     protected function getFiles($id)
     {
-        return Article::find($id)
+        return Post::query()
+            ->find($id)
             ->files
             ->last();
     }
-
-    /**
-     * Возращает комментарии к статье
-     *
-     * @param $articleId
-     *
-     * @return Comment[] | Collection
-     */
-    protected function getComments($articleId)
-    {
-        return Article::find($articleId)->comments;
-    }
-
 }

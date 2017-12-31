@@ -18,7 +18,7 @@ class CreateUserTable extends Migration
             $table->enum('role', ['admin', 'manager', 'vip', 'user'])
                 ->default('user');
             $table->string('name');
-            $table->string('email')->nullable();
+            $table->string('email');
             $table->string('password');
             $table->string('email_token')->nullable();
             $table->boolean('verified')->default(0);

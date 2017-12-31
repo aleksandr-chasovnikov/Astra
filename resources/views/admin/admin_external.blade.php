@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>{{ config('app.name') }}</title>
     <!-- bootstrap-css -->
-    <link href="{{ asset('GoEasyOn/css/bootstrap.css') }}" rel="stylesheet" type="text/css"
+    <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet" type="text/css"
           media="all"/>
     <!--// bootstrap-css -->
     <!-- font -->
@@ -16,13 +16,13 @@
           rel='stylesheet' type='text/css'>
     <!-- //font -->
     <!-- css -->
-    <link rel="stylesheet" href="{{ asset('GoEasyOn/css/style.css') }}" type="text/css"
+    <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}" type="text/css"
           media="all"/>
-    <link rel="stylesheet" href="{{ asset('GoEasyOn/css/component.css') }}" type="text/css"
+    <link rel="stylesheet" href="{{ asset('admin/css/component.css') }}" type="text/css"
           media="all"/>
     <!--// css -->
     <!-- font-awesome icons -->
-    <link href="{{ asset('GoEasyOn/css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/css/font-awesome.css') }}" rel="stylesheet">
     <!-- //font-awesome icons -->
 </head>
 <body>
@@ -134,12 +134,12 @@
 "> <span id="toTopHover"
                                                                              style="opacity: 1;"> </span></a>
     <!--/script-->
-    <script src="{{ asset('GoEasyOn/js/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ asset('GoEasyOn/js/modernizr.custom.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('GoEasyOn/js/menu.js') }}"></script>
+    <script src="{{ asset('admin/js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('admin/js/modernizr.custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/menu.js') }}"></script>
     <script type="text/javascript"
-            src="{{ asset('GoEasyOn/js/jquery.magnific-popup.js') }}"></script>
-    <link href="{{ asset('GoEasyOn/css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+            src="{{ asset('admin/js/jquery.magnific-popup.js') }}"></script>
+    <link href="{{ asset('admin/css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
     <script>
         $(document).ready(function () {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -156,18 +156,18 @@
         });
     </script>
     <!--animate-->
-    <link href="{{ asset('GoEasyOn/css/animate.css') }}" rel="stylesheet" type="text/css"
+    <link href="{{ asset('admin/css/animate.css') }}" rel="stylesheet" type="text/css"
           media="all">
-    <script src="{{ asset('GoEasyOn/js/wow.min.js') }}"></script>
+    <script src="{{ asset('admin/js/wow.min.js') }}"></script>
     <script>
         new WOW().init();
     </script>
     <!--//end-animate-->
     <!-- menu -->
-    <script type="text/javascript" src="{{ asset('GoEasyOn/js/main.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/main.js') }}"></script>
     <!-- //menu -->
-    <script src="{{ asset('GoEasyOn/js/rAF.js') }}"></script>
-    <script src="{{ asset('GoEasyOn/js/demo-2.js') }}"></script>
+    <script src="{{ asset('admin/js/rAF.js') }}"></script>
+    <script src="{{ asset('admin/js/demo-2.js') }}"></script>
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -198,8 +198,8 @@
         });
     </script>
     <!-- gallery Modals -->
-    <script type="text/javascript" src="{{ asset('GoEasyOn/js/move-top.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('GoEasyOn/js/easing.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/move-top.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/js/easing.js') }}"></script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
             $(".scroll").click(function (event) {
@@ -225,7 +225,7 @@
         });
     </script>
     <!-- for bootstrap working -->
-    <script src="{{ asset('GoEasyOn/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('admin/js/bootstrap.js') }}"></script>
     <!-- //for bootstrap working -->
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script src="/vendor/unisharp/laravel-ckeditor/adapters/jquery.js"></script>
