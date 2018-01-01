@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -61,5 +62,15 @@ class Category extends BaseModel
     public function avatar()
     {
         return $this->files->last();
+    }
+
+    /**
+     * @return Collection | static[]
+     */
+    public function subCategories()
+    {
+        return Category::query()    //TODO Сортировку по алфавиту?
+            ->where('parent_id', $this->id)
+            ->get();
     }
 }

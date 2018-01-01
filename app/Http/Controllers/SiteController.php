@@ -2,30 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Category;
 use Illuminate\Http\Request;
-use App\Article;
-use App\Category;
 
 class SiteController extends Controller
 {
     /**
-     * Количество статей на странице
-     */
-    const PAGINATE = 5;
-    /**
-     * Показать все статьи
+     * Показать все категории
      * 
      * GET /
      */
 	public function index()
 	{
-        //Список статей
-//        $articles = Article::select(['id', 'title', 'img', 'description', 'created_at'])->paginate(self::PAGINATE);
-//
-//        //Список категорий
-//        $categories = Category::select(['id', 'name_category'])->get();
-//
-        return view('index');
+        return view('index')->with([
+            'categories' => Category::all(),
+        ]);
 	}
 
     /**
