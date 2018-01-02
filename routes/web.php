@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
+//Route::get('/verify_email/{token}', 'Auth\RegisterController@verify');
 
 // Logout
 Route::any('/logout', function() { //TODO Не доделал?
@@ -24,9 +24,34 @@ Route::any('/logout', function() { //TODO Не доделал?
 })->name('logout');
 
 // Contact
-Route::get('contact', function() {
-    return view('contact');
-})->name('contact');
+//Route::get('contact', function() {
+//    return view('contact');
+//})->name('contact');
+
+//Contact
+Route::get('contact', function () { return view('contact'); })->name('contact');
+//Route::post('contact.mail', 'ContactController@contactMail')->name('contactMail');
+
+//posts
+Route::get('/', ['as' => 'index', 'uses' => 'SiteController@index']);
+Route::get('post.{id}', 'SiteController@show')->name('postShow');
+Route::get('category.{categoryId}', 'SiteController@showByCategory')->name('postByCategory');
+
+//Comments
+Route::get('comment{id}', 'CommentController@show')->name('commentShow');
+Route::post('post', 'CommentController@store')->name('commentStore');
+Route::delete('delete.{comment}', 'CommentController@delete')->name('commentDelete');
+
+
+Route::group(['prefix' => 'post'], function() {
+    Route::get('search', 'PostController@searchForm')->name('postSearchForm');
+    Route::get('index', 'PostController@index')->name('postIndex');
+    Route::get('create', 'PostController@create')->name('postCreate');
+    Route::post('store', 'PostController@store')->name('postStore');
+    Route::get('update.{id}', 'PostController@edit')->name('postEdit');
+    Route::post('update', 'PostController@update')->name('postUpdate');
+    Route::delete('delete.{id}', 'PostControllerr@destroy')->name('postDelete');
+});
 
 // ======== AdminPanel =========================
 Route::group(['prefix' => 'admin'], function() {
@@ -34,14 +59,12 @@ Route::group(['prefix' => 'admin'], function() {
 // Route::group(['prefix' => 'admin/post', 'middleware' => ['auth', 'admin']], function () {
 
         Route::get('index', 'Admin\AdminPostController@index')->name('adminIndex');
-        Route::post('create', 'Admin\AdminPostController@store')->name('postStore');
-        Route::get('create', 'Admin\AdminPostController@create')->name('postCreate');
-        Route::get('update.{id}', 'Admin\AdminPostController@edit')->name('postEdit');
-        Route::post('update', 'Admin\AdminPostController@update')->name('postUpdate');
-        Route::delete('destroy.{id}', 'Admin\AdminPostController@destroy')->name('postDelete');
-        Route::delete('delete.{post}.{tag}', 'Admin\AdminPostController@deleteTag')->name('postTagDelete');
-        Route::get('restore.{post}', 'Admin\AdminPostController@restore')->name('postRestore');
-        Route::get('status.{post}', 'Admin\AdminPostController@statusChange')->name('postStatusChange');
+        Route::post('create', 'Admin\AdminPostController@store')->name('adminPostStore');
+        Route::get('create', 'Admin\AdminPostController@create')->name('adminPostCreate');
+        Route::get('update.{id}', 'Admin\AdminPostController@edit')->name('adminPostEdit');
+        Route::post('update', 'Admin\AdminPostController@update')->name('adminPostUpdate');
+        Route::delete('destroy.{id}', 'Admin\AdminPostController@destroy')->name('adminPostDelete');
+        Route::get('restore.{post}', 'Admin\AdminPostController@restore')->name('adminPostRestore');
     });
 
     Route::group(['prefix' => 'user'], function() {
@@ -108,53 +131,3 @@ Route::group(['prefix' => 'admin'], function() {
 
 // ============================================
 
-//Contact
-Route::get('contact', function () { return view('contact'); })->name('contact');
-Route::post('contact.mail', 'ContactController@contactMail')->name('contactMail');
-
-//posts
-Route::get('/', ['as' => 'index', 'uses' => 'SiteController@index']);
-Route::get('post.{id}', 'SiteController@show')->name('postShow');
-Route::get('category.{categoryId}', 'SiteController@showByCategory')->name('postByCategory');
-
-//Comments
-Route::get('comment{id}', 'CommentController@show')->name('commentShow');
-Route::post('post', 'CommentController@store')->name('commentStore');
-Route::delete('delete.{comment}', 'CommentController@delete')->name('commentDelete');
-
-// ======== AdminPanel =========================
-Route::group(['prefix' => 'admin/post'], function () {
-// Route::group(['prefix' => 'admin/post', 'middleware' => ['auth', 'admin']], function () {
-
-	Route::get('index', 'Admin\AdminPostController@index')->name('adminIndex');
-	Route::post('create', 'Admin\AdminPostController@store')->name('postStore');
-	Route::get('create', 'Admin\AdminPostController@create')->name('postCreate');
-	Route::get('update.{id}', 'Admin\AdminPostController@update')->name('postUpdate');
-	Route::post('update', 'Admin\AdminPostController@postUpdate')->name('postPostUpdate');
-	Route::delete('delete.{post}', 'Admin\AdminPostController@delete')->name('postDelete');
-	Route::post('upload', 'Admin\AdminPostController@uploadFile')->name('upload');
-});
-
-Route::group(['prefix' => 'admin/category'], function () {
-
-	Route::get('index', 'Admin\AdminCategoryController@index')->name('categoryIndex');
-	Route::post('create', 'Admin\AdminCategoryController@store')->name('categoryStore');
-	Route::get('create', 'Admin\AdminCategoryController@create')->name('categoryCreate');
-	Route::get('update.{id}', 'Admin\AdminCategoryController@update')->name('categoryUpdate');
-	Route::get('delete.{post}', 'Admin\AdminCategoryController@delete')->name('categoryDelete');
-});
-// ======== END AdminPanel =======================
-
-// ======== Authentication =======================
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-
-// login
-Route::get('loginX', 'Auth\LoginController@showLoginForm')->name('loginX');
-Route::post('loginX', 'Auth\LoginController@login')->name('loginX');
-Route::get('logoutX', 'Auth\LoginController@logout')->name('logoutX');
-
-// register
-Route::get('registerX', 'Auth\RegisterController@showRegistrationForm')->name('registerX');
-Route::post('registerX', 'Auth\RegisterController@register')->name('registerX');
-// ======== END Authentication =======================

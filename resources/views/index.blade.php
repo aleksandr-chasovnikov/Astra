@@ -7,7 +7,7 @@
         <div class="site-header image">
             <div>
                 <div class="col-md-6 text-left">
-                    <a href="" title="Дать бесплатное объявление">
+                    <a href="{{ route('postCreate') }}" title="Дать бесплатное объявление">
                         <button class="btn btn-warning">
                             <i class="fa fa-hand-o-right" aria-hidden="true"></i>
                             &nbsp;&nbsp;Подать объявление бесплатно и
@@ -16,10 +16,10 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a href="" title="Требуется ID объявления и пароль">
+                    <a href="{{ route('postSearchForm') }}" title="Найти свои объявления по одному из параметров">
                         <button class="btn btn-info">
                             <i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                            &nbsp;&nbsp;Найти своё объявление
+                            &nbsp;&nbsp;Найти свои объявления
                         </button>
                     </a>
                 </div>

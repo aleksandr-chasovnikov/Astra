@@ -41,9 +41,8 @@ class BaseController extends Controller
     protected function showCategories()
     {
         return Category::query()
-            ->select(['id', 'title'])
             ->orderBy('title')
-            ->where('status', true)
+            ->where('hidden', false)
             ->get();
     }
 
