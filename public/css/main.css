@@ -1613,7 +1613,7 @@ textarea.input-lg,.input-group-lg>textarea.form-control,.input-group-lg>textarea
     font-size:12px}
 }
 .btn{display:inline-block;
-    margin-bottom:0;
+    margin-bottom: 20px;
     font-weight:normal;
     text-align:center;
     vertical-align:middle;

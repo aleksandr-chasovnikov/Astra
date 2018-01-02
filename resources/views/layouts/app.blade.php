@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Astra') }}</title>
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/fontawesome/fontawesome-all.css') }}" rel="stylesheet" media="all">
-    {{--<script src="https://funpay.ru/180/js/jquery.min.js"></script>--}}
-    {{--<script src="https://funpay.ru/180/js/bootstrap.min.js"></script>--}}
-    {{--<script src="https://funpay.ru/180/js/main.min.js"></script>--}}
+    {{--<script src="#180/js/jquery.min.js"></script>--}}
+    {{--<script src="#180/js/bootstrap.min.js"></script>--}}
+    {{--<script src="#180/js/main.min.js"></script>--}}
     <meta name="description" content="На сайте {{ config('app.name', 'Astra') }} вы можете дать объявление без регистрации и бесплатно.">
-    {{--<script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"FunPay","url":"https:\/\/funpay.ru\/"}]</script>--}}
+    {{--<script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"#","url":"https:\/\/#.ru\/"}]</script>--}}
 </head>
 <body>
 <!--suppress ALL -->
@@ -69,10 +68,12 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class=" dropdown">
-                    <a href="https://funpay.ru/" class="dropdown-toggle" data-toggle="dropdown">Помощь <span class="caret"></span></a>                              <ul class="dropdown-menu">
-                        <li class=""><a href="https://funpay.ru/help.html">Вопросы и ответы</a></li>
-                        <li class=""><a href="https://funpay.ru/arbitrage.html">Разрешение споров</a></li>
-                        <li class=""><a href="https://funpay.ru/trade/info">Правила для продавцов</a></li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-question-circle" aria-hidden="true"></i>
+                        &nbsp;Помощь <span class="caret"></span></a>                              <ul class="dropdown-menu">
+                        <li class=""><a href="#help.html">Вопросы и ответы</a></li>
+                        <li class=""><a href="#arbitrage.html">Разрешение споров</a></li>
+                        <li class=""><a href="#trade/info">Правила для продавцов</a></li>
                     </ul>
                 </li>
             </ul>
@@ -80,8 +81,16 @@
 
                 @if (Auth::guest())
 
-                    <li><a href="{{ route('login') }}">Войти</a></li>
-                    <li><a href="{{ route('register') }}">Регистрация (необязательно)</a></li>
+                    <li><a href="{{ route('login') }}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i>
+                            &nbsp;Войти
+                        </a>
+                    </li>
+                    <li><a href="{{ route('register') }}">
+                            <i class="fa fa-registered" aria-hidden="true"></i>
+                            &nbsp;Регистрация (необязательно)
+                        </a>
+                    </li>
                     <li><a href="#" class="vk" title="Войти через ВКонтакте">
                             <span class="fa fa-vk fa-lg"></span>
                         </a>
@@ -91,13 +100,20 @@
 
                     @if (isAdmin())
 
-                        <li><a href="{{ route('categoryIndex') }}">Админ-панель</a></li>
+                        <li><a href="{{ route('categoryIndex') }}">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
+                                &nbsp;Админ-панель
+                            </a>
+                        </li>
 
                     @endif
 
                         <li class="m_nav_item" id="moble_nav_item_6">
                             <a href="{{ route('logout') }}" class="link link--kumya scroll">
-                                <span data-letters="Выход">Выход</span>
+                                <span data-letters="Выход">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                    &nbsp;Выход
+                                </span>
                             </a>
                         </li>
                 @endif
@@ -118,10 +134,10 @@
                 @endif
                 .
                 Все права защищены.</li>
-            <li>Обратная связь: <a href="mailto:a@funpayZ.ZZru">a@funpayZ.ZZru</a></li>
+            <li>Обратная связь: <a href="mailto:a@#Z.ZZru">a@#Z.ZZru</a></li>
         </ul>
         <ul class="right">
-            <li><a href="https://vk.com/funpay" class="vk" rel="nofollow"><i class="fa fa-vk"></i></a></li>
+            <li><a href="https://vk.com/#" class="vk" rel="nofollow"><i class="fa fa-vk"></i></a></li>
             <li><a href="http://forums.goha.ru/showthread.php?t=1075287" class="icon goha" rel="nofollow"></a></li>
             <li><a href="https://passport.webmoney.ru/asp/certview.asp?wmid=221291168197" class="icon wm-c" rel="nofollow"></a></li>
         </ul>

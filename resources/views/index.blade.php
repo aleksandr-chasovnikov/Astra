@@ -5,7 +5,26 @@
     <div class="container main-container">
         <div id="global-origin"></div>
         <div class="site-header image">
-            <h1>Покупайте у игроков!</h1>
+            <div>
+                <div class="col-md-6 text-left">
+                    <a href="" title="Дать бесплатное объявление">
+                        <button class="btn btn-warning">
+                            <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                            &nbsp;&nbsp;Подать объявление бесплатно и
+                            <strong> без регистрации  </strong>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="" title="Требуется ID объявления и пароль">
+                        <button class="btn btn-info">
+                            <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                            &nbsp;&nbsp;Найти своё объявление
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix">&nbsp;</div>
         </div>
         <div id="content" class="content-promo content-promo-index">
             <ul class="promo-reviews">
@@ -46,10 +65,10 @@
                 </li>
             </ul>
 
-            <form action="https://funpay.ru/games/promoFilter" method="post"
+            <form action="{{--{{ route('promoFilter') }}--}}" method="post"
                   class="promo-games-filter">
                 <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Поиск"
+                    <input type="text" name="query" class="form-control" placeholder="Поиск по слову или словосочетанию"
                            autocomplete="off">
                     <span class="input-group-btn">
       <button type="submit" class="btn btn-default">Найти</button>
@@ -63,16 +82,8 @@
                     @php($word = null)
                     @foreach ($categories as $category)
                         @unless ($category->parent_id)
-                            <div class="promo-games-game" data-game="24">
-                                <div class="promo-games-char">
-                                    @php
-                                        if ($word !== $category->title[0]) {
-                                            $word = $category->title[0];
-                                            echo $word;
-                                        }
 
-                                    @endphp
-                                </div>
+                            <div class="promo-games-game" data-game="">
                                 <p class="promo-games-title">
                                     <a href="https://funpay.ru/chips/26/">
                                         {{ $category->title }}
@@ -85,6 +96,7 @@
                                     @endforeach
                                 </p>
                             </div>
+
                         @endunless
                     @endforeach
 
