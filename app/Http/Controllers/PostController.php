@@ -38,6 +38,21 @@ class PostController extends BaseController
     }
 
     /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function show($id)
+    {
+        $post = Post::query()
+            ->findOrFail($id);
+
+        return view('post.post')->with([
+            'post' => $post,
+        ]);
+    }
+
+    /**
      * Выводит форму для создания статьи
      *
      * GET /admin/post/create

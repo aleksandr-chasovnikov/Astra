@@ -24,14 +24,14 @@
                 </div>
                 <div class="form-group">
                     <label for="categories_id">Категория</label>&nbsp;&#10033;
-                    <select name="categories_id" size="3" class="form-control" id="categories_id"
+                    <select name="categories_id" size="7" class="form-control" id="categories_id"
                             required>
                         @foreach ($categories as $category)
-                            <option
-                                    @if (1 === $category->id)
-                                    selected
-                                    @endif
-                                    value="{{$category->id}}">{{$category->title}}</option>
+                            @if ($category->parent_id)
+                                <option value="{{ $category->id }}">
+                                    {{ $category->title }}
+                                </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-group">
                     <label for="region">Регион</label>&nbsp;&#10033;
-                    <select name="region" size="3" class="form-control" id="region"
+                    <select name="region" size="7" class="form-control" id="region"
                             required>
                         {{--@foreach ($regions as $region)--}}
                             {{--<option--}}

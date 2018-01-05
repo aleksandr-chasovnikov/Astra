@@ -7,43 +7,64 @@
 	<div class="row">
 		<div class="content">
 
-	@foreach ($category as $cat)
-		<div class="container">
-		        <h4>Категория &#8194;&#8658;&#8194; {{$cat->name_category}}</h4>
-		</div>
-	@endforeach
+	{{--@foreach ($category as $cat)--}}
+		{{--<div class="container">--}}
+		        {{--<h4>Категория &#8194;&#8658;&#8194; {{$cat->name_category}}</h4>--}}
+		{{--</div>--}}
+	{{--@endforeach--}}
 
 	<hr>
 
-	@if (!empty($articles))
+		@foreach ($posts as $post)
 
-		@foreach ($articles as $article)
-		
-			<small class="pull-right">{{$article->created_at}}</small>
-	<h3>{{ $article->title }}</h3>
+			<div class="onepost">
+				<div class="sheader margb4">
+					<span class="dremark">№{{ $loop->iteration }}</span>
 
-				@if (!empty($article->img))
-					<div class="text-center">
-						<img src="uploads/{{ $article->img }}" alt="" align="middle" width="90%">
+					<a href="{{ route('postShow') }}">
+						{{ $post->title }}
+					</a>
+
+					<div class="price" title="{{ $post->title }} за {{ $post->price }} рублей">
+						{{ $post->price }} руб.
 					</div>
-				@endif
+				</div>
 
-			<p>{{ $article->description }}</p>
-			<p class="text-right"><a class="btn btn-default" href="{{ route('articleShow',['id'=>$article->id]) }}" role="button">Подробнее &raquo;</a></p>
-			<hr>
+				<div class="mfont margb4 bremark">{{ $post->type }} - {{ $post->created_at }}</div>
+				{{ $post->content }}<div class="clear"></div>
+			</div>
+			<a name="post14255836"></a>
+		
+			{{--<small class="pull-right">{{$post->created_at}}</small>--}}
+			{{--<h3>{{ $post->title }}</h3>--}}
+
+			{{--@if (!empty($post->img))--}}
+				{{--<div class="text-center">--}}
+					{{--<img src="uploads/{{ $post->img }}" alt="" align="middle" width="90%">--}}
+				{{--</div>--}}
+			{{--@endif--}}
+
+			{{--<p>{{ $post->description }}</p>--}}
+
+			{{--<p class="text-right">--}}
+				{{--<a class="btn btn-default" href="{{ route('postShow',['id'=>$post->id]) }}" role="button">--}}
+					{{--Подробнее &raquo;--}}
+				{{--</a>--}}
+			{{--</p>--}}
+
+			{{--<hr>--}}
 
 		@endforeach
 
 		<div class="paginate container">
-			{{ $articles->links() }}
-		</div>	
-	@endif
+			{{ $posts->links() }}
+		</div>
 
-	@if (empty($article))
+		@if (empty($post))
 
-		<p>Извините. В этой категории ещё нет статей.</p>
+			<p>Извините. В этой категории ещё нет объявлений.</p>
 
-	@endif
+		@endif
 
 		</div>
 	</div>

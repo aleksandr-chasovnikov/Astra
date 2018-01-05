@@ -85,14 +85,14 @@
 
                             <div class="promo-games-game" data-game="">
                                 <p class="promo-games-title">
-                                    <a href="https://funpay.ru/chips/26/">
                                         {{ $category->title }}
-                                    </a>
                                 </p>
 
                                 <p class="promo-games-sections">
                                 @foreach ($category->subCategories() as $subCategory)
-                                        <a href="">&nbsp;{{ $subCategory->title }} </a>
+                                        <a href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">&nbsp;
+                                            {{ $subCategory->title }}
+                                        </a>
                                     @endforeach
                                 </p>
                             </div>

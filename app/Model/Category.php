@@ -69,8 +69,9 @@ class Category extends BaseModel
      */
     public function subCategories()
     {
-        return Category::query()    //TODO Сортировку по алфавиту?
+        return Category::query()
             ->where('parent_id', $this->id)
+            ->where('hidden', false)
             ->get();
     }
 }

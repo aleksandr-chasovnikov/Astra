@@ -35,7 +35,7 @@ Route::get('contact', function () { return view('contact'); })->name('contact');
 //posts
 Route::get('/', ['as' => 'index', 'uses' => 'SiteController@index']);
 Route::get('post.{id}', 'SiteController@show')->name('postShow');
-Route::get('category.{categoryId}', 'SiteController@showByCategory')->name('postByCategory');
+Route::get('category.{categoryId}', 'SiteController@showByCategory')->name('showByCategory');
 
 //Comments
 Route::get('comment{id}', 'CommentController@show')->name('commentShow');
@@ -48,6 +48,7 @@ Route::group(['prefix' => 'post'], function() {
     Route::get('index', 'PostController@index')->name('postIndex');
     Route::get('create', 'PostController@create')->name('postCreate');
     Route::post('store', 'PostController@store')->name('postStore');
+    Route::post('show', 'PostController@show')->name('postShow');
     Route::get('update.{id}', 'PostController@edit')->name('postEdit');
     Route::post('update', 'PostController@update')->name('postUpdate');
     Route::delete('delete.{id}', 'PostControllerr@destroy')->name('postDelete');
