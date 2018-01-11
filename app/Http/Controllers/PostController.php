@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Post;
+use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -63,6 +64,7 @@ class PostController extends BaseController
     {
         return view('post.create')->with([
             'categories' => $this->showCategories(),
+            'regions' => Region::query()->orderBy('name')->get(),
         ]);
     }
 

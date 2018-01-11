@@ -37,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <label for="content">Текст объявления</label>&nbsp;&#10033;
-                    <textarea name="content" class="form-control textarea" id="content" required
+                    <textarea name="content" rows="7" class="form-control textarea" id="content" required
                     >{{ old('title') }}</textarea>
                 </div>
                 <div class="form-group">
@@ -67,13 +67,13 @@
                     <label for="region">Регион</label>&nbsp;&#10033;
                     <select name="region" size="7" class="form-control" id="region"
                             required>
-                        {{--@foreach ($regions as $region)--}}
-                            {{--<option--}}
-                                    {{--@if (1 === $region->id)--}}
-                                    {{--selected--}}
-                                    {{--@endif--}}
-                                    {{--value="{{$region->id}}">{{$region->name}}</option>--}}
-                        {{--@endforeach--}}
+                        @foreach ($regions as $region)
+                            <option
+                                    @if (1 === $region->id)
+                                    selected
+                                    @endif
+                                    value="{{$region->id}}">{{$region->name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">

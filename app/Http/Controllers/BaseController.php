@@ -56,7 +56,7 @@ class BaseController extends Controller
      */
     protected function allPosts($tagId = null, $categoryId = null)
     {
-        $posts = Post::query()
+        $posts = Post::with('category', 'files')
             ->latest()
 //            ->where('published_at', '<=', Carbon::now()) //TODO Реализовать постепенную самопубликацию по устанновленным датам
             ->where('status', true);
