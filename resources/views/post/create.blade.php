@@ -18,12 +18,12 @@
                 <hr>
 
                 <div class="form-group">
-                    <label for="title">Заголовок</label>&nbsp;&#10033;
+                    <label for="title">Заголовок</label><span style="color: red;"> (обязательно)</span>
                     <input name="title" type="text" class="form-control" id="title" required
                            value="{{ old('title') }}">
                 </div>
                 <div class="form-group">
-                    <label for="categories_id">Категория</label>&nbsp;&#10033;
+                    <label for="categories_id">Категория</label><span style="color: red;"> (обязательно)</span>
                     <select name="categories_id" size="7" class="form-control" id="categories_id"
                             required>
                         @foreach ($categories as $category)
@@ -36,12 +36,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="content">Текст объявления</label>&nbsp;&#10033;
+                    <label for="content">Текст объявления</label><span style="color: red;"> (обязательно)</span>
                     <textarea name="content" rows="7" class="form-control textarea" id="content" required
                     >{{ old('title') }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="type">Тип объявления</label>&nbsp;&#10033;
+                    <label for="type">Тип объявления</label><span style="color: red;"> (обязательно) </span>
                     <select name="type" size="2" id="type">
                         <option selected value="offer">Предложение</option>
                         <option value="demand">Спрос</option>
@@ -64,7 +64,7 @@
                            value="{{ old('user_name') }}">
                 </div>
                 <div class="form-group">
-                    <label for="region">Регион</label>&nbsp;&#10033;
+                    <label for="region">Регион</label><span style="color: red;"> (обязательно)</span>
                     <select name="region" size="7" class="form-control" id="region"
                             required>
                         @foreach ($regions as $region)
@@ -102,15 +102,40 @@
                            value="{{ old('skype') }}">
                 </div>
                 <div class="form-group">
-                    <label for="end_lifetime">Срок размещения</label>
-                    <input name="end_lifetime" type="text" class="form-control" id="end_lifetime"
-                           value="{{ old('end_lifetime') }}">
+                    <label for="end_lifetime">Срок размещения:</label>
+                    <br>
+                    <input type="radio" id="two_weeks"
+                           name="contact" value="1">
+                    <label for="two_weeks">2 недели</label>
+
+                    <input type="radio" id="four_weeks" checked
+                           name="contact" value="2">
+                    <label for="four_weeks">4 недели</label>
+
+                    <input type="radio" id="eight_weeks"
+                           name="contact" value="3">
+                    <label for="eight_weeks">8 недель</label>
                 </div>
                 <div class="form-group">
-                    <label for="code">Проверочный код</label>
-                    <input name="code" type="text" class="form-control" id="code"
-                           value="{{ old('code') }}">
+                    <label for="check_code">Выберите код с картинки:</label>
+                    <span style="color: red;"> (обязательно)</span>
+                    <br>
+                    <input type="radio" id="checkCode1"
+                           name="contact" value="1">
+                    <label for="checkCode1">122135</label>
+
+                    <input type="radio" id="checkCode2"
+                           name="contact" value="2">
+                    <label for="checkCode2">232221</label>
+
+                    <input type="radio" id="checkCode3"
+                           name="contact" value="3">
+                    <label for="checkCode3">452132</label>
                 </div>
+                <img src="{{ asset('uploads/captcha/imgcap.jpg') }}" alt="">
+                <br>
+                <br>
+                <br>
 
                 <button type="submit" class="btn btn-primary">Опубликовать</button>
 
