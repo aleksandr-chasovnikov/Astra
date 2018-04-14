@@ -4,8 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{!! csrf_token() !!}" />
     <title>{{ config('app.name', 'Astra') }}</title>
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/second.css') }}" rel="stylesheet" media="all">
     {{--<script src="#180/js/jquery.min.js"></script>--}}
     {{--<script src="#180/js/bootstrap.min.js"></script>--}}
     {{--<script src="#180/js/main.min.js"></script>--}}
@@ -137,7 +139,7 @@
             <li>Обратная связь: <a href="mailto:a@#Z.ZZru">a@#Z.ZZru</a></li>
         </ul>
         <ul class="right">
-            <li><a href="https://vk.com/#" class="vk" rel="nofollow"><i class="fa fa-vk"></i></a></li>
+            <li><a href="#" class="vk" rel="nofollow"><i class="fa fa-vk"></i></a></li>
             <li><a href="http://forums.goha.ru/showthread.php?t=1075287" class="icon goha" rel="nofollow"></a></li>
             <li><a href="https://passport.webmoney.ru/asp/certview.asp?wmid=221291168197" class="icon wm-c" rel="nofollow"></a></li>
         </ul>
@@ -151,5 +153,7 @@
         {{--$.src="//v2.zopim.com/?2uAvJ6SRQuF3VGUB6rQpq3RHW4HAi1Cs";z.t=+new Date;$.--}}
             {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
 {{--</script>--}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{ asset('js/ajax/check_form.js') }}"></script>
 </body>
 </html>

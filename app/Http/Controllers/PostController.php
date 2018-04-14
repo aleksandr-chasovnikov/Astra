@@ -6,11 +6,33 @@ use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Validator;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PostController extends BaseController
 {
+    private $captchaNumber;
+
+    public function __construct()
+    {
+        $captchaNumbers = [
+            '707956' => 'sdfjifn43efni',
+            '664425' => 'fhgreh3rr454gt',
+            '120754' => 'jbe4g34gf21wwq',
+            '150173' => 'jkui6yerfwec567u',
+            '612619' => 'rtrt5445reu74ree',
+            '797212' => 'kuyu565rere3ddgh',
+            '931090' => '435eetr454ett4w',
+            '334906' => 'erter3454eretet',
+            '656226' => 'erhry45ytru5yyedfs',
+            '922223' => 'gvbbnrtyn4443gdfg',
+            '725365' => 'fukjtyertweeweff3',
+        ];
+
+        $this->captchaNumber = array_random($captchaNumbers);
+    }
+
     /**
      * @return Factory | View
      */
@@ -62,10 +84,45 @@ class PostController extends BaseController
      */
     public function create()
     {
+
         return view('post.create')->with([
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
+            'captchaNumber' => $this->captchaNumber,
         ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxValidate(Request $request)
+    {
+//        $validator = Validator::make($request->all(), [
+//            'title' => 'max:1',
+//        ]);
+
+//        $inputs = [
+//            'title'
+//        ];
+//
+//        if (in_array(array_keys($request->all())[0]), $inputs) {
+//
+//            foreach ($inputs)
+//
+//        }
+
+        if ( strlen($request->all()['title']) >= 2 ) {
+
+            return response()->json([
+                'error' => 'Слишком длинный текст.'
+            ]);
+        }
+
+        return response()->json([
+                'success' => 'Проверено.'
+            ]);
     }
 
     /**
@@ -82,10 +139,17 @@ class PostController extends BaseController
         $this->validate($request, [
             'title' => 'required|max:255',
             'content' => 'required',
+            'email' => 'nullable|email',
+//            'phone' => 'nullable|number',
+//            'captcha' => 'required|max:6|pattern:' . $this->captchaNumber,
         ]);
 
         Post::query()->create(
-            array_except($request->all(), ['tags_id'])
+            array_except($request->all(), [
+                '_token',
+                'captcha',
+                'MAX_FILE_SIZE',
+            ])
         );
 
         return view('post.post.create')->with([
