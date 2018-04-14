@@ -3,10 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
-use App\Comment;
 
-class Test extends FormRequest
+class StorePostRequest extends FormRequest
 {
     /**
      * Определить, авторизован ли пользователь для этого запроса.
@@ -26,8 +24,11 @@ class Test extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique|max:255',
-            'body' => 'required',
+            'title' => 'required|max:170',
+            'content' => 'required',
+            'email' => 'nullable|email',
+            'file' => 'nullable|file',
+            'phone' => ['required', 'regex:/^([0-9-]|\+|\(|\))*$/'],
         ];
     }
 
@@ -38,8 +39,8 @@ class Test extends FormRequest
     {
         return [
             'title.required' => 'Необходимо указать заголовок',
-            'body.required'  => 'Необходимо написать статью',
+            'phone.required' => 'Необходимо указать телефон',
+            'phone.regex' => 'Телефон содержит недопустимые символы',
         ];
     }
-
 }

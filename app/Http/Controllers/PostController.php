@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -99,30 +99,120 @@ class PostController extends BaseController
      */
     public function ajaxValidate(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'title' => 'max:1',
-//        ]);
+        $inputKey = $request->name;
+        $inputValue = $request->value;
 
-//        $inputs = [
-//            'title'
-//        ];
-//
-//        if (in_array(array_keys($request->all())[0]), $inputs) {
-//
-//            foreach ($inputs)
-//
-//        }
+        // Правило "required"
+        if ($request->required && (strlen($inputValue) === 0)) {
+            $responseJson = ['error' => 'Поле обязательно для заполнения!'];
 
-        if ( strlen($request->all()['title']) >= 2 ) {
-
-            return response()->json([
-                'error' => 'Слишком длинный текст.'
-            ]);
+            return response()->json($responseJson + $request->all());
         }
 
-        return response()->json([
-                'success' => 'Проверено.'
-            ]);
+        switch (true) {
+            case in_array($inputKey, [
+                'title',
+                'price',
+                'user_name',
+                'city',
+                'email',
+                'phone',
+                'site',
+                'skype',
+            ]):
+                $responseJson = $this->validateStrlenRegexp(
+                    $inputValue,
+                    170,
+                    3,
+                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
+                );
+
+                if (in_array($inputKey, [
+                    'phone',
+                ])) {
+                    $responseJson = $this->validateStrlenRegexp(
+                        $inputValue,
+                        25,
+                        5,
+                        '#^([0-9-]|\+|\(|\))*$#',
+                        true
+                    );
+                }
+                break;
+
+            case in_array($inputKey, [
+                'content',
+            ]):
+                $responseJson = $this->validateStrlenRegexp(
+                    $inputValue,
+                    2000,
+                    5,
+                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
+                );
+                break;
+
+            case in_array($inputKey, [
+                'captcha',
+            ]):
+                $responseJson = $this->validateStrlenRegexp(
+                    $inputValue,
+                    6,
+                    6,
+                    '#^\d*$#',
+                    true
+                );
+                break;
+
+            default:
+                $responseJson = [
+                        'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
+                    ];
+        }
+
+//        if (in_array($inputKey, [
+//            'title',
+//            'price',
+//            'user_name',
+//            'city',
+//            'email',
+//            'phone',
+//            'site',
+//            'skype',
+//        ])) {
+//            $responseJson = $this->validateStrlenRegexp(
+//                $inputValue,
+//                170,
+//                3,
+//                '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
+//            );
+//
+//            if (in_array($inputKey, [
+//                'phone',
+//            ])) {
+//                $responseJson = $this->validateStrlenRegexp(
+//                    $inputValue,
+//                    25,
+//                    5,
+//                    '#^([0-9-]|\+|\(|\))*$#',
+//                    true
+//                );
+//            }
+//        } elseif (in_array($inputKey, [
+//            'content',
+//        ])) {
+//            $responseJson = $this->validateStrlenRegexp(
+//                $inputValue,
+//                2000,
+//                5,
+//                '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
+//            );
+//        } else {
+//            return response()->json([
+//                    'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
+//                ] + $request->all());
+//        }
+
+        return response()->json($responseJson + $request->all());
     }
 
     /**
@@ -130,19 +220,24 @@ class PostController extends BaseController
      *
      * POST /admin/post/store
      *
-     * @param Request $request
+     * @param StorePostRequest $request
      *
      * @return $this | HttpException
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         $this->validate($request, [
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'email' => 'nullable|email',
-//            'phone' => 'nullable|number',
-//            'captcha' => 'required|max:6|pattern:' . $this->captchaNumber,
+            'captcha' => [
+                'required',
+                'max:6',
+                'regex:/^' . $this->captchaNumber . '$/',
+            ],
+        ], [
+            'captcha.required' => 'Проверочный код обязателен',
+            'captcha.regex' => 'Неверный проверочный код',
         ]);
+
+        dd($request->all());
 
         Post::query()->create(
             array_except($request->all(), [
@@ -228,6 +323,38 @@ class PostController extends BaseController
         Post::find($id)->delete();
 
         return redirect()->back();
+    }
+
+    /**
+     * @param        $inputValue
+     * @param string $patternNo
+     * @param bool   $invertPattern
+     * @param int    $max
+     * @param int    $min
+     *
+     * @return array
+     */
+    protected function validateStrlenRegexp($inputValue, $max = 170, $min = 3, $patternNo, $invertPattern = false)
+    {
+        if ($invertPattern) {
+            if (!preg_match($patternNo, $inputValue, $matches)) {
+                return ['error' => 'Есть недопустимый символ'];
+            }
+        } else {
+            if (preg_match($patternNo, $inputValue, $matches)) {
+                return ['error' => 'Недопустимый символ: ' . implode('', $matches)];
+            }
+        }
+
+        if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
+            return ['error' => 'Слишком короткий текст.'];
+        }
+
+        if (strlen($inputValue) > $max) {
+            return ['error' => 'Слишком длинный текст.'];
+        }
+
+        return ['success' => 'Проверено.'];
     }
 
 }
