@@ -27,9 +27,9 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="title">Заголовок</label>
+                    <label for="title">Заголовок</label><a name="title"></a>
                     <input name="title" type="text" class="form-control ajax-validate required" id="title"
-                           value="{{ old('title') }}">
+                           value="{{ old('title') }}" data-name="Заголовок">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
@@ -45,9 +45,9 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="content">Текст объявления</label>
-                    <textarea name="content" rows="5" class="form-control textarea ajax-validate required" id="content"
-                    >{{ old('title') }}</textarea>
+                    <label for="content">Текст объявления</label><a name="content"></a>
+                    <textarea name="content" rows="5" class="form-control textarea ajax-validate
+                    required" id="content" data-name="Текст объявления">{{ old('title') }}</textarea>
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
@@ -64,15 +64,15 @@
                            value="{{ old('img') }}">
                 </div>
                 <div class="form-group">
-                    <label for="price">Цена</label>
+                    <label for="price">Цена</label><a name="price"></a>
                     <input name="price" type="text" class="form-control ajax-validate" id="price"
-                           value="{{ old('price') }}">
+                           value="{{ old('price') }}" data-name="Цена">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="user_name">Контактное лицо</label>
+                    <label for="user_name">Контактное лицо</label><a name="user_name"></a>
                     <input name="user_name" type="text" class="form-control ajax-validate" id="user_name"
-                           value="{{ old('user_name') }}">
+                           value="{{ old('user_name') }}" data-name="Контактное лицо">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
@@ -88,33 +88,33 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="city">Город</label>
+                    <label for="city">Город</label><a name="city"></a>
                     <input name="city" type="text" class="form-control ajax-validate" id="city"
-                           value="{{ old('city') }}">
+                           value="{{ old('city') }}" data-name="Город">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="email">E-mail</label>
+                    <label for="email">E-mail</label><a name="email"></a>
                     <input name="email" type="text" class="form-control ajax-validate" id="email"
-                           value="{{ old('email') }}">
+                           value="{{ old('email') }}" data-name="E-mail">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="phone">Телефон</label>
+                    <label for="phone">Телефон</label><a name="phone"></a>
                     <input name="phone" type="text" class="form-control ajax-validate required" id="phone"
-                           value="{{ old('phone') }}">
+                           value="{{ old('phone') }}" data-name="Телефон">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="site">Сайт</label>
+                    <label for="site">Сайт</label><a name="site"></a>
                     <input name="site" type="text" class="form-control ajax-validate" id="site"
-                           value="{{ old('site') }}">
+                           value="{{ old('site') }}" data-name="Сайт">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="skype">Skype</label>
+                    <label for="skype">Skype</label><a name="skype"></a>
                     <input name="skype" type="text" class="form-control ajax-validate" id="skype"
-                           value="{{ old('skype') }}">
+                           value="{{ old('skype') }}" data-name="Skype">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
@@ -133,13 +133,15 @@
                     <label for="eight_weeks">8 недель</label>
                 </div>
                 <hr>
-                <img src="{{ asset('/uploads/captcha/' . $captchaNumber . '.jpg') }}" alt="">
+                <img src="{{ asset('/uploads/captcha/' . $captchaImage . '.jpg') }}" alt="">
                 <div class="form-group">
-                    <label for="captcha">Наберите код с картинки:</label>
+                    <label for="captcha">Наберите код с картинки:</label><a name="captcha"></a>
                     <br>
-                    <input name="captcha" type="text" class="form-control ajax-validate required">
+                    <input name="captcha" type="text" class="form-control ajax-validate required"
+                           data-name="Наберите код с картинки">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
+
                 <hr>
 
                 <button type="submit" class="btn btn-primary">Опубликовать</button>

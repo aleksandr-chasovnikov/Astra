@@ -10,8 +10,8 @@
                     <a href="{{ route('postCreate') }}" title="Дать бесплатное объявление">
                         <button class="btn btn-warning">
                             <i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                            &nbsp;&nbsp;Подать объявление бесплатно и
-                            <strong> без регистрации  </strong>
+                            &nbsp;&nbsp;Подать объявление
+                            <br>бесплатно и <strong>без регистрации </strong>
                         </button>
                     </a>
                 </div>

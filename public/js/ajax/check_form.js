@@ -16,7 +16,8 @@
         var attribute = {
             name: $(this).attr('name'),
             value: $(this).val(),
-            required: $(this).attr('required')
+            required: $(this).attr('required'),
+            data_name: $(this).attr('data-name') // Для отображения ошибок перед кнопкой 'submit'
         };
 
         $.ajax({
@@ -27,12 +28,21 @@
             success: function (data) {
                 if ($.isEmptyObject(data.error)) {
                     printMessage('&#9745; ' + data.success, 'success', data.name);
+
                     $('button[type=submit]').removeAttr('disabled');
+                    $('.js-error-info-' + data.name).detach(); // удалить элемент
 
                 } else {
                     printMessage('&#9746; ' + data.error, 'error', data.name);
-                    $('button[type=submit]').attr('disabled','disable');
 
+                    $('button[type=submit]')
+                        .before(
+                            '<div class="js-error-info-'
+                            + data.name + '" style="color: red;">Неправильно заполнено поле: <a href="#'
+                            + data.name + '">'
+                            + data.data_name + '</a></div>'
+                        )
+                        .attr('disabled', 'disable');
                 }
             }
         });

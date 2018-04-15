@@ -12,6 +12,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PostController extends BaseController
 {
+    private $captchaImage;
+
     private $captchaNumber;
 
     public function __construct()
@@ -29,8 +31,10 @@ class PostController extends BaseController
             '922223' => 'gvbbnrtyn4443gdfg',
             '725365' => 'fukjtyertweeweff3',
         ];
+        shuffle($captchaNumbers);
 
-        $this->captchaNumber = array_random($captchaNumbers);
+        $this->captchaImage = array_shift($captchaNumbers);
+        $this->captchaNumber = array_search($this->captchaImage, $captchaNumbers);
     }
 
     /**
@@ -88,7 +92,7 @@ class PostController extends BaseController
         return view('post.create')->with([
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
-            'captchaNumber' => $this->captchaNumber,
+            'captchaImage' => $this->captchaImage,
         ]);
     }
 
@@ -158,59 +162,17 @@ class PostController extends BaseController
                     $inputValue,
                     6,
                     6,
-                    '#^\d*$#',
-                    true
+                    '#^' . $this->captchaNumber . '#',
+                    true,
+                    ['invertPattern' => 'Неверный код: ' . $this->captchaNumber]
                 );
                 break;
 
             default:
                 $responseJson = [
-                        'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
-                    ];
+                    'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
+                ];
         }
-
-//        if (in_array($inputKey, [
-//            'title',
-//            'price',
-//            'user_name',
-//            'city',
-//            'email',
-//            'phone',
-//            'site',
-//            'skype',
-//        ])) {
-//            $responseJson = $this->validateStrlenRegexp(
-//                $inputValue,
-//                170,
-//                3,
-//                '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
-//            );
-//
-//            if (in_array($inputKey, [
-//                'phone',
-//            ])) {
-//                $responseJson = $this->validateStrlenRegexp(
-//                    $inputValue,
-//                    25,
-//                    5,
-//                    '#^([0-9-]|\+|\(|\))*$#',
-//                    true
-//                );
-//            }
-//        } elseif (in_array($inputKey, [
-//            'content',
-//        ])) {
-//            $responseJson = $this->validateStrlenRegexp(
-//                $inputValue,
-//                2000,
-//                5,
-//                '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
-//            );
-//        } else {
-//            return response()->json([
-//                    'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
-//                ] + $request->all());
-//        }
 
         return response()->json($responseJson + $request->all());
     }
@@ -327,31 +289,48 @@ class PostController extends BaseController
 
     /**
      * @param        $inputValue
-     * @param string $patternNo
-     * @param bool   $invertPattern
      * @param int    $max
      * @param int    $min
      *
+     * @param string $patternNo
+     * @param bool   $invertPattern
+     * @param array  $errorMessage
+     *
      * @return array
      */
-    protected function validateStrlenRegexp($inputValue, $max = 170, $min = 3, $patternNo, $invertPattern = false)
+    protected function validateStrlenRegexp(
+        $inputValue,
+        $max = 170,
+        $min = 3,
+        $patternNo,
+        $invertPattern = false,
+        $errorMessage = []
+    )
     {
-        if ($invertPattern) {
-            if (!preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => 'Есть недопустимый символ'];
-            }
-        } else {
-            if (preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => 'Недопустимый символ: ' . implode('', $matches)];
-            }
-        }
+        $errorMessage = $errorMessage + [
+                'max' => 'Слишком длинный текст.',
+                'min' => 'Слишком короткий текст.',
+                'patternNo' => 'Недопустимый символ: ',
+                'invertPattern' => 'Есть недопустимый символ',
+            ];
+
 
         if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
-            return ['error' => 'Слишком короткий текст.'];
+            return ['error' => $errorMessage['min']];
         }
 
         if (strlen($inputValue) > $max) {
-            return ['error' => 'Слишком длинный текст.'];
+            return ['error' => $errorMessage['max']];
+        }
+
+        if ($invertPattern) {
+            if (!preg_match($patternNo, $inputValue, $matches)) {
+                return ['error' => $errorMessage['invertPattern']];
+            }
+        } else {
+            if (preg_match($patternNo, $inputValue, $matches)) {
+                return ['error' => $errorMessage['patternNo'] . implode('', $matches)];
+            }
         }
 
         return ['success' => 'Проверено.'];
