@@ -6,19 +6,20 @@ use App\Http\Requests\StorePostRequest;
 use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PostController extends BaseController
 {
     private $captchaImage;
-
-    private $captchaNumber;
+    private $captchaNumbers;
 
     public function __construct()
     {
-        $captchaNumbers = [
+        $this->captchaNumbers = [
             '707956' => 'sdfjifn43efni',
             '664425' => 'fhgreh3rr454gt',
             '120754' => 'jbe4g34gf21wwq',
@@ -31,10 +32,8 @@ class PostController extends BaseController
             '922223' => 'gvbbnrtyn4443gdfg',
             '725365' => 'fukjtyertweeweff3',
         ];
-        shuffle($captchaNumbers);
 
-        $this->captchaImage = array_shift($captchaNumbers);
-        $this->captchaNumber = array_search($this->captchaImage, $captchaNumbers);
+        $this->captchaImage = array_random($this->captchaNumbers);
     }
 
     /**
@@ -105,6 +104,7 @@ class PostController extends BaseController
     {
         $inputKey = $request->name;
         $inputValue = $request->value;
+        $captchaCode = array_search($request->data_captcha, $this->captchaNumbers);
 
         // Правило "required"
         if ($request->required && (strlen($inputValue) === 0)) {
@@ -162,11 +162,26 @@ class PostController extends BaseController
                     $inputValue,
                     6,
                     6,
-                    '#^' . $this->captchaNumber . '#',
+                    '#^' . $captchaCode . '$#',
                     true,
-                    ['invertPattern' => 'Неверный код: ' . $this->captchaNumber]
+                    ['invertPattern' => 'Неверный код']
+//                    ['invertPattern' => 'Неверный код: ' . $captchaCode] // TODO Проверка капчи (удалить)
                 );
                 break;
+
+//                TODO Сделать валидацию для EMAIL
+//            case in_array($inputKey, [
+//                'email',
+//            ]):
+//                $responseJson = $this->validateStrlenRegexp(
+//                    $inputValue,
+//                    6,
+//                    6,
+//                    '#^' . $captchaCode . '$#',
+//                    true,
+//                    ['invertPattern' => 'Неверный код']
+//                );
+//                break;
 
             default:
                 $responseJson = [
@@ -188,29 +203,36 @@ class PostController extends BaseController
      */
     public function store(StorePostRequest $request)
     {
-        $this->validate($request, [
-            'captcha' => [
-                'required',
-                'max:6',
-                'regex:/^' . $this->captchaNumber . '$/',
-            ],
-        ], [
-            'captcha.required' => 'Проверочный код обязателен',
-            'captcha.regex' => 'Неверный проверочный код',
-        ]);
+//        TODO Доделать (как передавать код)
+//        $this->validate($request, [
+//            'captcha' => [
+//                'required',
+//                'max:6',
+//                'regex:/^' . $this->captchaNumber . '$/',
+//            ],
+//        ], [
+//            'captcha.required' => 'Проверочный код обязателен',
+//            'captcha.regex' => 'Неверный проверочный код',
+//        ]);
 
-        dd($request->all());
+//        dd($request->all());
 
-        Post::query()->create(
+        $post = Post::query()->create(
             array_except($request->all(), [
                 '_token',
                 'captcha',
                 'MAX_FILE_SIZE',
+                'img',
             ])
         );
 
-        return view('post.post.create')->with([
+        $this->uploadFile($post, $request->file('img'));
+
+        die('hello');
+
+        return view('post.show')->with([
             'message' => 'Статья успешно создана.',
+            'post' => $post,
         ]);
     }
 
@@ -288,6 +310,22 @@ class PostController extends BaseController
     }
 
     /**
+     * @param UploadedFile $file
+     * @param Post        $post
+     *
+     * @return void
+     */
+    protected function uploadFile(Post $post, UploadedFile $file = null)
+    {
+        if ($file) {
+            $originalName = $file->getClientOriginalName();
+            $post->img = config('my_config.img_path') . $file->storeAs('upload', $originalName);
+
+            $post->save();
+        }
+    }
+
+    /**
      * @param        $inputValue
      * @param int    $max
      * @param int    $min
@@ -318,11 +356,9 @@ class PostController extends BaseController
         if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
             return ['error' => $errorMessage['min']];
         }
-
         if (strlen($inputValue) > $max) {
             return ['error' => $errorMessage['max']];
         }
-
         if ($invertPattern) {
             if (!preg_match($patternNo, $inputValue, $matches)) {
                 return ['error' => $errorMessage['invertPattern']];

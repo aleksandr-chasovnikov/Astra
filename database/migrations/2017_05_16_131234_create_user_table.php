@@ -15,23 +15,23 @@ class CreateUserTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('role', ['admin', 'manager', 'vip', 'user'])
-                ->default('user');
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->string('email_token')->nullable();
-            $table->boolean('verified')->default(0);
-            $table->integer('phone')->nullable();
-            $table->string('avatar')->nullable();
-            $table->string('region')->nullable();
-            $table->string('city')->nullable();
-            $table->string('site')->nullable();
-            $table->string('skype')->nullable();
-            $table->integer('balance')->nullable();
-            $table->integer('promo_order,')->default(0);
-            $table->boolean('banned')->default(0);
+            $table->integer('region', false, true)->default(0);
+            $table->integer('avatar', false, true)->default(0);
+//            $table->enum('role', ['admin', 'manager', 'vip', 'user'])
+//                ->default('user');
+            $table->unsignedTinyInteger('role')->default(1)
+                ->comment('1-user, 2-manger, 3-admin, 4-vip');
+            $table->string('name', 120);
+            $table->string('email', 120);
+            $table->string('password', 120);
             $table->rememberToken();
+            $table->integer('phone', false, true)->default(0);
+            $table->integer('promo_order', false, true)->default(0);
+            $table->tinyInteger('banned')->default(0);
+            $table->tinyInteger('verified')->default(0);
+            $table->string('email_token')->default('');
+            $table->string('site', 120)->default('');
+            $table->string('skype', 120)->default('');
             $table->timestamps();
             $table->softDeletes();
         });

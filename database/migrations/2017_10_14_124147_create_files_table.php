@@ -16,10 +16,11 @@ class CreateFilesTable extends Migration
     {
         Schema::create(File::TABLE_NAME, function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('target_id'); // Для MySQL 5.0 полиморф не работает
-            $table->string('target_type'); // Для MySQL 5.0 метод foreign() не работает
-            $table->boolean('status')->default(true);
-            $table->string('path');
+            $table->integer('target_id')->unsigned(); // Для MySQL 5.0 полиморф не работает
+            $table->unsignedTinyInteger('target_type')
+                ->comment('1 - Post, 2 - User'); // Для MySQL 5.0 метод foreign() не работает
+            $table->tinyInteger('hidden')->default(0);
+            $table->string('path',180);
             $table->timestamps();
             $table->softDeletes();
         });

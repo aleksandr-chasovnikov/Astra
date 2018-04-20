@@ -15,8 +15,8 @@ class CreateTableRegions extends Migration
     {
         Schema::create('regions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->integer('sort_order')->default(0);
+            $table->string('name', 120);
+            $table->integer('sort_order', false, true)->default(0);
             $table->boolean('hidden')->default(0);
             $table->timestamps();
             $table->softDeletes();

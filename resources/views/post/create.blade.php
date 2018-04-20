@@ -136,14 +136,13 @@
                 <img src="{{ asset('/uploads/captcha/' . $captchaImage . '.jpg') }}" alt="">
                 <div class="form-group">
                     <label for="captcha">Наберите код с картинки:</label><a name="captcha"></a>
-                    <br>
+
                     <input name="captcha" type="text" class="form-control ajax-validate required"
-                           data-name="Наберите код с картинки">
+                           data-name="Наберите код с картинки" data-captcha="<?= $captchaImage ?>">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
 
                 <hr>
-
                 <button type="submit" class="btn btn-primary">Опубликовать</button>
 
                 {{ csrf_field() }}
