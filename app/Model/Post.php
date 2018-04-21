@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property integer    $id
+ * @property integer    $categories_id
+ * @property integer    $file_id
  * @property string     $title
  * @property string     $content
- * @property string     $type
- * @property integer    $categories_id
+ * @property integer    $type
+ * @property boolean    $hidden
  * @property integer    $promo_order
- * @property string     $img
- * @property string     $avatar
- * @property string     $price
+ * @property integer    $price
  * @property string     $user_name
- * @property string     $region
  * @property string     $city
  * @property string     $email
  * @property integer    $phone
@@ -25,26 +24,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string     $skype
  * @property string     $password
  * @property string     $link
- * @property boolean    $hidden
  * @property integer    $viewed
  * @property string     $meta_desc
  * @property string     $meta_key
  *
  *
  * @property Carbon     $end_lifetime
- * @property Carbon     $created_at
- * @property Carbon     $updated_at
  * @property Carbon     $deleted_at
  *
- * @property Category[] $category
+ * @property Category[] $category_id
+ * @property Region[]   $region_id
  * @property File[]     $files
  */
 class Post extends BaseModel
 {
     const TABLE_NAME = 'posts';
 
-    const TYPE_OFFER = 'offer';
-    const TYPE_DEMAND = 'demand';
+    const TYPE_OFFER = 0;   // Предложение
+    const TYPE_DEMAND = 1;  // Спрос
+
+    const TWO_WEEKS = 0;    // 2 недели
+    const FOUR_WEEKS = 1;   // 4 недели
+    const EIGHT_WEEKS = 2;  // 8 недель
 
     /**
      * @var string
@@ -57,16 +58,16 @@ class Post extends BaseModel
      * @var array
      */
     protected $fillable = [
+        'categories_id',
+        'region_id',
+        'file_id',
         'title',
         'content',
         'type',
-        'categories_id',
+        'hidden',
         'promo_order',
-        'img',
-        'avatar',
         'price',
         'user_name',
-        'region',
         'city',
         'email',
         'phone',
@@ -75,7 +76,6 @@ class Post extends BaseModel
         'end_lifetime',
         'password',
         'link',
-        'hidden',
         'viewed',
         'meta_desc',
         'meta_key',

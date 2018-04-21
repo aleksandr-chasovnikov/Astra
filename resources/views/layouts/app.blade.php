@@ -154,6 +154,6 @@
             {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
 {{--</script>--}}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="{{ asset('js/ajax/check_form.js') }}"></script>
+<script src="{{ asset('js/my/check_form.js') }}"></script>
 </body>
 </html>

@@ -2,7 +2,9 @@
     // Добавляет атритут required и подпись "обязательно"
     $('.required')
         .attr('required', 'required')
-        .before('<span style="color: #aa4a24;"> (обязательно)</span>');
+        .attr('placeholder', 'Обязательное поле')
+        // .prev().not('br')
+        // .after('<span style="color: #aa4a24;"> (обязательно)</span>');
 
     // Настройка для ajax-запросов методом POST
     $.ajaxSetup({

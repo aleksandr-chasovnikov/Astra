@@ -8,29 +8,27 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
- * @property integer   $id
- * @property string    $role
- * @property string    $name
- * @property string    $email
- * @property string    $password
- * @property integer   $rememberToken
- * @property integer   $email_token
- * @property integer   $verified
- * @property string    $phone
- * @property string    $avatar
- * @property string    $region
- * @property string    $city
- * @property string    $site
- * @property string    $skype
- * @property string    $balance
- * @property string    $promo_order
- * @property string    $banned
+ * @property integer $id
+ * @property integer $region
+ * @property integer $avatar
+ * @property integer $role
+ * @property string  $name
+ * @property string  $email
+ * @property string  $password
+ * @property integer $rememberToken
+ * @property integer $phone
+ * @property integer $promo_order
+ * @property boolean $banned
+ * @property boolean $verified
+ * @property string  $email_token
+ * @property string  $site
+ * @property string  $skype
  *
- * @property Carbon   $created_at
- * @property Carbon   $updated_at
- * @property Carbon   $deleted_at
+ * @property Carbon  $created_at
+ * @property Carbon  $updated_at
+ * @property Carbon  $deleted_at
  *
- * @property File[]    $files
+ * @property File[]  $files
  */
 class User extends Authenticatable
 {
@@ -39,10 +37,10 @@ class User extends Authenticatable
 
     const TABLE_NAME = 'users';
 
-    const ROLE_ADMIN = 'admin';
-    const ROLE_MANAGER = 'manager';
-    const ROLE_VIP = 'vip';
-    const ROLE_USER = 'user';
+    const ROLE_USER = 1;
+    const ROLE_MANAGER = 2;
+    const ROLE_ADMIN = 3;
+    const ROLE_VIP = 4;
 
     /**
      * @var string
@@ -55,20 +53,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'region',
+        'avatar',
         'role',
         'name',
         'email',
         'password',
-        'email_token',
-        'verified',
         'phone',
-        'avatar',
-        'region',
-        'city',
-        'skype',
-        'balance',
         'promo_order',
         'banned',
+        'verified',
+        'email_token',
+        'site',
+        'skype',
     ];
 
     /**

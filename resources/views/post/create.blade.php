@@ -27,22 +27,59 @@
                 @endif
 
                 <div class="form-group">
-                    <label for="title">Заголовок</label><a name="title"></a>
-                    <input name="title" type="text" class="form-control ajax-validate required" id="title"
-                           value="{{ old('title') }}" data-name="Заголовок">
+                    <label for="region_id">Регион</label>
+                    <select name="region_id" class="form-control addPost required" id="region_id">
+                        <option value="none" selected="selected">Обязательное поле</option>
+                        @foreach ($regions as $region)
+                            <option
+                                    {{--@if (1 === $region->id)--}}
+                                    {{--selected--}}
+                                    {{--@endif--}}
+                                    value="{{$region->id}}">{{$region->name}}</option>
+                        @endforeach
+                    </select>
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="categories_id">Категория</label>
-                    <select name="categories_id" size="7" class="form-control required" id="categories_id">
-                        @foreach ($categories as $category)
-                            @if ($category->parent_id)
-                                <option value="{{ $category->id }}">
-                                    {{ $category->title }}
-                                </option>
+                    <label for="type">Тип объявления </label>
+                    <br>
+                    <select name="type" size="2" id="type" class="form-control addPost required">
+                        <option selected value="offer">Предложение</option>
+                        <option value="demand">Спрос</option>
+                    </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="category_id">Категория</label>
+                    <select name="category_id" class="form-control addPost required" id="category_id">
+                        <option value="none" selected="selected">Обязательное поле</option>
+                        @php($styleColor = null)
+                        @foreach ($categories as $categoryParent)
+                            @if (!$categoryParent->parent_id)
+                                <optgroup label="{{ $categoryParent->title }}"
+                                    {{--@if ($loop->iteration % 2)--}}
+                                        {{--style="background-color: #abceea;"--}}
+                                    {{--@endif--}}
+                                >
+                                @foreach ($categories as $category)
+                                    @if ($categoryParent->id === $category->parent_id)
+                                        <option value="{{ $category->id }}">
+                                            {{ $category->title }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                                </optgroup>
                             @endif
                         @endforeach
                     </select>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="title">Заголовок</label><a name="title"></a>
+                    <input name="title" type="text" maxlength="10"  min="3"
+                           class="form-control ajax-validate required" id="title"
+                           value="{{ old('title') }}" data-name="Заголовок">
+                    <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="content">Текст объявления</label><a name="content"></a>
@@ -51,20 +88,7 @@
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="type">Тип объявления</label>
-                    <select name="type" size="2" id="type" class="required">
-                        <option selected value="offer">Предложение</option>
-                        <option value="demand">Спрос</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="img">Фотографии</label>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="500000"/>
-                    <input name="img" type="file" class="form-control" id="img"
-                           value="{{ old('img') }}">
-                </div>
-                <div class="form-group">
-                    <label for="price">Цена</label><a name="price"></a>
+                    <label for="price">Цена (в рублях)</label><a name="price"></a>
                     <input name="price" type="text" class="form-control ajax-validate" id="price"
                            value="{{ old('price') }}" data-name="Цена">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
@@ -76,25 +100,17 @@
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="region">Регион</label>
-                    <select name="region" size="7" class="form-control required" id="region">
-                        @foreach ($regions as $region)
-                            <option
-                                    @if (1 === $region->id)
-                                    selected
-                                    @endif
-                                    value="{{$region->id}}">{{$region->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
                     <label for="city">Город</label><a name="city"></a>
                     <input name="city" type="text" class="form-control ajax-validate" id="city"
                            value="{{ old('city') }}" data-name="Город">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="email">E-mail</label><a name="email"></a>
+                    <label for="email">E-mail
+                        <a title="Ваш email будет надежно защищен от спама">
+                            &#128274;
+                        </a>
+                    </label><a name="email"></a>
                     <input name="email" type="text" class="form-control ajax-validate" id="email"
                            value="{{ old('email') }}" data-name="E-mail">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
@@ -105,6 +121,13 @@
                            value="{{ old('phone') }}" data-name="Телефон">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
+                <div class="form-group">
+                    <label for="img">Фотографии</label>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="500000"/>
+                    <input name="photo" type="file" class="form-control" id="img"
+                           value="{{ old('photo') }}" multiple>
+                </div>
+                <br>
                 <div class="form-group">
                     <label for="site">Сайт</label><a name="site"></a>
                     <input name="site" type="text" class="form-control ajax-validate" id="site"
@@ -137,7 +160,7 @@
                 <div class="form-group">
                     <label for="captcha">Наберите код с картинки:</label><a name="captcha"></a>
 
-                    <input name="captcha" type="text" class="form-control ajax-validate required"
+                    <input name="captcha" id="captcha" type="text" class="form-control ajax-validate required"
                            data-name="Наберите код с картинки" data-captcha="<?= $captchaImage ?>">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>

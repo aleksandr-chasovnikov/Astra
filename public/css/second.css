@@ -6,3 +6,11 @@
 .success {
     color: green;
 }
+
+.darkorange {
+    color: darkorange;
+}
+
+.form-control.addPost {
+    max-width: 400px;
+}

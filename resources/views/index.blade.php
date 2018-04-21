@@ -11,7 +11,7 @@
                         <button class="btn btn-warning">
                             <i class="fa fa-hand-o-right" aria-hidden="true"></i>
                             &nbsp;&nbsp;Подать объявление
-                            <br>бесплатно и <strong>без регистрации </strong>
+                            <strong>без регистрации </strong>
                         </button>
                     </a>
                 </div>
@@ -89,8 +89,12 @@
                                 </p>
 
                                 <p class="promo-games-sections">
-                                @foreach ($category->subCategories() as $subCategory)
-                                        <a href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">&nbsp;
+                                    @foreach ($category->subCategories() as $subCategory)
+                                        <a class="
+                                            @if ($loop->iteration % 2)
+                                                darkorange
+                                            @endif
+                                                " href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">
                                             {{ $subCategory->title }}
                                         </a>
                                     @endforeach

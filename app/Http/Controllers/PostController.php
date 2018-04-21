@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\libraries\GenerateText;
 use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
@@ -87,7 +88,6 @@ class PostController extends BaseController
      */
     public function create()
     {
-
         return view('post.create')->with([
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
@@ -114,6 +114,36 @@ class PostController extends BaseController
         }
 
         switch (true) {
+            case in_array($inputKey, [
+                'region_id',
+                'price',
+                'user_name',
+                'city',
+                'email',
+                'phone',
+                'site',
+                'skype',
+            ]):
+                $responseJson = $this->validateStrlenRegexp(
+                    $inputValue,
+                    170,
+                    3,
+                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
+                );
+
+                if (in_array($inputKey, [
+                    'phone',
+                ])) {
+                    $responseJson = $this->validateStrlenRegexp(
+                        $inputValue,
+                        25,
+                        5,
+                        '#^([0-9-]|\+|\(|\))*$#',
+                        true
+                    );
+                }
+                break;
+
             case in_array($inputKey, [
                 'title',
                 'price',
@@ -369,7 +399,7 @@ class PostController extends BaseController
             }
         }
 
-        return ['success' => 'Проверено.'];
+        return ['success' => 'Готово.'];
     }
 
 }
