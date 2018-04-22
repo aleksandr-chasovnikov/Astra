@@ -67,8 +67,8 @@ class GenerateText
         $arText = explode(' ', config('generate_text.donor_text'));
 
         $text = null;
-        foreach (array_rand($arText, $countWords) as $item) {
-            $text .= $arText[$item] . ' ';
+        for ($i=0; $i<$countWords; $i++) {
+            $text .= array_random($arText) . ' ';
         }
 
         return $text;
@@ -86,7 +86,7 @@ class GenerateText
     {
         $word = null;
         $min = $minChar < 2 ? 2 : $minChar;
-        foreach (array_rand(self::$arrayCharRus, rand($min, $maxChar)) as $item) {
+        foreach (array_rand(self::$arrayCharRus, random_int($min, $maxChar)) as $item) {
             $word .= self::$arrayCharRus[$item];
         }
 

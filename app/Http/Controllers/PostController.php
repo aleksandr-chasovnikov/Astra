@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\libraries\GenerateText;
+use App\Model\File;
 use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
@@ -71,6 +72,7 @@ class PostController extends BaseController
      */
     public function show($id)
     {
+        die('post-show');
         $post = Post::query()
             ->findOrFail($id);
 
@@ -245,24 +247,23 @@ class PostController extends BaseController
 //            'captcha.regex' => 'Неверный проверочный код',
 //        ]);
 
-//        dd($request->all());
-
         $post = Post::query()->create(
             array_except($request->all(), [
                 '_token',
                 'captcha',
                 'MAX_FILE_SIZE',
-                'img',
+                'photo',
             ])
         );
 
-        $this->uploadFile($post, $request->file('img'));
+        $this->uploadFile($post->id, $request->file('photo'));
 
-        die('hello');
-
-        return view('post.show')->with([
-            'message' => 'Статья успешно создана.',
-            'post' => $post,
+        return view('post.create')->with([
+            'categories' => $this->showCategories(),
+            'regions' => Region::query()->orderBy('name')->get(),
+            'captchaImage' => $this->captchaImage,
+            'postId' => $post->id,
+            'message' => 'Объявление успешно создано.',
         ]);
     }
 
@@ -340,18 +341,33 @@ class PostController extends BaseController
     }
 
     /**
-     * @param UploadedFile $file
-     * @param Post        $post
+     * @param UploadedFile[] | UploadedFile $file
+     * @param int                           $postId
      *
      * @return void
      */
-    protected function uploadFile(Post $post, UploadedFile $file = null)
+    protected function uploadFile($postId, $file = null)
     {
         if ($file) {
-            $originalName = $file->getClientOriginalName();
-            $post->img = config('my_config.img_path') . $file->storeAs('upload', $originalName);
+            if (is_array($file)) {
+                foreach ($file as $photo) {
+                    $originalName = $photo->getClientOriginalName();
 
-            $post->save();
+                    File::query()->create([
+                        'target_id' => $postId,
+                        'target_type' => File::TARGET_POST,
+                        'path' => config('my_config.img_path') . $photo->storeAs('upload', $originalName),
+                    ]);
+                }
+            } else {
+                $originalName = $file->getClientOriginalName();
+
+                File::query()->create([
+                    'target_id' => $postId,
+                    'target_type' => File::TARGET_POST,
+                    'path' => config('my_config.img_path') . $file->storeAs('upload', $originalName),
+                ]);
+            }
         }
     }
 
@@ -381,7 +397,6 @@ class PostController extends BaseController
                 'patternNo' => 'Недопустимый символ: ',
                 'invertPattern' => 'Есть недопустимый символ',
             ];
-
 
         if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
             return ['error' => $errorMessage['min']];

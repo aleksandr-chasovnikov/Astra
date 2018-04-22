@@ -5,16 +5,17 @@
     <div class="container">
         <div class="row">
 
-            @if (!empty($message))
-                <div class="alert alert-danger text-center">
-                    {{$message}}
-                </div>
-            @endif
-
             <form action="{{ route('postStore') }}" method="post" role="form"
                   enctype="multipart/form-data">
                 <h3>Подать объявление (бесплатно и без регистрации)</h3>
                 <hr>
+
+                @if (!empty($message))
+                    <div class="alert alert-success text-center">
+                        {{$message}}
+                        <a href="{{ route('postShow', ['id' => $postId]) }}">Ссылка на созданное объявление.</a>
+                    </div>
+                @endif
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -44,15 +45,15 @@
                     <label for="type">Тип объявления </label>
                     <br>
                     <select name="type" size="2" id="type" class="form-control addPost required">
-                        <option selected value="offer">Предложение</option>
-                        <option value="demand">Спрос</option>
+                        <option selected value="0">Предложение</option>
+                        <option value="1">Спрос</option>
                     </select>
                 </div>
                 <br>
                 <div class="form-group">
                     <label for="category_id">Категория</label>
                     <select name="category_id" class="form-control addPost required" id="category_id">
-                        <option value="none" selected="selected">Обязательное поле</option>
+                        {{--<option value="none">Обязательное поле</option>--}}
                         @php($styleColor = null)
                         @foreach ($categories as $categoryParent)
                             @if (!$categoryParent->parent_id)
@@ -122,9 +123,9 @@
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
-                    <label for="img">Фотографии</label>
+                    <label for="photo">Фотографии</label>
                     <input type="hidden" name="MAX_FILE_SIZE" value="500000"/>
-                    <input name="photo" type="file" class="form-control" id="img"
+                    <input name="photo[]" type="file" class="form-control" id="photo"
                            value="{{ old('photo') }}" multiple>
                 </div>
                 <br>
@@ -144,15 +145,15 @@
                     <label for="end_lifetime">Срок размещения:</label>
                     <br>
                     <input type="radio" id="two_weeks"
-                           name="end_lifetime" value="2 недели">
+                           name="end_lifetime" value="0">
                     <label for="two_weeks">2 недели</label>
 
                     <input type="radio" id="four_weeks" checked
-                           name="end_lifetime" value="4 недели">
+                           name="end_lifetime" value="1">
                     <label for="four_weeks">4 недели</label>
 
                     <input type="radio" id="eight_weeks"
-                           name="end_lifetime" value="8 недель">
+                           name="end_lifetime" value="2">
                     <label for="eight_weeks">8 недель</label>
                 </div>
                 <hr>

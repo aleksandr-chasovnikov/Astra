@@ -94,7 +94,7 @@
                                             @if ($loop->iteration % 2)
                                                 darkorange
                                             @endif
-                                                " href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">
+                                                " href="{{ route('showByCategory', ['categoryId' => $subCategory->id]) }}">
                                             {{ $subCategory->title }}
                                         </a>
                                     @endforeach

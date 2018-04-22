@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Category;
+use App\Model\Post;
 use Illuminate\Http\Request;
 
 class SiteController extends BaseController
@@ -41,31 +42,24 @@ class SiteController extends BaseController
 //                                    'comments' => $comments,
 //                                    ]);
 //    }
-//
-//    /**
-//     * Показать статьи по категории
-//     *
-//     * GET /category.{id}
-//     */
-//    public function showByCategory($categoryId)
-//    {
-//        //Список категорий
-//        $categories = Category::select(['id', 'name_category'])->get();
-//
-//        //Выбранная категория
-//        $category = Category::all()->where('id', $categoryId);
-//
-//        //Список статей
-//        $articles = Article::select(['id', 'title', 'img', 'description', 'created_at'])
-//                            ->where('categories_id', $categoryId)
-//                            ->paginate(self::PAGINATE);
-//
-//
-//        return view('category')->with([
-//                'articles' => $articles,
-//                'category' => $category,
-//                'categories' => $categories
-//            ]);
-//    }
+
+    /**
+     * Показать статьи по категории
+     *
+     * GET /category.{id}
+     *
+     * @param $categoryId
+     *
+     * @return $this
+     */
+    public function showByCategory($categoryId)
+    {
+        return view('category')->with([
+                'posts' => Post::query()->where('category_id', $categoryId)
+                    ->paginate(self::PAGINATE),
+//                'categoryName' => Category::query()->find($categoryId)->first(['title']),
+//                'categories' => $this->showCategories()
+            ]);
+    }
 
 }

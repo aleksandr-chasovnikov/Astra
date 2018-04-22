@@ -49,7 +49,7 @@ Route::group(['prefix' => 'post'], function() {
     Route::get('create', 'PostController@create')->name('postCreate');
     Route::any('ajax_validate', 'PostController@ajaxValidate')->name('ajaxValidate');
     Route::post('store', 'PostController@store')->name('postStore');
-    Route::post('show', 'PostController@show')->name('postShow');
+    Route::get('show.{id}', 'PostController@show')->name('postShow');
     Route::get('update.{id}', 'PostController@edit')->name('postEdit');
     Route::post('update', 'PostController@update')->name('postUpdate');
     Route::delete('delete.{id}', 'PostControllerr@destroy')->name('postDelete');

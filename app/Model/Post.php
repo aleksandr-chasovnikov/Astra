@@ -58,7 +58,7 @@ class Post extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'categories_id',
+        'category_id',
         'region_id',
         'file_id',
         'title',

@@ -2,15 +2,67 @@
 .error {
     color: red;
 }
-
 .success {
     color: green;
 }
-
 .darkorange {
     color: darkorange;
 }
-
 .form-control.addPost {
     max-width: 400px;
+}
+.ads-wrapper {
+    /*margin-top: 180px;*/
+}
+.ads {
+    /*margin-top: -180px;*/
+    max-height: 200px;
+}
+.ads-img-container {
+    width: 200px;
+    border: solid;
+}
+.ads .title {
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ads-content {
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*position: absolute;*/
+}
+.ads-text {
+    z-index: 100;
+    margin-left: 210px;
+    position: relative;
+    top: -210px;
+}
+.ads > img {
+    max-height: 200px;
+}
+@media screen and (max-width: 600px) {
+    .ads-text {
+        margin-left: 150px;
+    }
+    .ads > img {
+        max-height: 150px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .ads-text {
+        margin-left: 100px;
+    }
+    .ads > img {
+        max-height: 100px;
+    }
+}
+.ads-price {
+    /*background-color: #abceea;*/
+    font-size: 120%;
+}
+.ads-type {
+    font-size: 90%;
+    color: #357456;
 }

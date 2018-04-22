@@ -20,6 +20,9 @@ class File extends BaseModel
 {
     const TABLE_NAME = 'files';
 
+    const TARGET_POST = 1;
+    const TARGET_USER = 1;
+
     /**
      * @var string
      */
@@ -32,13 +35,13 @@ class File extends BaseModel
      */
     protected $guarded = [];
 
-    /**
-     * Получить все модели, обладающие target.
-     *
-     * @return MorphTo
-     */
-    public function target()
-    {
-        return $this->morphTo();
-    }
+//    /**
+//     * Получить все модели, обладающие target.
+//     *
+//     * @return MorphTo
+//     */
+//    public function target()
+//    {
+//        return $this->morphTo();
+//    }
 }

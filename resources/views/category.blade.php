@@ -2,73 +2,79 @@
 
 @section('content')
 
-<div class="container">
-	<!-- Example row of columns -->
-	<div class="row">
-		<div class="content">
+    <div class="container ads-wrapper">
+        <!-- Example row of columns -->
+        <div class="row">
+            <div class="content">
 
-	{{--@foreach ($category as $cat)--}}
-		{{--<div class="container">--}}
-		        {{--<h4>Категория &#8194;&#8658;&#8194; {{$cat->name_category}}</h4>--}}
-		{{--</div>--}}
-	{{--@endforeach--}}
+                {{--@foreach ($category as $cat)--}}
+                {{--<div class="container">--}}
+                {{--<h4>Категория &#8194;&#8658;&#8194; {{$cat->name_category}}</h4>--}}
+                {{--</div>--}}
+                {{--@endforeach--}}
 
-	<hr>
+                @foreach ($posts as $post)
 
-		@foreach ($posts as $post)
+                    {{--<span class="dremark">№{{ $loop->iteration }}</span>--}}
+                    <div class="ads">
+                        <img src="{{asset('uploads/no_photo.jpg')}}" alt="фото">
+                        <div class="ads-text"
+                             title="{{ $post->title }} за {{ $post->price }} рублей">
+                            <a class="title" href="{{ route('postShow', ['id' => $post->id]) }}">
+                                <h4>{{ $post->title }}</h4>
+                            </a>
+                            <div>
+                                <span class="ads-price">{{ number_format(intval($post->price), 0, '.', ' ') }} руб.</span>&nbsp;
+                                <span class="ads-type">
+                                    @if ($post->type)
+                                        Спрос
+                                    @else
+                                        Предложение
+                                    @endif
+                                    -- {{ $post->created_at }}
+                                </span>
+                            </div>
+                            <p class="ads-content">
+                                {{ $post->content }}
+                            </p>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
 
-			<div class="onepost">
-				<div class="sheader margb4">
-					<span class="dremark">№{{ $loop->iteration }}</span>
+                    {{--<small class="pull-right">{{$post->created_at}}</small>--}}
+                    {{--<h3>{{ $post->title }}</h3>--}}
 
-					<a href="{{ route('postShow') }}">
-						{{ $post->title }}
-					</a>
+                    {{--@if (!empty($post->img))--}}
+                    {{--<div class="text-center">--}}
+                    {{--<img src="uploads/{{ $post->img }}" alt="" align="middle" width="90%">--}}
+                    {{--</div>--}}
+                    {{--@endif--}}
 
-					<div class="price" title="{{ $post->title }} за {{ $post->price }} рублей">
-						{{ $post->price }} руб.
-					</div>
-				</div>
+                    {{--<p>{{ $post->description }}</p>--}}
 
-				<div class="mfont margb4 bremark">{{ $post->type }} - {{ $post->created_at }}</div>
-				{{ $post->content }}<div class="clear"></div>
-			</div>
-			<a name="post14255836"></a>
-		
-			{{--<small class="pull-right">{{$post->created_at}}</small>--}}
-			{{--<h3>{{ $post->title }}</h3>--}}
+                    {{--<p class="text-right">--}}
+                    {{--<a class="btn btn-default" href="{{ route('postShow',['id'=>$post->id]) }}" role="button">--}}
+                    {{--Подробнее &raquo;--}}
+                    {{--</a>--}}
+                    {{--</p>--}}
 
-			{{--@if (!empty($post->img))--}}
-				{{--<div class="text-center">--}}
-					{{--<img src="uploads/{{ $post->img }}" alt="" align="middle" width="90%">--}}
-				{{--</div>--}}
-			{{--@endif--}}
+                    {{--<hr>--}}
 
-			{{--<p>{{ $post->description }}</p>--}}
+                @endforeach
 
-			{{--<p class="text-right">--}}
-				{{--<a class="btn btn-default" href="{{ route('postShow',['id'=>$post->id]) }}" role="button">--}}
-					{{--Подробнее &raquo;--}}
-				{{--</a>--}}
-			{{--</p>--}}
+                <div class="paginate container">
+                    {{ $posts->links() }}
+                </div>
 
-			{{--<hr>--}}
+                @if (empty($post))
 
-		@endforeach
+                    <p>Извините. В этой категории ещё нет объявлений.</p>
 
-		<div class="paginate container">
-			{{ $posts->links() }}
-		</div>
+                @endif
 
-		@if (empty($post))
-
-			<p>Извините. В этой категории ещё нет объявлений.</p>
-
-		@endif
-
-		</div>
-	</div>
-</div>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
