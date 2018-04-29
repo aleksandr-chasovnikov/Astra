@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label for="region_id">Регион</label>
                     <select name="region_id" class="form-control addPost required" id="region_id">
-                        <option value="none" selected="selected">Обязательное поле</option>
+                        {{--<option value="none" selected="selected">Обязательное поле</option>--}}
                         @foreach ($regions as $region)
                             <option
                                     {{--@if (1 === $region->id)--}}
@@ -77,6 +77,7 @@
                 <br>
                 <div class="form-group">
                     <label for="title">Заголовок</label><a name="title"></a>
+                    <span class="countChars"></span>
                     <input name="title" type="text" maxlength="10"  min="3"
                            class="form-control ajax-validate required" id="title"
                            value="{{ old('title') }}" data-name="Заголовок">
@@ -84,24 +85,28 @@
                 </div>
                 <div class="form-group">
                     <label for="content">Текст объявления</label><a name="content"></a>
+                    <span class="countChars"></span>
                     <textarea name="content" rows="5" class="form-control textarea ajax-validate
-                    required" id="content" data-name="Текст объявления">{{ old('title') }}</textarea>
+                    required" id="content" data-name="Текст_объявления">{{ old('title') }}</textarea>
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="price">Цена (в рублях)</label><a name="price"></a>
+                    <span class="countChars"></span>
                     <input name="price" type="text" class="form-control ajax-validate" id="price"
                            value="{{ old('price') }}" data-name="Цена">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="user_name">Контактное лицо</label><a name="user_name"></a>
+                    <span class="countChars"></span>
                     <input name="user_name" type="text" class="form-control ajax-validate" id="user_name"
-                           value="{{ old('user_name') }}" data-name="Контактное лицо">
+                           value="{{ old('user_name') }}" data-name="Контактное_лицо">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="city">Город</label><a name="city"></a>
+                    <span class="countChars"></span>
                     <input name="city" type="text" class="form-control ajax-validate" id="city"
                            value="{{ old('city') }}" data-name="Город">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
@@ -112,12 +117,14 @@
                             &#128274;
                         </a>
                     </label><a name="email"></a>
+                    <span class="countChars"></span>
                     <input name="email" type="text" class="form-control ajax-validate" id="email"
                            value="{{ old('email') }}" data-name="E-mail">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="phone">Телефон</label><a name="phone"></a>
+                    <span class="countChars"></span>
                     <input name="phone" type="text" class="form-control ajax-validate required" id="phone"
                            value="{{ old('phone') }}" data-name="Телефон">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
@@ -131,12 +138,14 @@
                 <br>
                 <div class="form-group">
                     <label for="site">Сайт</label><a name="site"></a>
+                    <span class="countChars"></span>
                     <input name="site" type="text" class="form-control ajax-validate" id="site"
                            value="{{ old('site') }}" data-name="Сайт">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>
                 </div>
                 <div class="form-group">
                     <label for="skype">Skype</label><a name="skype"></a>
+                    <span class="countChars"></span>
                     <input name="skype" type="text" class="form-control ajax-validate" id="skype"
                            value="{{ old('skype') }}" data-name="Skype">
                     <div class="print-error-msg">&nbsp;&nbsp;</div>

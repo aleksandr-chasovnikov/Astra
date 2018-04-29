@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * @property integer $id

@@ -9,6 +9,7 @@ use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -34,27 +35,14 @@ class PostController extends BaseController
             '922223' => 'gvbbnrtyn4443gdfg',
             '725365' => 'fukjtyertweeweff3',
         ];
-
         $this->captchaImage = array_random($this->captchaNumbers);
     }
-
     /**
-     * @return Factory | View
-     */
-    public function searchForm()
-    {
-        return view('post.search');
-    }
-
-    /**
-     * Показывает все статьи в админ панели
-     *
-     * GET /admin/post/index
-     *
      * @return View | HttpException
      */
     public function index()
     {
+        die('post-index');
         $posts = Post::query()
             ->orderBy('created_at', 'desc')
             ->get();
@@ -104,124 +92,10 @@ class PostController extends BaseController
      */
     public function ajaxValidate(Request $request)
     {
-        $inputKey = $request->name;
-        $inputValue = $request->value;
-        $captchaCode = array_search($request->data_captcha, $this->captchaNumbers);
-
-        // Правило "required"
-        if ($request->required && (strlen($inputValue) === 0)) {
-            $responseJson = ['error' => 'Поле обязательно для заполнения!'];
-
-            return response()->json($responseJson + $request->all());
-        }
-
-        switch (true) {
-            case in_array($inputKey, [
-                'region_id',
-                'price',
-                'user_name',
-                'city',
-                'email',
-                'phone',
-                'site',
-                'skype',
-            ]):
-                $responseJson = $this->validateStrlenRegexp(
-                    $inputValue,
-                    170,
-                    3,
-                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
-                );
-
-                if (in_array($inputKey, [
-                    'phone',
-                ])) {
-                    $responseJson = $this->validateStrlenRegexp(
-                        $inputValue,
-                        25,
-                        5,
-                        '#^([0-9-]|\+|\(|\))*$#',
-                        true
-                    );
-                }
-                break;
-
-            case in_array($inputKey, [
-                'title',
-                'price',
-                'user_name',
-                'city',
-                'email',
-                'phone',
-                'site',
-                'skype',
-            ]):
-                $responseJson = $this->validateStrlenRegexp(
-                    $inputValue,
-                    170,
-                    3,
-                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
-                );
-
-                if (in_array($inputKey, [
-                    'phone',
-                ])) {
-                    $responseJson = $this->validateStrlenRegexp(
-                        $inputValue,
-                        25,
-                        5,
-                        '#^([0-9-]|\+|\(|\))*$#',
-                        true
-                    );
-                }
-                break;
-
-            case in_array($inputKey, [
-                'content',
-            ]):
-                $responseJson = $this->validateStrlenRegexp(
-                    $inputValue,
-                    2000,
-                    5,
-                    '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#'
-                );
-                break;
-
-            case in_array($inputKey, [
-                'captcha',
-            ]):
-                $responseJson = $this->validateStrlenRegexp(
-                    $inputValue,
-                    6,
-                    6,
-                    '#^' . $captchaCode . '$#',
-                    true,
-                    ['invertPattern' => 'Неверный код']
-//                    ['invertPattern' => 'Неверный код: ' . $captchaCode] // TODO Проверка капчи (удалить)
-                );
-                break;
-
-//                TODO Сделать валидацию для EMAIL
-//            case in_array($inputKey, [
-//                'email',
-//            ]):
-//                $responseJson = $this->validateStrlenRegexp(
-//                    $inputValue,
-//                    6,
-//                    6,
-//                    '#^' . $captchaCode . '$#',
-//                    true,
-//                    ['invertPattern' => 'Неверный код']
-//                );
-//                break;
-
-            default:
-                $responseJson = [
-                    'success' => 'Техническая ошибка. Обратитесь в техподдержку.'
-                ];
-        }
-
-        return response()->json($responseJson + $request->all());
+        return response()->json(
+            (new StorePostRequest())->ajaxValidate($request, $this->captchaNumbers)
+                + $request->all()
+        );
     }
 
     /**
@@ -268,17 +142,13 @@ class PostController extends BaseController
     }
 
     /**
-     * Выводит форму для редактирования статьи
-     *
-     * GET /admin/post/update.{id}
-     *
      * @var int $id
      *
      * @return View | HttpException
      */
     public function edit($id)
     {
-        self::checkAdmin();
+        die('post-edit');
 
         $post = Post::withTrashed()
             ->where('id', $id)
@@ -292,17 +162,13 @@ class PostController extends BaseController
     }
 
     /**
-     * Редактирует статью
-     *
-     * POST /admin/post/update
-     *
      * @param Request $request
      *
      * @return RedirectResponse | HttpException
      */
     public function update(Request $request)
     {
-        self::checkAdmin();
+        die('post-update');
 
         $this->validate($request, [
             'title' => 'required|max:255',
@@ -323,17 +189,13 @@ class PostController extends BaseController
     }
 
     /**
-     * Удаляет статью
-     *
-     * DELETE /admin/post/delete/{id}
-     *
      * @param $id
      *
      * @return RedirectResponse | HttpException
      */
     public function destroy($id)
     {
-        self::checkAdmin();
+        die('post-delete');
 
         Post::find($id)->delete();
 
@@ -371,50 +233,5 @@ class PostController extends BaseController
         }
     }
 
-    /**
-     * @param        $inputValue
-     * @param int    $max
-     * @param int    $min
-     *
-     * @param string $patternNo
-     * @param bool   $invertPattern
-     * @param array  $errorMessage
-     *
-     * @return array
-     */
-    protected function validateStrlenRegexp(
-        $inputValue,
-        $max = 170,
-        $min = 3,
-        $patternNo,
-        $invertPattern = false,
-        $errorMessage = []
-    )
-    {
-        $errorMessage = $errorMessage + [
-                'max' => 'Слишком длинный текст.',
-                'min' => 'Слишком короткий текст.',
-                'patternNo' => 'Недопустимый символ: ',
-                'invertPattern' => 'Есть недопустимый символ',
-            ];
-
-        if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
-            return ['error' => $errorMessage['min']];
-        }
-        if (strlen($inputValue) > $max) {
-            return ['error' => $errorMessage['max']];
-        }
-        if ($invertPattern) {
-            if (!preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => $errorMessage['invertPattern']];
-            }
-        } else {
-            if (preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => $errorMessage['patternNo'] . implode('', $matches)];
-            }
-        }
-
-        return ['success' => 'Готово.'];
-    }
 
 }

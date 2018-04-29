@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Requests\StorePostRequest;
 use App\libraries\GenerateText;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -20,33 +21,32 @@ class CreateTablePosts extends Migration
             $table->increments('id');
             $table->integer('category_id')->unsigned()->default(0);
             $table->integer('region_id', false, true)->unsigned()->default(0);
-            $table->string('title', 150);
-            $table->text('content', 2000);
+            $table->string('title', StorePostRequest::TITLE_MAX_LENGTH);
+            $table->text('content', StorePostRequest::CONTENT_MAX_LENGTH);
             $table->tinyInteger('type')->default(0)
                 ->comment('0-предложение, 1-спрос');
             $table->tinyInteger('hidden')->default(0);
 //            $table->enum('type', ['offer', 'demand']);    // неподходит для старый версий mysql
             $table->integer('promo_order')->default(0)->comment('vip-сортировка');
-            $table->string('price', 20)->default(0);
-            $table->string('user_name', 120)->default('-');
-            $table->string('city', 120)->default('-');
-            $table->string('email', 120)->default('-');
-            $table->string('phone', 25)->default('-');
-            $table->string('site', 120)->default('-');
-            $table->string('skype', 120)->default('-');
+            $table->string('price', StorePostRequest::PRICE_MAX_LENGTH)->default(0);
+            $table->string('user_name', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
+            $table->string('city', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
+            $table->string('email', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
+            $table->string('phone', StorePostRequest::PRICE_MAX_LENGTH)->default('-');
+            $table->string('site', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
+            $table->string('skype', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
             $table->tinyInteger('end_lifetime', false, true)->default(0)
                 ->comment('0 - 2 недели, 1 - 4 недели, 2 - 8 недель');
-            $table->string('password', 120)->default('-');
-            $table->string('link')->default('-');
+            $table->string('password', StorePostRequest::TITLE_MAX_LENGTH)->default('-');
+            $table->string('link', StorePostRequest::LINK_MAX_LENGTH)->default('-');
             $table->integer('viewed')->default(0);
-            $table->string('meta_desc', 180)->default('-');
-            $table->string('meta_key', 180)->default('-');
+            $table->string('meta_desc', StorePostRequest::LINK_MAX_LENGTH)->default('-');
+            $table->string('meta_key', StorePostRequest::LINK_MAX_LENGTH)->default('-');
             $table->timestampsTz();
             $table->softDeletes();
         });
 
         for ($i = 0; $i < 500; $i++) {
-
             DB::table('posts')->insert([
                 'category_id' => random_int(20, 170),
                 'region_id' => random_int(1, 20),
