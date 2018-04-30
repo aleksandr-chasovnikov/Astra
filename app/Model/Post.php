@@ -105,4 +105,119 @@ class Post extends BaseModel
     {
         return $this->hasMany(File::class);
     }
+
+    /**
+     * Замещает нецензурные слова
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function censorReplacesWords($value)
+    {
+        return preg_replace(
+            '/(' . implode(')|(', config('censor')) . ')/ui',
+            '..',
+            $value
+        );
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getTitleAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getContentAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getUserNameAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getCityAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getSiteAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getEmailAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getSkypeAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getLinkAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getMetaDescAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    public function getMetaKeyAttribute($value)
+    {
+        return $this->censorReplacesWords($value);
+    }
 }

@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{!! csrf_token() !!}" />
     <title>{{ config('app.name', 'Astra') }}</title>
+    {{--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"--}}
+          {{--integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"--}}
+          {{--crossorigin="anonymous">--}}
+    <link href="{{ asset('css/fontawesome/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/fontawesome/fontawesome.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/fontawesome/fa-brands.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/fontawesome/fa-regular.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/fontawesome/fa-solid.min.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/second.css') }}" rel="stylesheet" media="all">
     {{--<script src="#180/js/jquery.min.js"></script>--}}
@@ -153,6 +161,7 @@
         {{--$.src="//v2.zopim.com/?2uAvJ6SRQuF3VGUB6rQpq3RHW4HAi1Cs";z.t=+new Date;$.--}}
             {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
 {{--</script>--}}
+<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="{{ asset('js/my/check_form.js') }}"></script>
 </body>

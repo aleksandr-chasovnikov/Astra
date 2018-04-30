@@ -6,6 +6,7 @@
         <!-- Example row of columns -->
         <div class="row">
             <div class="content">
+                <br>
 
                 {{--@foreach ($category as $cat)--}}
                 {{--<div class="container">--}}
@@ -13,8 +14,43 @@
                 {{--</div>--}}
                 {{--@endforeach--}}
 
-                @foreach ($posts as $post)
+                <div class="catalog-filters clearfix">
+                    <div class="catalog-filters-type button-group ">
+                        <span class="button button-origin is-active">Все</span>
+                        <a class="button button-origin"
+                            href="" title="Предложения" data-user="1">
+                                Предложения
+                        </a>
+                        <a class="button button-origin"
+                            href="" title="Спрос" data-user="2">
+                                Спрос
+                        </a>
+                    </div>
+                    <div class="catalog-filters-sort form-select-v2">
+                        <select class="js-sort-select">
+                            {{--<option selected="" data-default="1" value="101">По умолчанию</option>--}}
+                            <option value="104">По дате</option>
+                            <option value="1">Дешевле</option>
+                            <option value="2">Дороже</option>
+                        </select>
+                    </div>
+                    {{--<div class="catalog-filters-views button-group">--}}
+                        {{--<span class="button button-origin is-active" title="Показать большие фото">--}}
+                            {{--<i class="i-catalog-view i-catalog-view_gallery"></i>--}}
+                            {{--<i class="fas fa-table fa-lg"></i>--}}
+                        {{--</span>--}}
+                        {{--<a href="" class="button button-origin" title="Выводить списком с фото" rel="nofollow">--}}
+                            {{--<i class="i-catalog-view i-catalog-view_table"></i>--}}
+                            {{--<i class="fas fa-list fa-lg"></i>--}}
+                        {{--</a>--}}
+                        {{--<a href="" class="button button-origin" title="Выводить списком без фото" rel="nofollow">--}}
+                            {{--<i class="i-catalog-view i-catalog-view_list"></i>--}}
+                            {{--<i class="fas fa-bars fa-lg"></i>--}}
+                        {{--</a>--}}
+                    {{--</div>--}}
+                </div>
 
+                @foreach ($posts as $post)
                     {{--<span class="dremark">№{{ $loop->iteration }}</span>--}}
                     <div class="ads">
                         <img src="{{asset('uploads/no_photo.jpg')}}" alt="фото">
@@ -24,14 +60,15 @@
                                 <h4>{{ $post->title }}</h4>
                             </a>
                             <div>
-                                <span class="ads-price">{{ number_format(intval($post->price), 0, '.', ' ') }} руб.</span>&nbsp;
+                                <span class="ads-price">{{ number_format(intval($post->price), 0, '.', ' ') }}
+                                    руб.</span>&nbsp;
                                 <span class="ads-type">
                                     @if ($post->type)
                                         Спрос
                                     @else
                                         Предложение
                                     @endif
-                                    -- {{ $post->created_at }}
+                                    &nbsp; {{ $post->created_at }}
                                 </span>
                             </div>
                             <p class="ads-content">

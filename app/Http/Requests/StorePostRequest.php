@@ -13,17 +13,24 @@ class StorePostRequest extends FormRequest
     const PRICE_MAX_LENGTH = 20;
 
     const TITLE_MIN_LENGTH = 3;
-    const PHONE_MIN_LENGTH = 5;
+    const PHONE_MIN_LENGTH = 1;
 
-    const TITLE_PATTERN = '#\\|\/|\[|\^|\]|\$|\{|\}|=|<|>#';
+    const TITLE_PATTERN = '#[^\/|\[|\^|\]|\$|\{|\}|=|<|>]#';
     const PHONE_PATTERN = '#^([0-9-]|\+|\(|\))*$#';
     const EMAIL_PATTERN = '/.+@.+\..+/i';
 
-    const ERROR_MESSAGE = [
+    const MAX_FILE_SIZE = 500000;
+
+    public $arErrorMessage = [
         'max' => 'Слишком длинный текст.',
         'min' => 'Слишком короткий текст.',
+        'required' => 'Поле обязательно для заполнения.',
+        'email.regex' => 'Непохоже на email.',
         'patternNo' => 'Недопустимый символ: ',
         'invertPattern' => 'Есть недопустимый символ',
+        'phone.required' => 'Необходимо указать телефон.',
+        'title.required' => 'Необходимо указать заголовок.',
+        'phone.regex' => 'Телефон содержит недопустимые символы.',
     ];
 
     /**
@@ -44,11 +51,52 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:170',
-            'content' => 'required',
-            'email' => 'nullable|email',
+            'title' => [
+                'required',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'user_name' => [
+                'nullable',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'city' => [
+                'nullable',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'site' => [
+                'nullable',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'skype' => [
+                'nullable',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'email' => [
+                'nullable',
+                'regex:' . self::EMAIL_PATTERN,
+                'max:' . self::TITLE_MAX_LENGTH,
+            ],
+            'content' => [
+                'nullable',
+                'regex:' . self::TITLE_PATTERN,
+                'max:' . self::CONTENT_MAX_LENGTH,
+            ],
+            'price' => [
+                'nullable',
+                'regex:' . self::PHONE_PATTERN,
+                'max:' . self::PRICE_MAX_LENGTH,
+            ],
+            'phone' => [
+                'required',
+                'regex:' . self::PHONE_PATTERN,
+                'max:' . self::PRICE_MAX_LENGTH,
+            ],
             'file' => 'nullable|file',
-            'phone' => ['required', 'regex:/^([0-9-]|\+|\(|\))*$/'],
         ];
     }
 
@@ -58,9 +106,10 @@ class StorePostRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Необходимо указать заголовок',
-            'phone.required' => 'Необходимо указать телефон',
-            'phone.regex' => 'Телефон содержит недопустимые символы',
+            'title.required' => $this->arErrorMessage['title.required'],
+            'phone.required' => $this->arErrorMessage['phone.required'],
+            'phone.regex' => $this->arErrorMessage['phone.regex'],
+            'email.regex' => $this->arErrorMessage['email.regex'],
         ];
     }
 
@@ -79,7 +128,7 @@ class StorePostRequest extends FormRequest
         // Правило "required"
         if ($request->required && (strlen($inputValue) === 0 || !$inputValue)) {
             return response()->json(
-                ['error' => 'Поле обязательно для заполнения!']
+                ['error' => $this->arErrorMessage['required']]
                     + $request->all()
             );
         }
@@ -98,8 +147,7 @@ class StorePostRequest extends FormRequest
                     $inputValue,
                     self::PRICE_MAX_LENGTH,
                     self::PHONE_MIN_LENGTH,
-                    self::PHONE_PATTERN,
-                    true
+                    self::PHONE_PATTERN
                 ) + ['maxlength' => self::PRICE_MAX_LENGTH];
                 break;
             case in_array($inputKey, ['content']):
@@ -113,10 +161,9 @@ class StorePostRequest extends FormRequest
             case in_array($inputKey, ['captcha']):
                 $response = $this->validateStrlenRegexp(
                     $inputValue,
-                    null,
-                    null,
+                    self::TITLE_MAX_LENGTH,
+                    self::PHONE_MIN_LENGTH,
                     '#^' . $captchaCode . '$#',
-                    true,
                     ['invertPattern' => 'Неверный код.']
                 );
                 break;
@@ -126,7 +173,6 @@ class StorePostRequest extends FormRequest
                     self::TITLE_MAX_LENGTH,
                     self::TITLE_MIN_LENGTH,
                     self::EMAIL_PATTERN,
-                    true,
                     ['invertPattern' => 'Непохоже на email.']
                 ) + ['maxlength' => self::TITLE_MAX_LENGTH];
                 break;
@@ -152,11 +198,10 @@ class StorePostRequest extends FormRequest
         $max = self::TITLE_MAX_LENGTH,
         $min = self::TITLE_MIN_LENGTH,
         $patternNo,
-        $invertPattern = false,
         $errorMessage = []
     )
     {
-        $errorMessage = $errorMessage + self::ERROR_MESSAGE;
+        $errorMessage = $errorMessage + $this->arErrorMessage;
 
         if (strlen($inputValue) < $min && strlen($inputValue) !== 0) {
             return ['error' => $errorMessage['min']];
@@ -164,14 +209,8 @@ class StorePostRequest extends FormRequest
         if (strlen($inputValue) > $max) {
             return ['error' => $errorMessage['max']];
         }
-        if ($invertPattern) {
-            if (!preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => $errorMessage['invertPattern']];
-            }
-        } else {
-            if (preg_match($patternNo, $inputValue, $matches)) {
-                return ['error' => $errorMessage['patternNo'] . implode('', $matches)];
-            }
+        if (!preg_match($patternNo, $inputValue, $matches)) {
+            return ['error' => $errorMessage['invertPattern']];
         }
 
         return ['success' => 'Проверено.'];

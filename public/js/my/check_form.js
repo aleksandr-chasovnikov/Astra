@@ -29,6 +29,18 @@
             }
             return message;
         };
+        $('button[type=submit]').submit(function() {
+            $(window).unbind('beforeunload');
+        });
+    }
+
+    if ($('.js-addPhoto').length) {
+        $('.js-addPhoto').click(function () {
+            $('.js-addPhoto').before(
+                '<input name="photo[]" type="file" class="form-control" '
+                    + 'id="photo1" value="{{ old(\'photo1\') }}" multiple><br>'
+            )
+        });
     }
 
 })(jQuery);
@@ -78,9 +90,9 @@ function ajaxValidateForm(element) {
                     $('button[type=submit]')
                         .before(
                             '<div class="js-error-info-'
-                            + data.name + '" style="color: red;">Неправильно заполнено поле: <a href="#'
-                            + data.name + '">'
-                            + data.data_name + ' (&#11014;перейти&#11014;)</a></div>'
+                                + data.name + '" style="color: red;">Неправильно заполнено поле: <a href="#'
+                                + data.name + '">'
+                                + data.data_name + ' (&#11014;перейти&#11014;)</a></div>'
                         );
                 }
             }

@@ -82,6 +82,9 @@ class PostController extends BaseController
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
             'captchaImage' => $this->captchaImage,
+            'titleMaxLength' => StorePostRequest::TITLE_MAX_LENGTH,
+            'contentMaxLength' => StorePostRequest::CONTENT_MAX_LENGTH,
+            'priceMaxLength' => StorePostRequest::PRICE_MAX_LENGTH,
         ]);
     }
 
@@ -213,13 +216,14 @@ class PostController extends BaseController
         if ($file) {
             if (is_array($file)) {
                 foreach ($file as $photo) {
-                    $originalName = $photo->getClientOriginalName();
-
-                    File::query()->create([
-                        'target_id' => $postId,
-                        'target_type' => File::TARGET_POST,
-                        'path' => config('my_config.img_path') . $photo->storeAs('upload', $originalName),
-                    ]);
+                    if ($photo->getSize() <= StorePostRequest::MAX_FILE_SIZE
+                            && is_writable($photo)) {
+                        File::query()->create([
+                            'target_id' => $postId,
+                            'target_type' => File::TARGET_POST,
+                            'path' => config('my_config.img_path') . $photo->storeAs('upload', $photo->getClientOriginalName()),
+                        ]);
+                    }
                 }
             } else {
                 $originalName = $file->getClientOriginalName();
