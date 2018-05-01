@@ -33,6 +33,8 @@ class StorePostRequest extends FormRequest
         'phone.regex' => 'Телефон содержит недопустимые символы.',
     ];
 
+    private $captchaCode;
+
     /**
      * Определить, авторизован ли пользователь для этого запроса.
      *
@@ -110,6 +112,8 @@ class StorePostRequest extends FormRequest
             'phone.required' => $this->arErrorMessage['phone.required'],
             'phone.regex' => $this->arErrorMessage['phone.regex'],
             'email.regex' => $this->arErrorMessage['email.regex'],
+            'captcha.required' => 'Проверочный код обязателен',
+            'captcha.regex' => 'Неверный проверочный код',
         ];
     }
 
@@ -123,7 +127,7 @@ class StorePostRequest extends FormRequest
     {
         $inputKey = $request->name;
         $inputValue = $request->value;
-        $captchaCode = array_search($request->data_captcha, $captchaNumbers);
+        $this->captchaCode = array_search($request->data_captcha, $captchaNumbers);
 
         // Правило "required"
         if ($request->required && (strlen($inputValue) === 0 || !$inputValue)) {
@@ -163,7 +167,7 @@ class StorePostRequest extends FormRequest
                     $inputValue,
                     self::TITLE_MAX_LENGTH,
                     self::PHONE_MIN_LENGTH,
-                    '#^' . $captchaCode . '$#',
+                    '#^' . $this->captchaCode . '$#',
                     ['invertPattern' => 'Неверный код.']
                 );
                 break;
@@ -188,7 +192,6 @@ class StorePostRequest extends FormRequest
      * @param int    $max
      * @param int    $min
      * @param string $patternNo
-     * @param bool   $invertPattern
      * @param array  $errorMessage
      *
      * @return array

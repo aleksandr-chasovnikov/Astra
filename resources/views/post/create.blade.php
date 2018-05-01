@@ -188,7 +188,6 @@
 
             <hr>
             <button type="submit" class="btn btn-primary">Опубликовать</button>
-
             {{ csrf_field() }}
         </form>
     </div>

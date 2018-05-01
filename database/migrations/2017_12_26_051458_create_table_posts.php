@@ -31,17 +31,17 @@ class CreateTablePosts extends Migration
             $table->integer('viewed')->default(0);
             $table->tinyInteger('end_lifetime', false, true)->default(0)
                 ->comment('0 - 2 недели, 1 - 4 недели, 2 - 8 недель');
+            $table->string('password', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
+            $table->string('meta_desc', StorePostRequest::LINK_MAX_LENGTH)->nullable();
+            $table->string('meta_key', StorePostRequest::LINK_MAX_LENGTH)->nullable();
+            $table->string('link', StorePostRequest::LINK_MAX_LENGTH)->nullable();
             $table->string('price', StorePostRequest::PRICE_MAX_LENGTH)->nullable();
+            $table->string('phone', StorePostRequest::PRICE_MAX_LENGTH)->nullable();
             $table->string('user_name', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
             $table->string('city', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
             $table->string('email', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
-            $table->string('phone', StorePostRequest::PRICE_MAX_LENGTH)->nullable();
             $table->string('site', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
             $table->string('skype', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
-            $table->string('password', StorePostRequest::TITLE_MAX_LENGTH)->nullable();
-            $table->string('link', StorePostRequest::LINK_MAX_LENGTH)->nullable();
-            $table->string('meta_desc', StorePostRequest::LINK_MAX_LENGTH)->nullable();
-            $table->string('meta_key', StorePostRequest::LINK_MAX_LENGTH)->nullable();
             $table->timestampsTz();
             $table->softDeletes();
         });

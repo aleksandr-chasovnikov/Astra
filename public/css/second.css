@@ -42,22 +42,22 @@
 .ads > img {
     max-height: 200px;
 }
-@media screen and (max-width: 600px) {
-    .ads-text {
-        margin-left: 150px;
-    }
-    .ads > img {
-        max-height: 150px;
-    }
-}
-@media screen and (max-width: 400px) {
-    .ads-text {
-        margin-left: 100px;
-    }
-    .ads > img {
-        max-height: 100px;
-    }
-}
+/*@media screen and (max-width: 600px) {*/
+    /*.ads-text {*/
+        /*margin-left: 150px;*/
+    /*}*/
+    /*.ads > img {*/
+        /*max-height: 150px;*/
+    /*}*/
+/*}*/
+/*@media screen and (max-width: 400px) {*/
+    /*.ads-text {*/
+        /*margin-left: 100px;*/
+    /*}*/
+    /*.ads > img {*/
+        /*max-height: 100px;*/
+    /*}*/
+/*}*/
 .ads-price {
     /*background-color: #abceea;*/
     font-size: 120%;

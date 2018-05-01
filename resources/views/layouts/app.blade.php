@@ -10,10 +10,10 @@
           {{--integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"--}}
           {{--crossorigin="anonymous">--}}
     <link href="{{ asset('css/fontawesome/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/fontawesome/fontawesome.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/fontawesome/fa-brands.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/fontawesome/fa-regular.min.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/fontawesome/fa-solid.min.css') }}" rel="stylesheet" media="all">
+    {{--<link href="{{ asset('css/fontawesome/fontawesome.min.css') }}" rel="stylesheet" media="all">--}}
+    {{--<link href="{{ asset('css/fontawesome/fa-brands.min.css') }}" rel="stylesheet" media="all">--}}
+    {{--<link href="{{ asset('css/fontawesome/fa-regular.min.css') }}" rel="stylesheet" media="all">--}}
+    {{--<link href="{{ asset('css/fontawesome/fa-solid.min.css') }}" rel="stylesheet" media="all">--}}
     <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
     <link href="{{ asset('css/second.css') }}" rel="stylesheet" media="all">
     {{--<script src="#180/js/jquery.min.js"></script>--}}
@@ -108,7 +108,7 @@
 
                 @else
 
-                    @if (isAdmin())
+                    @if (!Auth::guest() && isAdmin())
 
                         <li><a href="{{ route('categoryIndex') }}">
                                 <i class="fa fa-lock" aria-hidden="true"></i>

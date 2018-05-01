@@ -16,6 +16,9 @@
         "unisharp/laravel-ckeditor": "^4.6"
     },
     "autoload": {
+        "files": [
+            "app/Helpers/functions.php"
+        ],
         "classmap": [
             "database",
             "app/libraries"

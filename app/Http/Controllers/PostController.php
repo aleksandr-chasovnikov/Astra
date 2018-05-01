@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PostController extends BaseController
 {
+    private $captchaCode;
     private $captchaImage;
     private $captchaNumbers;
 
@@ -95,6 +96,9 @@ class PostController extends BaseController
      */
     public function ajaxValidate(Request $request)
     {
+        // Для дополнительной валидации капчи в store()
+        $this->captchaCode = array_search($request->data_captcha, $this->captchaNumbers);
+
         return response()->json(
             (new StorePostRequest())->ajaxValidate($request, $this->captchaNumbers)
                 + $request->all()
@@ -112,17 +116,16 @@ class PostController extends BaseController
      */
     public function store(StorePostRequest $request)
     {
-//        TODO Доделать (как передавать код)
-//        $this->validate($request, [
-//            'captcha' => [
-//                'required',
-//                'max:6',
-//                'regex:/^' . $this->captchaNumber . '$/',
-//            ],
-//        ], [
-//            'captcha.required' => 'Проверочный код обязателен',
+        // Не переносить в StorePostRequest (MethodNotAllowedHttpException)
+        $this->validate($request, [
+            'captcha' => [
+                'required',
+//                'regex:/^' . $this->captchaCode . '$/',
+            ],
+        ], [
+            'captcha.required' => 'Проверочный код обязателен',
 //            'captcha.regex' => 'Неверный проверочный код',
-//        ]);
+        ]);
 
         $post = Post::query()->create(
             array_except($request->all(), [

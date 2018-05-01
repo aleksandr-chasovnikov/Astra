@@ -35,7 +35,9 @@ Route::get('contact', function () { return view('contact'); })->name('contact');
 //posts
 Route::get('/', ['as' => 'index', 'uses' => 'SiteController@index']);
 Route::get('post.{id}', 'SiteController@show')->name('postShow');
-Route::get('category.{categoryId}', 'SiteController@showByCategory')->name('showByCategory');
+Route::any('category.{categoryId}', 'SiteController@showByCategory')->name('showByCategory');
+Route::post('category', 'SiteController@postShowByCategory')->name('postShowByCategory');
+//Route::any('ajax_sort', 'SiteController@ajaxSort')->name('ajaxSort');
 
 //Comments
 Route::get('comment{id}', 'CommentController@show')->name('commentShow');

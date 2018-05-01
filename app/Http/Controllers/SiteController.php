@@ -10,15 +10,15 @@ class SiteController extends BaseController
 {
     /**
      * Показать все категории
-     * 
+     *
      * GET /
      */
-	public function index()
-	{
+    public function index()
+    {
         return view('index')->with([
             'categories' => $this->showCategories(),
         ]);
-	}
+    }
 
 //    /**
 //     * Показать одну статью
@@ -46,20 +46,65 @@ class SiteController extends BaseController
     /**
      * Показать статьи по категории
      *
-     * GET /category.{id}
-     *
-     * @param $categoryId
+     * @param int    $categoryId
+     * @param string $type
+     * @param string $sort
      *
      * @return $this
      */
-    public function showByCategory($categoryId)
+    public function showByCategory($categoryId, $type = 'all', $sort = 'created_at')
     {
+        $direction = 'desc';
+
+        if ('all' === $type) {
+            $type = [0, 1];
+        } else {
+            $type = [$type, $type];
+        }
+
+        if ('price_asc' === $sort) {
+            $direction = 'asc';
+            $sort = 'price';
+        }
+
         return view('category')->with([
-                'posts' => Post::query()->where('category_id', $categoryId)
-                    ->paginate(self::PAGINATE),
-//                'categoryName' => Category::query()->find($categoryId)->first(['title']),
-//                'categories' => $this->showCategories()
-            ]);
+            'posts' => Post::query()->where('category_id', $categoryId)
+                ->whereIn('type', $type)
+                ->orderBy($sort, $direction)
+                ->paginate(self::PAGINATE),
+            'subCategory' => Category::query()->find($categoryId),
+            'categories' => $this->showCategories(),
+        ]);
+    }
+
+    /**
+     * Сортировка
+     * @param Request $request
+     *
+     * @return $this
+     */
+    public function postShowByCategory(Request $request)
+    {
+        $type = $request->type ? $request->type : 'all';
+        $sort = $request->sort ? $request->sort : 'created_at';
+        $categoryId = $request->categoryId;
+        $direction = 'desc';
+
+        $type = ('all' === $type) ? [0, 1] : [$type, $type];
+
+        if ('price_asc' === $sort) {
+            $direction = 'asc';
+            $sort = 'price';
+        }
+
+        return view('category')->with([
+            'posts' => Post::query()->where('category_id', $categoryId)
+                ->whereIn('type', $type)
+                ->orderBy($sort, $direction)
+                ->paginate(self::PAGINATE),
+            'subCategory' => Category::query()->find($categoryId),
+            'categories' => $this->showCategories(),
+        ]);
     }
 
 }
