@@ -161,7 +161,7 @@
         {{--$.src="//v2.zopim.com/?2uAvJ6SRQuF3VGUB6rQpq3RHW4HAi1Cs";z.t=+new Date;$.--}}
             {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
 {{--</script>--}}
-<script src="{{ asset('js/jquery-2.1.4.min.js') }}"></script>
+<script src="{{ asset('jqujquery-3.1.1.min.js}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="{{ asset('js/my/check_form.js') }}"></script>
 </body>

@@ -20,17 +20,20 @@ class StorePostRequest extends FormRequest
     const EMAIL_PATTERN = '/.+@.+\..+/i';
 
     const MAX_FILE_SIZE = 500000;
+    const MAX_FILES_COUNT = 5;
 
     public $arErrorMessage = [
         'max' => 'Слишком длинный текст.',
         'min' => 'Слишком короткий текст.',
-        'required' => 'Поле обязательно для заполнения.',
         'email.regex' => 'Непохоже на email.',
         'patternNo' => 'Недопустимый символ: ',
         'invertPattern' => 'Есть недопустимый символ',
+        'required' => 'Поле обязательно для заполнения.',
         'phone.required' => 'Необходимо указать телефон.',
         'title.required' => 'Необходимо указать заголовок.',
         'phone.regex' => 'Телефон содержит недопустимые символы.',
+        'captcha.required' => 'Проверочный код обязателен',
+        'captcha.regex' => 'Неверный проверочный код',
     ];
 
     private $captchaCode;
@@ -98,7 +101,11 @@ class StorePostRequest extends FormRequest
                 'regex:' . self::PHONE_PATTERN,
                 'max:' . self::PRICE_MAX_LENGTH,
             ],
-            'file' => 'nullable|file',
+            'files.*' => 'nullable|file',
+            'captcha' => [
+                'required',
+//                'regex:/^' . $this->captchaCode . '$/',
+            ],
         ];
     }
 
@@ -112,8 +119,8 @@ class StorePostRequest extends FormRequest
             'phone.required' => $this->arErrorMessage['phone.required'],
             'phone.regex' => $this->arErrorMessage['phone.regex'],
             'email.regex' => $this->arErrorMessage['email.regex'],
-            'captcha.required' => 'Проверочный код обязателен',
-            'captcha.regex' => 'Неверный проверочный код',
+            'captcha.regex' => $this->arErrorMessage['captcha.regex'],
+            'captcha.required' => $this->arErrorMessage['captcha.required'],
         ];
     }
 
@@ -130,7 +137,7 @@ class StorePostRequest extends FormRequest
         $this->captchaCode = array_search($request->data_captcha, $captchaNumbers);
 
         // Правило "required"
-        if ($request->required && (strlen($inputValue) === 0 || !$inputValue)) {
+        if ($request->required && ( strlen($inputValue) === 0 || !$inputValue ) ) {
             return response()->json(
                 ['error' => $this->arErrorMessage['required']]
                     + $request->all()
@@ -146,6 +153,7 @@ class StorePostRequest extends FormRequest
                     self::TITLE_PATTERN
                 ) + ['maxlength' => self::TITLE_MAX_LENGTH];
                 break;
+
             case in_array($inputKey, ['phone','price']):
                 $response = $this->validateStrlenRegexp(
                     $inputValue,
@@ -154,7 +162,8 @@ class StorePostRequest extends FormRequest
                     self::PHONE_PATTERN
                 ) + ['maxlength' => self::PRICE_MAX_LENGTH];
                 break;
-            case in_array($inputKey, ['content']):
+
+            case 'content' === $inputKey:
                 $response = $this->validateStrlenRegexp(
                     $inputValue,
                     self::CONTENT_MAX_LENGTH,
@@ -162,7 +171,8 @@ class StorePostRequest extends FormRequest
                     self::TITLE_PATTERN
                 ) + ['maxlength' => self::CONTENT_MAX_LENGTH];
                 break;
-            case in_array($inputKey, ['captcha']):
+
+            case 'captcha' === $inputKey:
                 $response = $this->validateStrlenRegexp(
                     $inputValue,
                     self::TITLE_MAX_LENGTH,
@@ -171,7 +181,8 @@ class StorePostRequest extends FormRequest
                     ['invertPattern' => 'Неверный код.']
                 );
                 break;
-            case in_array($inputKey, ['email']):
+
+            case 'email' === $inputKey:
                 $response = $this->validateStrlenRegexp(
                     $inputValue,
                     self::TITLE_MAX_LENGTH,
@@ -180,6 +191,7 @@ class StorePostRequest extends FormRequest
                     ['invertPattern' => 'Непохоже на email.']
                 ) + ['maxlength' => self::TITLE_MAX_LENGTH];
                 break;
+
             default:
                 $response = ['success' => 'Техническая ошибка. Обратитесь в техподдержку.'];
         }

@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
-use App\libraries\GenerateText;
 use App\Model\File;
 use App\Model\Post;
 use App\Model\Region;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -61,19 +58,21 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-        die('post-show');
-        $post = Post::query()
-            ->findOrFail($id);
+//        $r = Post::query()->findOrFail($id);
+//        $ed = [];
+//        foreach ($r->files as $e) {
+//            $ed[] = $e->path;
+//        }
+//        dd($ed);
 
-        return view('post.post')->with([
-            'post' => $post,
+        return view('post.show')->with([
+            'post' => Post::query()->findOrFail($id),
+            'categories' => $this->showCategories(),
         ]);
     }
 
     /**
      * Выводит форму для создания статьи
-     *
-     * GET /admin/post/create
      *
      * @return View | HttpException
      */
@@ -96,19 +95,13 @@ class PostController extends BaseController
      */
     public function ajaxValidate(Request $request)
     {
-        // Для дополнительной валидации капчи в store()
-        $this->captchaCode = array_search($request->data_captcha, $this->captchaNumbers);
-
-        return response()->json(
-            (new StorePostRequest())->ajaxValidate($request, $this->captchaNumbers)
-                + $request->all()
+        return response()->json((new StorePostRequest())
+                ->ajaxValidate($request, $this->captchaNumbers) + $request->all()
         );
     }
 
     /**
      * Сохраняет статью и выводит форму с сообщением об успешной операции
-     *
-     * POST /admin/post/store
      *
      * @param StorePostRequest $request
      *
@@ -116,27 +109,13 @@ class PostController extends BaseController
      */
     public function store(StorePostRequest $request)
     {
-        // Не переносить в StorePostRequest (MethodNotAllowedHttpException)
-        $this->validate($request, [
-            'captcha' => [
-                'required',
-//                'regex:/^' . $this->captchaCode . '$/',
-            ],
-        ], [
-            'captcha.required' => 'Проверочный код обязателен',
-//            'captcha.regex' => 'Неверный проверочный код',
-        ]);
-
-        $post = Post::query()->create(
-            array_except($request->all(), [
+        $post = Post::query()->create( array_except( $request->all(), [
                 '_token',
                 'captcha',
                 'MAX_FILE_SIZE',
-                'photo',
-            ])
-        );
-
-        $this->uploadFile($post->id, $request->file('photo'));
+                'files',
+            ]));
+        $this->uploadFile($post->id, $request->file('files'));
 
         return view('post.create')->with([
             'categories' => $this->showCategories(),
@@ -209,36 +188,45 @@ class PostController extends BaseController
     }
 
     /**
-     * @param UploadedFile[] | UploadedFile $file
+     * @param UploadedFile[] | UploadedFile $files
      * @param int                           $postId
      *
      * @return void
      */
-    protected function uploadFile($postId, $file = null)
+    protected function uploadFile($postId, $files = null)
     {
-        if ($file) {
-            if (is_array($file)) {
-                foreach ($file as $photo) {
-                    if ($photo->getSize() <= StorePostRequest::MAX_FILE_SIZE
-                            && is_writable($photo)) {
+        if ($files) {
+            if (is_array($files)) {
+                foreach (array_slice(
+                    $files,
+                    0,
+                    StorePostRequest::MAX_FILES_COUNT,
+                    true) as $photo) {
+                    if (
+                        $photo->getSize() <= StorePostRequest::MAX_FILE_SIZE
+                            && is_writable($photo)
+                    ) {
+                        $photo->storeAs('public/app/uploads', $photo->getClientOriginalName());
+
                         File::query()->create([
                             'target_id' => $postId,
                             'target_type' => File::TARGET_POST,
-                            'path' => config('my_config.img_path') . $photo->storeAs('upload', $photo->getClientOriginalName()),
+                            'path' => config('my_config.img_path')
+                                . $photo->getClientOriginalName(),
                         ]);
                     }
                 }
             } else {
-                $originalName = $file->getClientOriginalName();
+                $originalName = $files->getClientOriginalName();
 
                 File::query()->create([
                     'target_id' => $postId,
                     'target_type' => File::TARGET_POST,
-                    'path' => config('my_config.img_path') . $file->storeAs('upload', $originalName),
+                    'path' => config('my_config.img_path')
+                        . $files->storeAs('uploads', $originalName),
                 ]);
             }
         }
     }
-
 
 }

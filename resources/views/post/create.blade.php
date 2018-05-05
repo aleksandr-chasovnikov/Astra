@@ -134,16 +134,17 @@
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
             <div class="form-group">
-                <label for="photo">Фотографии
-                    <span style="font-weight: 100">
-                        (максимальный размер 5Мб)
-                    </span>
-                </label>
-                <input type="hidden" name="MAX_FILE_SIZE" value="{{ \App\Http\Requests\StorePostRequest::MAX_FILE_SIZE }}"/>
-                <input name="photo[]" type="file" class="form-control" id="photo"
-                       value="{{ old('photo') }}" multiple>
+                <label for="files">Фотографии</label>
+                <input type="hidden" name="MAX_FILE_SIZE"
+                       value="{{ \App\Http\Requests\StorePostRequest::MAX_FILE_SIZE }}"/>
+                <input name="files[]" type="file" class="form-control js-inputPhoto" id="files"
+                       value="{{ old('files') }}" multiple>
                 <br>
-                <a class="btn btn-info btn-sm js-addPhoto">&#10010; Ещё фотографии</a>
+                <a class="btn btn-info btn-sm js-addPhoto"
+                   data-count="{{ \App\Http\Requests\StorePostRequest::MAX_FILES_COUNT }}"
+                   title="Максимум - {{ \App\Http\Requests\StorePostRequest::MAX_FILES_COUNT }} фотографий.
+Максимальный размер фотографии - {{ \App\Http\Requests\StorePostRequest::MAX_FILE_SIZE /100000  }} Мб"
+                >&#10010; Ещё фотографии</a>
             </div>
             <div class="form-group">
                 <label for="site">Сайт</label><a name="site"></a>

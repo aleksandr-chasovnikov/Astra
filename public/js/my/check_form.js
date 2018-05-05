@@ -29,17 +29,20 @@
             }
             return message;
         };
-        $('button[type=submit]').submit(function() {
+        $('button[type=submit]').submit(function () {
             $(window).unbind('beforeunload');
         });
     }
 
+    // Добавление фотографий
     if ($('.js-addPhoto').length) {
         $('.js-addPhoto').click(function () {
-            $('.js-addPhoto').before(
-                '<input name="photo[]" type="file" class="form-control" '
-                    + 'id="photo1" value="{{ old(\'photo1\') }}" multiple><br>'
-            )
+            if ($('.js-inputPhoto').length < $('.js-addPhoto').attr('data-count')) {
+                $('.js-addPhoto').before(
+                    '<input name="files[]" type="file" class="form-control js-inputPhoto" '
+                    + ' value="" multiple><br>'
+                );
+            }
         });
     }
 
@@ -90,9 +93,9 @@ function ajaxValidateForm(element) {
                     $('button[type=submit]')
                         .before(
                             '<div class="js-error-info-'
-                                + data.name + '" style="color: red;">Неправильно заполнено поле: <a href="#'
-                                + data.name + '">'
-                                + data.data_name + ' (&#11014;перейти&#11014;)</a></div>'
+                            + data.name + '" style="color: red;">Неправильно заполнено поле: <a href="#'
+                            + data.name + '">'
+                            + data.data_name + ' (&#11014;перейти&#11014;)</a></div>'
                         );
                 }
             }
@@ -103,7 +106,7 @@ function ajaxValidateForm(element) {
 }
 
 function in_array(needle, haystack, strict1) {   // Checks if a value exists in an array
-                                                 // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     var found = false,
         key,
         strict = !!strict1;

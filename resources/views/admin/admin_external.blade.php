@@ -134,7 +134,7 @@
 "> <span id="toTopHover"
                                                                              style="opacity: 1;"> </span></a>
     <!--/script-->
-    <script src="{{ asset('admin/js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ asset('jquery-3.jquery-3.1.1.min.jsscript>
     <script src="{{ asset('admin/js/modernizr.custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('admin/js/menu.js') }}"></script>
     <script type="text/javascript"

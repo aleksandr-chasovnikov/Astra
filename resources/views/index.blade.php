@@ -83,18 +83,16 @@
                     @foreach ($categories as $category)
                         @unless ($category->parent_id)
 
-                            <div class="promo-games-game" data-game="">
+                            <div class="promo-games-game">
                                 <p class="promo-games-title">
                                         {{ $category->title }}
                                 </p>
 
                                 <p class="promo-games-sections">
                                     @foreach ($category->subCategories() as $subCategory)
-                                        <a class="
-                                            @if ($loop->iteration % 2)
-                                                darkorange
-                                            @endif
-                                                " href="{{ route('showByCategory', ['categoryId' => $subCategory->id]) }}">
+                                        <a class="@if ($loop->iteration % 2) darkorange @endif"
+                                            href="{{ route('showByCategory',
+                                                ['categoryId' => $subCategory->id]) }}">
                                             {{ $subCategory->title }}
                                         </a>
                                     @endforeach

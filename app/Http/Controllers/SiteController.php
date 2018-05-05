@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 class SiteController extends BaseController
 {
     /**
-     * Показать все категории
-     *
-     * GET /
+     * @return $this
      */
     public function index()
     {
@@ -19,29 +17,6 @@ class SiteController extends BaseController
             'categories' => $this->showCategories(),
         ]);
     }
-
-//    /**
-//     * Показать одну статью
-//     *
-//     * GET /post.{id}
-//     */
-//    public function show($id)
-//    {
-//        $article = Article::select(['id', 'title', 'img', 'text', 'created_at'])
-//                ->where('id', $id)
-//                ->first();
-//
-//        //Комментарии, принадлежащие статье
-//        $comments = Article::find($id)->comments()->get();
-//
-//        //Список категорий
-//        $categories = Category::select(['id', 'name_category'])->get();
-//
-//        return view('post')->with(['post' => $article,
-//                                    'categories' => $categories,
-//                                    'comments' => $comments,
-//                                    ]);
-//    }
 
     /**
      * Показать статьи по категории
@@ -54,14 +29,9 @@ class SiteController extends BaseController
      */
     public function showByCategory($categoryId, $type = 'all', $sort = 'created_at')
     {
+
         $direction = 'desc';
-
-        if ('all' === $type) {
-            $type = [0, 1];
-        } else {
-            $type = [$type, $type];
-        }
-
+        $type = ('all' === $type) ? [0, 1] : [$type, $type];
         if ('price_asc' === $sort) {
             $direction = 'asc';
             $sort = 'price';

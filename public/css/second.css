@@ -28,7 +28,8 @@
     text-overflow: ellipsis;
 }
 .ads-content {
-    height: 80px;
+    margin-bottom: -1px;
+    height: 65px;
     overflow: hidden;
     text-overflow: ellipsis;
     /*position: absolute;*/
@@ -42,29 +43,31 @@
 .ads > img {
     max-height: 200px;
 }
-/*@media screen and (max-width: 600px) {*/
-    /*.ads-text {*/
-        /*margin-left: 150px;*/
-    /*}*/
-    /*.ads > img {*/
-        /*max-height: 150px;*/
-    /*}*/
-/*}*/
-/*@media screen and (max-width: 400px) {*/
-    /*.ads-text {*/
-        /*margin-left: 100px;*/
-    /*}*/
-    /*.ads > img {*/
-        /*max-height: 100px;*/
-    /*}*/
-/*}*/
+@media screen and (max-width: 600px) {
+    .ads-text {
+        margin-left: 150px;
+        top: -160px;
+    }
+    .ads > img {
+        max-height: 150px;
+    }
+}
+@media screen and (max-width: 400px) {
+    .ads-text {
+        margin-left: 100px;
+        top: -120px;
+    }
+    .ads > img {
+        max-height: 100px;
+    }
+}
 .ads-price {
     /*background-color: #abceea;*/
     font-size: 120%;
 }
 .ads-type {
     font-size: 90%;
-    color: #357456;
+    color: #999;
 }
 
 /*-- Фильтры в списке объявлений --*/
@@ -170,7 +173,7 @@
     float: none;
 }
 .form-select-v2::after {
-    background: url(/s/avito/ui/form/select/select-arrow.svg?83a27dd) left top no-repeat;
+    /*background: url(/s/avito/ui/form/select/select-arrow.svg?83a27dd) left top no-repeat;*/
     position: absolute;
     right: 10px;
     margin-top: -2px;
@@ -195,7 +198,7 @@
     white-space: nowrap;
 }
 .form-select-v2::after {
-    background: url(/s/avito/ui/form/select/select-arrow.svg?83a27dd) left top no-repeat;
+    /*background: url(/s/avito/ui/form/select/select-arrow.svg?83a27dd) left top no-repeat;*/
     position: absolute;
     right: 10px;
     margin-top: -2px;
@@ -237,7 +240,7 @@
     height: 12px;
 }
 .i-catalog-view {
-    background: url(/s/a/i/sprites/catalog-view.svg?cb0e39b) no-repeat;
+    /*background: url(/s/a/i/sprites/catalog-view.svg?cb0e39b) no-repeat;*/
 }
 .i, .i-bonus, .i-card, .i-catalog-view, .i-csc, .i-metro, .i-new, .icon-photo, .ix {
     display: inline-block;

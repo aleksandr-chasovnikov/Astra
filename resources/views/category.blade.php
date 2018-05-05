@@ -6,7 +6,7 @@
         <h3 class="text-center">Категория &#8194;&#8658;&#8194; {{$subCategory->title}}</h3>
         <hr>
         <div class="row">
-            <div class="content  col-md-8">
+            <div class="content col-md-8 col-sm-8">
                 <div class="catalog-filters clearfix text-center">
                     <form method="post" action="{{ route('postShowByCategory') }}" role="form">
                         {{--<div class="catalog-filters-type button-group ">--}}
@@ -90,19 +90,26 @@
                         {{--</a>--}}
                     {{--</div>--}}
                 </div>
-                <hr>
+                {{--<div class="paginate container text-center">--}}
+                    {{--{{ $posts->links() }}--}}
+                {{--</div>--}}
 
                 @foreach ($posts as $post)
-                    {{--<span class="dremark">№{{ $loop->iteration }}</span>--}}
                     <div class="ads">
-                        <img src="{{asset('uploads/no_photo.jpg')}}" alt="фото">
+
+                            @if (count($post->files) > 0)
+                                <img src="{{ asset($post->files->last()->path) }}" alt="фото">
+                            @else
+                                <img src="uploads/no_photo.jpg" alt="фото">
+                            @endif
+
                         <div class="ads-text"
                              title="{{ $post->title }} за {{ $post->price }} рублей">
                             <a class="title" href="{{ route('postShow', ['id' => $post->id]) }}">
                                 <h4>{{ $post->title }}</h4>
                             </a>
                             <div>
-                                <span class="ads-price" style="background-color: orange">
+                                <span class="ads-price darkorange">
                                     {{ number_format(intval($post->price), 0, '.', ' ') }} руб.
                                 </span>&nbsp;
                                 <span class="ads-type">
@@ -111,12 +118,12 @@
                                     @else
                                         Предложение
                                     @endif
-                                    &nbsp; {{ $post->created_at }}
                                 </span>
                             </div>
                             <p class="ads-content">
                                 {{ $post->content }}
                             </p>
+                            <span class="ads-type" style="margin-top: -20px;">{{ $post->created_at }}</span>
                         </div>
                         <div class="clear"></div>
                     </div>
@@ -142,16 +149,16 @@
 
                 @endforeach
 
-                <div class="paginate container">
+                <div class="paginate container text-center">
                     {{ $posts->links() }}
                 </div>
 
-                @if (empty($post))
+                @if (empty($posts))
                     <p>Извините. В этой категории ещё нет объявлений.</p>
                 @endif
 
             </div>
-            <div class="sidebar col-md-4">
+            <div class="col-md-4 col-sm-4">
                 {{--@foreach ($categories as $category)--}}
                         {{--<a>Категория &#8194;&#8658;&#8194; {{$category->title}}</a>--}}
                 {{--@endforeach--}}
@@ -175,7 +182,6 @@
             </div>
         </div>
     </div>
-
 
 @endsection
 

@@ -103,7 +103,8 @@ class Post extends BaseModel
      */
     public function files()
     {
-        return $this->hasMany(File::class);
+        return $this->hasMany(File::class, 'target_id', 'id')
+            ->where('target_type', File::TARGET_POST);
     }
 
     /**
