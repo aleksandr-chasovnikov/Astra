@@ -104,7 +104,7 @@ class StorePostRequest extends FormRequest
             'files.*' => 'nullable|file',
             'captcha' => [
                 'required',
-//                'regex:/^' . $this->captchaCode . '$/',
+                'regex:/^' . session('captchaCode') . '$/',
             ],
         ];
     }
@@ -134,7 +134,7 @@ class StorePostRequest extends FormRequest
     {
         $inputKey = $request->name;
         $inputValue = $request->value;
-        $this->captchaCode = array_search($request->data_captcha, $captchaNumbers);
+//        $this->captchaCode = array_search($request->data_captcha, $captchaNumbers);
 
         // Правило "required"
         if ($request->required && ( strlen($inputValue) === 0 || !$inputValue ) ) {
@@ -172,15 +172,15 @@ class StorePostRequest extends FormRequest
                 ) + ['maxlength' => self::CONTENT_MAX_LENGTH];
                 break;
 
-            case 'captcha' === $inputKey:
-                $response = $this->validateStrlenRegexp(
-                    $inputValue,
-                    self::TITLE_MAX_LENGTH,
-                    self::PHONE_MIN_LENGTH,
-                    '#^' . $this->captchaCode . '$#',
-                    ['invertPattern' => 'Неверный код.']
-                );
-                break;
+//            case 'captcha' === $inputKey:
+//                $response = $this->validateStrlenRegexp(
+//                    $inputValue,
+//                    self::TITLE_MAX_LENGTH,
+//                    self::PHONE_MIN_LENGTH,
+//                    '#^' . $this->captchaCode . '$#',
+//                    ['invertPattern' => 'Неверный код.']
+//                );
+//                break;
 
             case 'email' === $inputKey:
                 $response = $this->validateStrlenRegexp(
@@ -193,7 +193,8 @@ class StorePostRequest extends FormRequest
                 break;
 
             default:
-                $response = ['success' => 'Техническая ошибка. Обратитесь в техподдержку.'];
+//                $response = ['success' => 'Техническая ошибка. Обратитесь в техподдержку.'];
+                $response = ['success' => ''];
         }
 
         return $response;

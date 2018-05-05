@@ -178,7 +178,10 @@
                 <label for="eight_weeks">8 недель</label>
             </div>
             <hr>
-            <img src="{{ asset('/uploads/captcha/' . $captchaImage . '.jpg') }}" alt="">
+            <img id="captchaImage" src="{{ asset('/uploads/captcha/' . $captchaImage . '.jpg') }}" alt="">
+            <button type="button" class="btn btn-primary js-captchaRefresh"
+                    title="Показать другую картинку" style="margin-top: 19px;">
+                <i class="fa fa-refresh fa-3x" aria-hidden="true"></i></button>
             <div class="form-group">
                 <label for="captcha">Наберите код с картинки:</label><a name="captcha"></a>
 

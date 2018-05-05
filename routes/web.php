@@ -45,6 +45,7 @@ Route::post('post', 'CommentController@store')->name('commentStore');
 Route::delete('delete.{comment}', 'CommentController@delete')->name('commentDelete');
 
 
+Route::any('ajax_captcha_refresh', 'PostController@ajaxCaptchaRefresh')->name('ajaxCaptchaRefresh');
 Route::group(['prefix' => 'post'], function() {
     Route::get('search', 'PostController@searchForm')->name('postSearchForm');
     Route::get('index', 'PostController@index')->name('postIndex');
@@ -64,7 +65,7 @@ Route::group(['prefix' => 'admin'], function() {
 
         Route::get('index', 'Admin\AdminPostController@index')->name('adminIndex');
         Route::post('create', 'Admin\AdminPostController@store')->name('adminPostStore');
-        Route::get('create', 'Admin\AdminPostController@create')->name('adminPostCreate');
+        Route::post('create', 'Admin\AdminPostController@create')->name('adminPostCreate');
         Route::get('update.{id}', 'Admin\AdminPostController@edit')->name('adminPostEdit');
         Route::post('update', 'Admin\AdminPostController@update')->name('adminPostUpdate');
         Route::delete('destroy.{id}', 'Admin\AdminPostController@destroy')->name('adminPostDelete');

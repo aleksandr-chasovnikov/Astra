@@ -78,6 +78,9 @@ class PostController extends BaseController
      */
     public function create()
     {
+        $this->captchaCode = array_search($this->captchaImage, $this->captchaNumbers);
+        session(['captchaCode' => $this->captchaCode]);
+
         return view('post.create')->with([
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
@@ -98,6 +101,19 @@ class PostController extends BaseController
         return response()->json((new StorePostRequest())
                 ->ajaxValidate($request, $this->captchaNumbers) + $request->all()
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function ajaxCaptchaRefresh()
+    {
+        $this->captchaCode = array_search($this->captchaImage, $this->captchaNumbers);
+        session(['captchaCode' => $this->captchaCode]);
+
+        return response()->json([
+            'captcha' => $this->captchaImage,
+        ]);
     }
 
     /**
@@ -207,7 +223,6 @@ class PostController extends BaseController
                             && is_writable($photo)
                     ) {
                         $photo->storeAs('public/app/uploads', $photo->getClientOriginalName());
-
                         File::query()->create([
                             'target_id' => $postId,
                             'target_type' => File::TARGET_POST,
@@ -218,12 +233,12 @@ class PostController extends BaseController
                 }
             } else {
                 $originalName = $files->getClientOriginalName();
-
+                $files->storeAs('uploads', $originalName);
                 File::query()->create([
                     'target_id' => $postId,
                     'target_type' => File::TARGET_POST,
                     'path' => config('my_config.img_path')
-                        . $files->storeAs('uploads', $originalName),
+                        . $files->getClientOriginalName(),
                 ]);
             }
         }

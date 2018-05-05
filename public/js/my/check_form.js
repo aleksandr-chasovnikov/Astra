@@ -20,18 +20,15 @@
 
         // всплывашка при попытке закрыть или перезгрузить окно
         window.onbeforeunload = function (evt) {
-            var message = "Возможно, внесенные изменения не сохранятся.";
-            if (typeof evt == "undefined") {
-                evt = window.event;
+            $('button[type=submit]').click( function() {
+                $(this).data('clicked', true);
+            });
+
+            if ($('button[type=submit]').data('clicked')) {
+                return null;
             }
-            if (evt) {
-                evt.returnValue = message;
-            }
-            return message;
+            return true;
         };
-        $('button[type=submit]').submit(function () {
-            $(window).unbind('beforeunload');
-        });
     }
 
     // Добавление фотографий
@@ -43,6 +40,24 @@
                     + ' value="" multiple><br>'
                 );
             }
+        });
+    }
+
+    // Обновить картинку капчи
+    if ($('.js-captchaRefresh').length) {
+        $('.js-captchaRefresh').click(function () {
+            $.ajax({
+                url: '/ajax_captcha_refresh',
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    $('#captchaImage').detach();
+                    $('.js-captchaRefresh').before(
+                        '<img id="captchaImage" src="/uploads/captcha/'
+                            + data.captcha + '.jpg" alt="">'
+                    );
+                }
+            });
         });
     }
 
@@ -72,7 +87,7 @@ function ajaxValidateForm(element) {
         value: element.val(),
         required: element.attr('required'),
         data_name: element.attr('data-name'), // Для отображения ошибок перед кнопкой 'submit'
-        data_captcha: element.attr('data-captcha')
+        // data_captcha: element.attr('data-captcha')
     };
 
     $.ajax({
