@@ -22,6 +22,8 @@ class StorePostRequest extends FormRequest
     const MAX_FILE_SIZE = 500000;
     const MAX_FILES_COUNT = 5;
 
+    const MAX_POSTS_COUNT = 5;
+
     public $arErrorMessage = [
         'max' => 'Слишком длинный текст.',
         'min' => 'Слишком короткий текст.',
@@ -36,7 +38,20 @@ class StorePostRequest extends FormRequest
         'captcha.regex' => 'Неверный проверочный код',
     ];
 
-    private $captchaCode;
+    /**
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => $this->arErrorMessage['title.required'],
+            'phone.required' => $this->arErrorMessage['phone.required'],
+            'phone.regex' => $this->arErrorMessage['phone.regex'],
+            'email.regex' => $this->arErrorMessage['email.regex'],
+            'captcha.regex' => $this->arErrorMessage['captcha.regex'],
+            'captcha.required' => $this->arErrorMessage['captcha.required'],
+        ];
+    }
 
     /**
      * Определить, авторизован ли пользователь для этого запроса.
@@ -106,21 +121,6 @@ class StorePostRequest extends FormRequest
                 'required',
                 'regex:/^' . session('captchaCode') . '$/',
             ],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'title.required' => $this->arErrorMessage['title.required'],
-            'phone.required' => $this->arErrorMessage['phone.required'],
-            'phone.regex' => $this->arErrorMessage['phone.regex'],
-            'email.regex' => $this->arErrorMessage['email.regex'],
-            'captcha.regex' => $this->arErrorMessage['captcha.regex'],
-            'captcha.required' => $this->arErrorMessage['captcha.required'],
         ];
     }
 

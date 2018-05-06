@@ -10,10 +10,18 @@
             <h3>Подать объявление (без регистрации)</h3>
             <hr>
 
-            @if (!empty($message))
+            @if (!empty($successMessage))
                 <div class="alert alert-success text-center">
-                    {{$message}}
-                    <a href="{{ route('postShow', ['id' => $postId]) }}">Ссылка на созданное объявление.</a>
+                    {{ $successMessage }}
+                    <a href="{{ route('postShow', ['id' => $postId]) }}">
+                        Посмотреть созданное объявление.
+                    </a>
+                </div>
+            @endif
+
+            @if (!empty($errorMessage))
+                <div class="alert alert-danger text-center">
+                    {{ $errorMessage }}
                 </div>
             @endif
 
@@ -26,6 +34,7 @@
                     </ul>
                 </div>
             @endif
+            <p>Звездочкой <span style="color: red;">&#10033;</span> отмечены обязательные к заполнению поля</p>
 
             <div class="form-group">
                 <label for="region_id">Регион</label>
@@ -72,20 +81,19 @@
             </div>
             <br>
             <div class="form-group">
-                <label for="title">Заголовок</label><a name="title"></a>
+                <label for="title">Заголовок</label><a name="title"></a> <span style="color: red;">&#10033;</span>
                 <span class="countChars"></span>
                 <input name="title" type="text" maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate required" id="title"
+                       class="form-control ajax-validate inputTitle required" id="title"
                        value="{{ old('title') }}" data-name="Заголовок">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
             <div class="form-group">
-                <label for="content">Текст объявления
-                    <span style="color: #999; font-weight: 100">(обязательно)</span>
+                <label for="content">Текст объявления <span style="color: red;">&#10033;</span>
                 </label><a name="content"></a>
                 <span class="countChars"></span>
                 <textarea name="content" rows="5"  maxlength="{{ $contentMaxLength or 1800 }}"
-                          class="form-control textarea ajax-validate" required id="content"
+                          class="form-control textarea ajax-validate inputTitle" required id="content"
                           data-name="Текст_объявления">{{ old('content') }}</textarea>
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -93,7 +101,7 @@
                 <label for="price">Цена (в рублях)</label><a name="price"></a>
                 <span class="countChars"></span>
                 <input name="price" type="text"  maxlength="{{ $priceMaxLength or 20 }}"
-                       class="form-control ajax-validate" id="price"
+                       class="form-control ajax-validate inputTitle" id="price"
                        value="{{ old('price') or 0 }}" data-name="Цена">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -101,7 +109,7 @@
                 <label for="user_name">Контактное лицо</label><a name="user_name"></a>
                 <span class="countChars"></span>
                 <input name="user_name" type="text" maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate" id="user_name"
+                       class="form-control ajax-validate inputTitle" id="user_name"
                        value="{{ old('user_name') }}" data-name="Контактное_лицо">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -109,7 +117,7 @@
                 <label for="city">Город</label><a name="city"></a>
                 <span class="countChars"></span>
                 <input name="city" type="text" maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate" id="city"
+                       class="form-control ajax-validate inputTitle" id="city"
                        value="{{ old('city') }}" data-name="Город">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -121,15 +129,15 @@
                 </label><a name="email"></a>
                 <span class="countChars"></span>
                 <input name="email" type="text" maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate" id="email"
+                       class="form-control ajax-validate inputTitle" id="email"
                        value="{{ old('email') }}" data-name="E-mail">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
             <div class="form-group">
-                <label for="phone">Телефон</label><a name="phone"></a>
+                <label for="phone">Телефон</label><a name="phone"></a> <span style="color: red;">&#10033;</span>
                 <span class="countChars"></span>
                 <input name="phone" type="text" maxlength="{{ $priceMaxLength or 25 }}"
-                       class="form-control ajax-validate required" id="phone"
+                       class="form-control ajax-validate inputTitle required" id="phone"
                        value="{{ old('phone') }}" data-name="Телефон">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -137,10 +145,10 @@
                 <label for="files">Фотографии</label>
                 <input type="hidden" name="MAX_FILE_SIZE"
                        value="{{ \App\Http\Requests\StorePostRequest::MAX_FILE_SIZE }}"/>
-                <input name="files[]" type="file" class="form-control js-inputPhoto" id="files"
+                <input name="files[]" type="file" class="form-control js-inputPhoto inputTitle" id="files"
                        value="{{ old('files') }}" multiple>
                 <br>
-                <a class="btn btn-info btn-sm js-addPhoto"
+                <a class="btn btn-primary btn-sm js-addPhoto"
                    data-count="{{ \App\Http\Requests\StorePostRequest::MAX_FILES_COUNT }}"
                    title="Максимум - {{ \App\Http\Requests\StorePostRequest::MAX_FILES_COUNT }} фотографий.
 Максимальный размер фотографии - {{ \App\Http\Requests\StorePostRequest::MAX_FILE_SIZE /100000  }} Мб"
@@ -150,7 +158,7 @@
                 <label for="site">Сайт</label><a name="site"></a>
                 <span class="countChars"></span>
                 <input name="site" type="text"  maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate" id="site"
+                       class="form-control ajax-validate inputTitle" id="site"
                        value="{{ old('site') }}" data-name="Сайт">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -158,7 +166,7 @@
                 <label for="skype">Skype</label><a name="skype"></a>
                 <span class="countChars"></span>
                 <input name="skype" type="text" maxlength="{{ $titleMaxLength or 120 }}"
-                       class="form-control ajax-validate" id="skype"
+                       class="form-control ajax-validate inputTitle" id="skype"
                        value="{{ old('skype') }}" data-name="Skype">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
@@ -185,7 +193,8 @@
             <div class="form-group">
                 <label for="captcha">Наберите код с картинки:</label><a name="captcha"></a>
 
-                <input name="captcha" id="captcha" type="text" class="form-control ajax-validate required"
+                <input name="captcha" id="captcha" style="max-width: 265px;"
+                       type="text" class="form-control ajax-validate required"
                        data-name="Наберите код с картинки" data-captcha="{{ $captchaImage }}">
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>

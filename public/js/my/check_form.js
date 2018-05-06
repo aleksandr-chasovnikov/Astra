@@ -10,7 +10,7 @@
     // Добавляет атритут required и подпись "обязательно"
     $('.required')
         .attr('required', 'required')
-        .attr('placeholder', 'Обязательное поле');
+        /*.attr('placeholder', 'Обязательное поле')*/;
 
     // Валидация формы
     if ($('.ajax-validate').length) {

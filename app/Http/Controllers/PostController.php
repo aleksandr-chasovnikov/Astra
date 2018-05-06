@@ -14,7 +14,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PostController extends BaseController
 {
-    private $captchaCode;
     private $captchaImage;
     private $captchaNumbers;
 
@@ -58,13 +57,6 @@ class PostController extends BaseController
      */
     public function show($id)
     {
-//        $r = Post::query()->findOrFail($id);
-//        $ed = [];
-//        foreach ($r->files as $e) {
-//            $ed[] = $e->path;
-//        }
-//        dd($ed);
-
         return view('post.show')->with([
             'post' => Post::query()->findOrFail($id),
             'categories' => $this->showCategories(),
@@ -78,8 +70,7 @@ class PostController extends BaseController
      */
     public function create()
     {
-        $this->captchaCode = array_search($this->captchaImage, $this->captchaNumbers);
-        session(['captchaCode' => $this->captchaCode]);
+        session(['captchaCode' => array_search($this->captchaImage, $this->captchaNumbers)]);
 
         return view('post.create')->with([
             'categories' => $this->showCategories(),
@@ -88,31 +79,7 @@ class PostController extends BaseController
             'titleMaxLength' => StorePostRequest::TITLE_MAX_LENGTH,
             'contentMaxLength' => StorePostRequest::CONTENT_MAX_LENGTH,
             'priceMaxLength' => StorePostRequest::PRICE_MAX_LENGTH,
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function ajaxValidate(Request $request)
-    {
-        return response()->json((new StorePostRequest())
-                ->ajaxValidate($request, $this->captchaNumbers) + $request->all()
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function ajaxCaptchaRefresh()
-    {
-        $this->captchaCode = array_search($this->captchaImage, $this->captchaNumbers);
-        session(['captchaCode' => $this->captchaCode]);
-
-        return response()->json([
-            'captcha' => $this->captchaImage,
+            'message' => null,
         ]);
     }
 
@@ -125,20 +92,48 @@ class PostController extends BaseController
      */
     public function store(StorePostRequest $request)
     {
-        $post = Post::query()->create( array_except( $request->all(), [
+        session(['captchaCode' => array_search($this->captchaImage, $this->captchaNumbers)]);
+        $errorMessage = null;
+        $successMessage = null;
+        $postId = null;
+
+        $builderPostOld = Post::query()
+            ->where('region_id', $request->input('region_id'))
+            ->where('title', $request->input('title'))
+            ->where('content', $request->input('content'))
+            ->where('type', $request->input('type'))
+            ->where('phone', $request->input('phone'));
+        $countPost = $builderPostOld->count();
+
+        if ($builderPostOld->where(
+                'category_id',
+                $request->input('category_id'))->first()
+        ) {
+            $errorMessage = 'Нельзя дублировать объявления в одной и той же категории';
+
+        } elseif (StorePostRequest::MAX_POSTS_COUNT < $countPost) {
+//            $errorMessage = 'Превышен лимит одинаковых объявлений в разных категориях.';
+            $errorMessage = 'Количество одинаковых объявлений в разных категориях не может превышать '
+                    . StorePostRequest::MAX_POSTS_COUNT . ' шт.';
+
+        } else {
+            $postNew = Post::query()->create( array_except( $request->all(), [
                 '_token',
                 'captcha',
                 'MAX_FILE_SIZE',
                 'files',
             ]));
-        $this->uploadFile($post->id, $request->file('files'));
+            $this->uploadFile($postId = $postNew->id, $request->file('files'));
+            $successMessage = 'Объявление успешно создано.';
+        }
 
         return view('post.create')->with([
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
             'captchaImage' => $this->captchaImage,
-            'postId' => $post->id,
-            'message' => 'Объявление успешно создано.',
+            'postId' => $postId,
+            'errorMessage' => $errorMessage,
+            'successMessage' => $successMessage,
         ]);
     }
 
@@ -242,6 +237,30 @@ class PostController extends BaseController
                 ]);
             }
         }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxValidate(Request $request)
+    {
+        return response()->json((new StorePostRequest())
+                ->ajaxValidate($request, $this->captchaNumbers) + $request->all()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function ajaxCaptchaRefresh()
+    {
+        session(['captchaCode' => array_search($this->captchaImage, $this->captchaNumbers)]);
+
+        return response()->json([
+            'captcha' => $this->captchaImage,
+        ]);
     }
 
 }

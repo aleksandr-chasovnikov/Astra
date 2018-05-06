@@ -11,6 +11,9 @@
 .form-control.addPost {
     max-width: 400px;
 }
+.form-control.inputTitle {
+    max-width: 980px;
+}
 .ads-wrapper {
     /*margin-top: 180px;*/
 }
