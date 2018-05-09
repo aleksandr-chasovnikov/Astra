@@ -60,7 +60,7 @@ class AdminFileController extends BaseController
 //                /**
 //                 * @var ?
 //                 */
-//                $request->file->move('uploads', $filename->getClientOriginalName());
+//                $request->file->move('images', $filename->getClientOriginalName());
 //            } catch (\Exception $exception) {
 //                echo 'Не удалось загрузить файл!';
 //            }

@@ -10,15 +10,22 @@
                         <h2>{{ $post->title }}</h2>
                         {{--@if (!empty($post->photo))--}}
                         {{--<div class="text-center">--}}
-                        {{--<img src="uploads/{{ $post->img }}" alt="" align="middle" width="90%">--}}
+                        {{--<img src="images/{{ $post->img }}" alt="" align="middle" width="90%">--}}
                         {{--</div>--}}
                         {{--@endif--}}
                         <p>{{ $post->content }}</p>
                     </div>
+                <div class="slick-slider">
+                    {{--@if (empty($post->files))--}}
+                        {{--<div><img src="{{ asset('images/no_photo.jpg') }}" alt="photo" /></div>--}}
+                    {{--@endif--}}
+
                     @foreach($post->files as $photo)
                         <img src="{{ asset($photo->path) }}" alt="фото">
                     @endforeach
+                </div>
                     <hr>
+                    {{-- Комментарии: --}}
 
                     {{--@foreach($comments as $comment)--}}
                     {{--<div class="content">--}}

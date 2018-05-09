@@ -3,5 +3,5 @@
 return [
     'name' => 'Astra',
 
-    'img_path' => 'storage/app/uploads/',
+    'img_path' => 'storage/app/images/',
 ];

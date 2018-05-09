@@ -46,10 +46,10 @@ class CreateTablePosts extends Migration
             $table->softDeletes();
         });
 
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             DB::table('posts')->insert([
-                'category_id' => random_int(20, 170),
-                'region_id' => random_int(1, 20),
+                'category_id' => random_int(20, 27),
+                'region_id' => random_int(1, 10),
                 'title' => GenerateText::wordFromDonorText(random_int(3, 11)),
                 'content' => GenerateText::wordFromDonorText(random_int(5, 120)),
                 'price' => random_int(10, 100000000),

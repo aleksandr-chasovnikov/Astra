@@ -217,7 +217,7 @@ class PostController extends BaseController
                         $photo->getSize() <= StorePostRequest::MAX_FILE_SIZE
                             && is_writable($photo)
                     ) {
-                        $photo->storeAs('public/app/uploads', $photo->getClientOriginalName());
+                        $photo->storeAs('public/app/images', $photo->getClientOriginalName());
                         File::query()->create([
                             'target_id' => $postId,
                             'target_type' => File::TARGET_POST,
@@ -228,7 +228,7 @@ class PostController extends BaseController
                 }
             } else {
                 $originalName = $files->getClientOriginalName();
-                $files->storeAs('uploads', $originalName);
+                $files->storeAs('images', $originalName);
                 File::query()->create([
                     'target_id' => $postId,
                     'target_type' => File::TARGET_POST,

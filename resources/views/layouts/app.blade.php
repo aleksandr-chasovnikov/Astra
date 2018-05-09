@@ -6,24 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{!! csrf_token() !!}" />
     <title>{{ config('app.name', 'Astra') }}</title>
-    {{--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"--}}
-          {{--integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"--}}
-          {{--crossorigin="anonymous">--}}
-    <link href="{{ asset('css/fontawesome/fontawesome-all.min.css') }}" rel="stylesheet" media="all">
-    {{--<link href="{{ asset('css/fontawesome/fontawesome.min.css') }}" rel="stylesheet" media="all">--}}
-    {{--<link href="{{ asset('css/fontawesome/fa-brands.min.css') }}" rel="stylesheet" media="all">--}}
-    {{--<link href="{{ asset('css/fontawesome/fa-regular.min.css') }}" rel="stylesheet" media="all">--}}
-    {{--<link href="{{ asset('css/fontawesome/fa-solid.min.css') }}" rel="stylesheet" media="all">--}}
-    <link href="{{ asset('css/main.css') }}" rel="stylesheet" media="all">
-    <link href="{{ asset('css/second.css') }}" rel="stylesheet" media="all">
-    {{--<script src="#180/js/jquery.min.js"></script>--}}
-    {{--<script src="#180/js/bootstrap.min.js"></script>--}}
-    {{--<script src="#180/js/main.min.js"></script>--}}
+    <link href="{{ asset('css/includes.css') }}" rel="stylesheet" media="all">
     <meta name="description" content="На сайте {{ config('app.name', 'Astra') }} вы можете дать объявление без регистрации и бесплатно.">
-    {{--<script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"#","url":"https:\/\/#.ru\/"}]</script>--}}
 </head>
 <body>
-<!--suppress ALL -->
 
 {{--<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-TWG83B"--}}
                   {{--height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>--}}
@@ -66,6 +52,7 @@
 {{--</noscript>--}}
 <div class="navbar navbar-default navbar-static-top">
     <div class="container">
+        <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images') }}" alt="{{ config('app.name', 'Astra') }}"></a>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -73,14 +60,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}"><img src="/img/layout/logo.svg" alt="{{ config('app.name', 'Astra') }}"></a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class=" dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-question-circle" aria-hidden="true"></i>
-                        &nbsp;Помощь <span class="caret"></span></a>                              <ul class="dropdown-menu">
+                        &nbsp;Помощь <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
                         <li class=""><a href="#help.html">Вопросы и ответы</a></li>
                         <li class=""><a href="#arbitrage.html">Разрешение споров</a></li>
                         <li class=""><a href="#trade/info">Правила для продавцов</a></li>
@@ -90,7 +78,6 @@
             <ul class="nav navbar-nav navbar-right">
 
                 @if (Auth::guest())
-
                     <li><a href="{{ route('login') }}">
                             <i class="fa fa-sign-in" aria-hidden="true"></i>
                             &nbsp;Войти
@@ -105,9 +92,7 @@
                             <span class="fa fa-vk fa-lg"></span>
                         </a>
                     </li>
-
                 @else
-
                     @if (!Auth::guest() && isAdmin())
 
                         <li><a href="{{ route('categoryIndex') }}">
@@ -115,9 +100,7 @@
                                 &nbsp;Админ-панель
                             </a>
                         </li>
-
                     @endif
-
                         <li class="m_nav_item" id="moble_nav_item_6">
                             <a href="{{ route('logout') }}" class="link link--kumya scroll">
                                 <span data-letters="Выход">
@@ -127,6 +110,7 @@
                             </a>
                         </li>
                 @endif
+
             </ul>
         </div>
     </div>
@@ -153,16 +137,13 @@
         </ul>
     </div>
 </footer>
-<!--suppress JSUndeclaredVariable, JSUnresolvedVariable -->
-{{--<script>--}}
-    {{--window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=--}}
-        {{--d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.--}}
-    {{--_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute("charset","utf-8");--}}
-        {{--$.src="//v2.zopim.com/?2uAvJ6SRQuF3VGUB6rQpq3RHW4HAi1Cs";z.t=+new Date;$.--}}
-            {{--type="text/javascript";e.parentNode.insertBefore($,e)})(document,"script");--}}
-{{--</script>--}}
-<script src="{{ asset('jqujquery-3.1.1.min.js}}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="{{ asset('js/my/check_form.js') }}"></script>
+
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>--}}
+<script src="{{ asset('js/vendor/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ asset('js/vendor/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/vendor/slick.min.js') }}"></script>
+<script src="{{ asset('js/check_form.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
         <hr>
         <div class="row">
             <div class="content col-md-8 col-sm-8">
-                <div class="catalog-filters clearfix text-center">
+                <div class="catalog-filters clearfix">
                     <form method="post" action="{{ route('postShowByCategory') }}" role="form">
                         {{--<div class="catalog-filters-type button-group ">--}}
                             {{--<a class="button button-origin is-active" title="Все объявления"--}}
@@ -27,18 +27,21 @@
                             {{--</a>--}}
                         {{--</div>--}}
                         <input type="hidden" name="categoryId" value="{{ $subCategory->id }}">
-                        <div class="form-group">
-                            <input type="radio" id="all" @if (old('type') === 'all') checked @endif
-                            name="type" value="all">
-                            <label for="all">Все</label>
+                        <div class="form-group col-md-3">
+                            <input type="radio" id="all"
+                                @if ('all' === $_REQUEST['type'] || null === $_REQUEST['type']) checked @endif
+                                name="type" value="all" class="radio">
+                            <label for="all">Все</label><br>
 
-                            <input type="radio" id="offers" @if (old('type') === 0) checked @endif
-                            name="type" value="0">
-                            <label for="offers">Предложения</label>
+                            <input type="radio" id="offers"
+                                @if ('0' === $_REQUEST['type']) checked @endif
+                                name="type" value="0" class="radio">
+                            <label for="offers">Предложения</label><br>
 
-                            <input type="radio" id="demands" @if (old('type') === 1) checked @endif
-                            name="type" value="1">
-                            <label for="demands">Спрос</label>
+                            <input type="radio" id="demands"
+                                @if ('1' === $_REQUEST['type']) checked @endif
+                                name="type" value="1" class="radio">
+                            <label for="demands">Спрос</label><br>
                         </div>
                         {{--<div class="catalog-filters clearfix">--}}
                             {{--<a class="button button-origin is-active" title="Все объявления"--}}
@@ -58,21 +61,23 @@
                                 {{--Дороже--}}
                             {{--</a>--}}
                         {{--</div>--}}
-                        <div class="catalog-filters-sort form-select-v2">
+                        <div class="catalog-filters-sort form-select-v2 col-md-4">
                             <select class="js-sort-select" name="sort">
                                 {{--<option selected="" data-default="1" value="101">По умолчанию</option>--}}
                                 <option value="created_at"
-                                        @if (old('sort') == 'created_at') selected @endif>
+                                        @if ('created_at' === $_REQUEST['sort']) selected @endif>
                                     По дате</option>
                                 <option value="price_asc"
-                                        @if (old('sort') == 'price_asc') selected @endif>
+                                        @if ('price_asc' === $_REQUEST['sort']) selected @endif>
                                     Дешевле</option>
                                 <option value="price"
-                                        @if (old('sort') == 'price') selected @endif>
+                                        @if ('price' === $_REQUEST['sort']) selected @endif>
                                     Дороже</option>
-                            </select>
-                        </div>
-                        <button type="submit">Обновить</button>
+                        </select>
+                </div>
+                <br>
+                        <br>
+                        <button type="submit" class="btn btn-primary" style="width: 250px">Обновить</button>
                         {{ csrf_field() }}
                     </form>
                     {{--<div class="catalog-filters-views button-group">--}}
@@ -94,19 +99,23 @@
                     {{--{{ $posts->links() }}--}}
                 {{--</div>--}}
 
+                <hr style="margin-bottom: 0px; margin-top: -9px;">
+                <div class="paginate container">
+                    {{ $posts->links() }}
+                </div>
                 @foreach ($posts as $post)
                     <div class="ads">
 
                             @if (count($post->files) > 0)
                                 <img src="{{ asset($post->files->last()->path) }}" alt="фото">
                             @else
-                                <img src="uploads/no_photo.jpg" alt="фото">
+                                <img src="images/no_photo.jpg" alt="фото">
                             @endif
 
                         <div class="ads-text"
                              title="{{ $post->title }} за {{ $post->price }} рублей">
-                            <a class="title" href="{{ route('postShow', ['id' => $post->id]) }}">
-                                <h4>{{ $post->title }}</h4>
+                            <a href="{{ route('postShow', ['id' => $post->id]) }}">
+                                <h4 class="title">{{ $post->title }}</h4>
                             </a>
                             <div>
                                 <span class="ads-price darkorange">
@@ -120,9 +129,9 @@
                                     @endif
                                 </span>
                             </div>
-                            <p class="ads-content">
+                            <div class="ads-content">
                                 {{ $post->content }}
-                            </p>
+                            </div>
                             <span class="ads-type" style="margin-top: -20px;">{{ $post->created_at }}</span>
                         </div>
                         <div class="clear"></div>
@@ -133,7 +142,7 @@
 
                     {{--@if (!empty($post->img))--}}
                     {{--<div class="text-center">--}}
-                    {{--<img src="uploads/{{ $post->img }}" alt="" align="middle" width="90%">--}}
+                    {{--<img src="images/{{ $post->img }}" alt="" align="middle" width="90%">--}}
                     {{--</div>--}}
                     {{--@endif--}}
 
@@ -149,7 +158,7 @@
 
                 @endforeach
 
-                <div class="paginate container text-center">
+                <div class="paginate container">
                     {{ $posts->links() }}
                 </div>
 

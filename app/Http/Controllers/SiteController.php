@@ -29,7 +29,8 @@ class SiteController extends BaseController
      */
     public function showByCategory($categoryId, $type = 'all', $sort = 'created_at')
     {
-
+        $_REQUEST['type'] = null;
+        $_REQUEST['sort'] = null;
         $direction = 'desc';
         $type = ('all' === $type) ? [0, 1] : [$type, $type];
         if ('price_asc' === $sort) {

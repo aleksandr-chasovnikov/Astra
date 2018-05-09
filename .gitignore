@@ -46,7 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-vendor/
+/vendor/
 .idea/
 node_modules/
 npm-debug.log
@@ -57,8 +57,9 @@ app/storage/
 
 # Laravel 5 & Lumen specific
 public/storage
-storage
-public/uploads
+public/images/
+storage/
+public/uploads/
 public/hot
 storage/*.key
 .env.*.php
@@ -66,4 +67,7 @@ storage/*.key
 .env
 Homestead.yaml
 Homestead.json
+
+# ==============
 DELETE/
+config/censor.php
