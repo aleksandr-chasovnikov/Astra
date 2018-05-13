@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{!! csrf_token() !!}" />
     <title>{{ config('app.name', 'Astra') }}</title>
     <link href="{{ asset('css/includes.css') }}" rel="stylesheet" media="all">
+    {{--<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.9.0/slick/slick-theme.css"/>--}}
     <meta name="description" content="На сайте {{ config('app.name', 'Astra') }} вы можете дать объявление без регистрации и бесплатно.">
 </head>
 <body>
@@ -137,6 +138,7 @@
         </ul>
     </div>
 </footer>
+<button id="toTop"><i class="fa fa-arrow-up fa-2x"></i></button>
 
 {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
 {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>--}}

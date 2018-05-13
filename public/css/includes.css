@@ -1,0 +1,8 @@
+/*@import 'vendor/fontawesome-all.min.css' screen;*/
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+@import 'vendor/col-from-bootstrap.css' screen;
+/* Из сайта Fanpay.ru */
+@import 'vendor/fanpay.css' screen;
+/* Слайдер Slick */
+/*@import 'vendor/slick.css' screen;*/
+@import 'common.css' screen;

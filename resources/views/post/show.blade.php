@@ -4,26 +4,53 @@
 
     <div class="container">
         <div class="row">
-            <div class="content col-md-8 col-sm-8">
+            <div class="content col-md-9 col-sm-9">
                 @if($post)
-                    <div class="content">
-                        <h2>{{ $post->title }}</h2>
-                        {{--@if (!empty($post->photo))--}}
-                        {{--<div class="text-center">--}}
-                        {{--<img src="images/{{ $post->img }}" alt="" align="middle" width="90%">--}}
-                        {{--</div>--}}
-                        {{--@endif--}}
-                        <p>{{ $post->content }}</p>
-                    </div>
-                <div class="slick-slider">
-                    {{--@if (empty($post->files))--}}
-                        {{--<div><img src="{{ asset('images/no_photo.jpg') }}" alt="photo" /></div>--}}
-                    {{--@endif--}}
+                <div class="content">
+                    <h4>{{ $post->title }}</h4>
+                    <p>Тип: {{ $post->type }}</p>
+                    <p>Просмотров: {{ $post->viewed or 0 }}</p>
+                    @if (!empty($post->price))
+                        <p>Цена: {{ $post->price }}</p>
+                    @endif
+                    @if (!empty($post->content))
+                        <p> {{ $post->content }}</p>
+                    @endif
+                    @if (!empty($post->phone))
+                        <p>Телефон: {{ $post->phone }}</p>
+                    @endif
+                    @if (!empty($post->user_name))
+                        <p>Контактное лицо: {{ $post->user_name }}</p>
+                    @endif
+                    @if (!empty($post->city))
+                        <p>Город: {{ $post->city }}</p>
+                    @endif
+                    @if (!empty($post->email))
+                        <p>Сайт: {{ $post->email }}</p>
+                    @endif
+                    @if (!empty($post->site))
+                        <p>Сайт: {{ $post->site }}</p>
+                    @endif
+                    @if (!empty($post->skype))
+                        <p>Skype: {{ $post->skype }}</p>
+                    @endif
+                    @if (!empty($post->created_at))
+                        <p>Создано: {{ $post->created_at }}</p>
+                    @endif
+
+                </div>
+                <div class="owl-carousel owl-theme">
+                    @if (empty($post->files))
+                        <div><img src="{{ asset('images/no_photo.jpg') }}" alt="photo" /></div>
+                    @endif
 
                     @foreach($post->files as $photo)
-                        <img src="{{ asset($photo->path) }}" alt="фото">
+                        <div><img class="image-slider" src="{{ asset($photo->path) }}" alt="фото"></div>
                     @endforeach
                 </div>
+                    {{--@foreach($post->files as $photo)--}}
+                        {{--<img class="image-sub-slider" src="{{ asset($photo->path) }}" alt="фото">--}}
+                    {{--@endforeach--}}
                     <hr>
                     {{-- Комментарии: --}}
 
@@ -72,7 +99,7 @@
                 @endif
 
             </div>
-            <div class="col-md-4 col-sm-4">
+            <div class="col-md-3 col-sm-3">
                 {{--@foreach ($categories as $category)--}}
                 {{--<a>Категория &#8194;&#8658;&#8194; {{$category->title}}</a>--}}
                 {{--@endforeach--}}
