@@ -13,9 +13,11 @@
             @if (!empty($successMessage))
                 <div class="alert alert-success text-center">
                     {{ $successMessage }}
-                    <a href="{{ route('postShow', ['id' => $postId]) }}">
-                        Посмотреть созданное объявление.
-                    </a>
+                    <p>Ссылка на созданное объявление
+                        <a href="{{ route('postShow', ['id' => $post->id]) }}">
+                            {{ url('post/show.' . $post->id) }}
+                        </a></p>
+                    <p>Запишите пароль: {{ $post->password }}</p>
                 </div>
             @endif
 
@@ -199,7 +201,6 @@
                 <div class="print-error-msg">&nbsp;&nbsp;</div>
             </div>
 
-            <hr>
             <button type="submit" class="btn btn-primary">Опубликовать</button>
             {{ csrf_field() }}
         </form>

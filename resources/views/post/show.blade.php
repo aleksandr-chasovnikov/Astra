@@ -5,7 +5,6 @@
     <div class="container">
         <div class="row">
             <div class="content col-md-9 col-sm-9">
-                @if($post)
                 <div class="content">
                     <h4>{{ $post->title }}</h4>
                     <p>Тип: {{ $post->type }}</p>
@@ -13,6 +12,7 @@
                     @if (!empty($post->price))
                         <p>Цена: {{ $post->price }}</p>
                     @endif
+                    <p>Категория: {{ $post->category->title }}</p>
                     @if (!empty($post->content))
                         <p> {{ $post->content }}</p>
                     @endif
@@ -95,8 +95,6 @@
 
                     {{--<button class="btn btn-default" type="submit">Отправить комментарий</button>--}}
                     {{--</form>--}}
-
-                @endif
 
             </div>
             <div class="col-md-3 col-sm-3">

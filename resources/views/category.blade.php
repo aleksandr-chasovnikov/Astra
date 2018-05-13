@@ -3,32 +3,21 @@
 @section('content')
 
     <div class="container ads-wrapper">
-        <h3 class="text-center">Категория &#8194;&#8658;&#8194; {{$subCategory->title}}</h3>
-        <hr>
+        @if (isset($subCategory))
+            <h3 class="text-center">Категория &#8194;&#8658;&#8194; {{$subCategory->title}}</h3>
+            <hr>
+        @endif
+
         <div class="row">
             <div class="content col-md-8 col-sm-8">
                 <div class="catalog-filters clearfix">
-                    <form method="post" action="{{ route('postShowByCategory') }}" role="form">
-                        {{--<div class="catalog-filters-type button-group ">--}}
-                            {{--<a class="button button-origin is-active" title="Все объявления"--}}
-                                {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'type' => 'all']) }}" >--}}
-                                {{--Все--}}
-                            {{--</a>--}}
-                            {{--<a class="button button-origin is-active" title="Предложения"--}}
-                                {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'type' => 0]) }}" >--}}
-                                {{--Предложения--}}
-                            {{--</a>--}}
-                            {{--<a class="button button-origin" title="Спрос"--}}
-                                {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'type' => 1]) }}">--}}
-                                {{--Спрос--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
-                        <input type="hidden" name="categoryId" value="{{ $subCategory->id }}">
+                    <form method="post" action="{{ route('reSortPosts') }}" role="form">
+                        @if (isset($subCategory))
+                            <input type="hidden" name="categoryId" value="{{ $subCategory->id }}">
+                        @endif
                         <div class="form-group col-md-3">
                             <input type="radio" id="all"
+                                   @php(!isset($_REQUEST['type']) ? $_REQUEST['type'] = 'all' : null)
                                 @if ('all' === $_REQUEST['type'] || null === $_REQUEST['type']) checked @endif
                                 name="type" value="all" class="radio">
                             <label for="all">Все</label><br>
@@ -43,28 +32,11 @@
                                 name="type" value="1" class="radio">
                             <label for="demands">Спрос</label><br>
                         </div>
-                        {{--<div class="catalog-filters clearfix">--}}
-                            {{--<a class="button button-origin is-active" title="Все объявления"--}}
-                               {{--style="margin-left: 15px;"--}}
-                               {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'sort' => 'created_at']) }}" >--}}
-                                {{--По дате--}}
-                            {{--</a>--}}
-                            {{--<a class="button button-origin is-active" title="Предложения"--}}
-                               {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'sort' => 'price_asc']) }}" >--}}
-                                {{--Дешевле--}}
-                            {{--</a>--}}
-                            {{--<a class="button button-origin" title="Спрос"--}}
-                               {{--href="{{ route('showByCategory',--}}
-                                    {{--['categoryId' => $subCategory->id, 'sort' => 'price']) }}">--}}
-                                {{--Дороже--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
                         <div class="catalog-filters-sort form-select-v2 col-md-4">
                             <select class="js-sort-select" name="sort">
                                 {{--<option selected="" data-default="1" value="101">По умолчанию</option>--}}
                                 <option value="created_at"
+                                        @php(!isset($_REQUEST['sort']) ? $_REQUEST['sort'] = 'created_at' : null)
                                         @if ('created_at' === $_REQUEST['sort']) selected @endif>
                                     По дате</option>
                                 <option value="price_asc"
@@ -171,23 +143,25 @@
                 {{--@foreach ($categories as $category)--}}
                         {{--<a>Категория &#8194;&#8658;&#8194; {{$category->title}}</a>--}}
                 {{--@endforeach--}}
-                <h4>Похожие категории:</h4>
-                @foreach ($categories as $categoryParent)
-                    @if (!$categoryParent->parent_id
-                        && $categoryParent->id === $subCategory->parent_id)
-                        <ul>
-                            @foreach ($categories as $category)
-                                @if ($categoryParent->id === $category->parent_id)
-                                    <li>
-                                        <a href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">
-                                            {{ $category->title }}
-                                        </a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    @endif
-                @endforeach
+                @if (isset($subCategory))
+                    <h4>Похожие категории:</h4>
+                    @foreach ($categories as $categoryParent)
+                        @if (!$categoryParent->parent_id
+                            && $categoryParent->id === $subCategory->parent_id)
+                            <ul>
+                                @foreach ($categories as $category)
+                                    @if ($categoryParent->id === $category->parent_id)
+                                        <li>
+                                            <a href="{{ route('showByCategory', ['categoryId' => $category->id]) }}">
+                                                {{ $category->title }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        @endif
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

@@ -82,10 +82,8 @@ ads-img-container{ width:200px; border:solid }
     background:#9999999c;
     text-align:center;
     padding:0.5vh;
-    height:100%;
     position:fixed;
     bottom:0;
-    /* left: 0; */
     cursor:pointer;
     color:#333;
     font-size:12px;
@@ -93,3 +91,5 @@ ads-img-container{ width:200px; border:solid }
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     width:7vw }
+.form-search-post{ padding:2px; margin-bottom: -5px}
+.btn-search-post{ margin-top:10px; width:100%}

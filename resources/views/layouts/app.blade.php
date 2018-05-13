@@ -53,7 +53,9 @@
 {{--</noscript>--}}
 <div class="navbar navbar-default navbar-static-top">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}"><img src="{{ asset('images') }}" alt="{{ config('app.name', 'Astra') }}"></a>
+        <a class="navbar-brand" href="{{ url('/') }}"
+            >{{-- <img src="{{ asset('images') }}" alt="{{ config('app.name', 'Astra') }}">--}}{{
+                config('app.name', 'Astra') }}</a>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -77,22 +79,34 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <form action="{{--{{ route('promoFilter') }}--}}" method="post"
+                          class="promo-games-filter">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control"
+                                   placeholder="Поиск по слову или словосочетанию" autocomplete="off">
+                            <span class="input-group-btn">
+                      <button type="submit" class="btn btn-default">Найти</button>
+                    </span>
+                        </div>
+                    </form>
+                </li>
 
                 @if (Auth::guest())
-                    <li><a href="{{ route('login') }}">
-                            <i class="fa fa-sign-in" aria-hidden="true"></i>
-                            &nbsp;Войти
-                        </a>
-                    </li>
-                    <li><a href="{{ route('register') }}">
-                            <i class="fa fa-registered" aria-hidden="true"></i>
-                            &nbsp;Регистрация (необязательно)
-                        </a>
-                    </li>
-                    <li><a href="#" class="vk" title="Войти через ВКонтакте">
-                            <span class="fa fa-vk fa-lg"></span>
-                        </a>
-                    </li>
+                    {{--<li><a href="{{ route('login') }}">--}}
+                            {{--<i class="fa fa-sign-in" aria-hidden="true"></i>--}}
+                            {{--&nbsp;Войти--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li><a href="{{ route('register') }}">--}}
+                            {{--<i class="fa fa-registered" aria-hidden="true"></i>--}}
+                            {{--&nbsp;Регистрация (необязательно)--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li><a href="#" class="vk" title="Войти через ВКонтакте">--}}
+                            {{--<span class="fa fa-vk fa-lg"></span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                 @else
                     @if (!Auth::guest() && isAdmin())
 

@@ -16,12 +16,34 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a href="{{ route('postSearchForm') }}" title="Найти свои объявления по одному из параметров">
-                        <button class="btn btn-info">
-                            <i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                            &nbsp;&nbsp;Найти свои объявления
-                        </button>
-                    </a>
+                    {{--<a href="{{ route('searchPost') }}" title="Найти свои объявления по одному из параметров">--}}
+                        {{--<div class="navbar-collapse collapse">--}}
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class=" dropdown">
+                                    <button class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                                        &nbsp;&nbsp;Найти свои объявления
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="">
+                                            <form action="{{ route('searchPost') }}" method="post">
+                                                <div class="form-group form-search-post">
+                                                    <input type="text" name="id_or_email" class="form-control required"
+                                                           placeholder="ID или Email">
+                                                    <button class="btn-search-post">Найти</button>
+                                                    {{ csrf_field() }}
+                                                </div>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        {{--</div>--}}
+                        {{--<button class="btn btn-info">--}}
+                            {{--<i class="fa fa-hand-o-right" aria-hidden="true"></i>--}}
+                            {{--&nbsp;&nbsp;Найти свои объявления--}}
+                        {{--</button>--}}
+                    {{--</a>--}}
                 </div>
             </div>
             <div class="clearfix">&nbsp;</div>
@@ -64,17 +86,7 @@
                                 rel="nofollow" target="_blank">545 отзывов</a></div>
                 </li>
             </ul>
-
-            <form action="{{--{{ route('promoFilter') }}--}}" method="post"
-                  class="promo-games-filter">
-                <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Поиск по слову или словосочетанию"
-                           autocomplete="off">
-                    <span class="input-group-btn">
-      <button type="submit" class="btn btn-default">Найти</button>
-    </span>
-                </div>
-            </form>
+            <hr>
 
             <div class="promo-games">
                 <div class="promo-games-columns">

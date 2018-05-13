@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class StorePostRequest extends FormRequest
 {
     const CONTENT_MAX_LENGTH = 2000;
-    const LINK_MAX_LENGTH = 180;
+    const META_MAX_LENGTH = 180;
     const TITLE_MAX_LENGTH = 120;
     const PRICE_MAX_LENGTH = 20;
 

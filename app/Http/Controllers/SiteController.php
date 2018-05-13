@@ -29,6 +29,7 @@ class SiteController extends BaseController
      */
     public function showByCategory($categoryId, $type = 'all', $sort = 'created_at')
     {
+        // Можно убрать, но тогда добавить дополнительную проверку в view на наличие $_REQUEST
         $_REQUEST['type'] = null;
         $_REQUEST['sort'] = null;
         $direction = 'desc';
@@ -54,11 +55,10 @@ class SiteController extends BaseController
      *
      * @return $this
      */
-    public function postShowByCategory(Request $request)
+    public function reSortPosts(Request $request)
     {
         $type = $request->type ? $request->type : 'all';
         $sort = $request->sort ? $request->sort : 'created_at';
-        $categoryId = $request->categoryId;
         $direction = 'desc';
 
         $type = ('all' === $type) ? [0, 1] : [$type, $type];
@@ -68,14 +68,46 @@ class SiteController extends BaseController
             $sort = 'price';
         }
 
-        return view('category')->with([
-            'posts' => Post::query()->where('category_id', $categoryId)
+        $category = null;
+        $posts = null;
+        if (!empty($request->categoryId)) {
+            $categoryId = $request->categoryId;
+            $category = Category::query()->find($categoryId);
+            $posts = Post::query()->where('category_id', $categoryId)
                 ->whereIn('type', $type)
                 ->orderBy($sort, $direction)
-                ->paginate(self::PAGINATE),
-            'subCategory' => Category::query()->find($categoryId),
+                ->paginate(self::PAGINATE);
+        } else {
+            $posts = Post::query()->whereIn('type', $type)
+                ->orderBy($sort, $direction)
+                ->paginate(self::PAGINATE);
+        }
+
+        return view('category')->with([
+            'posts' => $posts,
+            'subCategory' => $category,
             'categories' => $this->showCategories(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function searchPost(Request $request)
+    {
+        $idOrEmail = $request->input('id_or_email');
+
+        if (preg_match('/.+@.+\..+/i', $idOrEmail)) {
+            return view('category')->with([
+                'posts' => Post::query()->where('email', $idOrEmail)
+                    ->paginate(self::PAGINATE),
+                'categories' => $this->showCategories(),
+            ]);
+        } else {
+            return redirect()->route('postShow', ['id' => $idOrEmail]);
+        }
     }
 
 }

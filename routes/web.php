@@ -36,7 +36,8 @@ Route::get('contact', function () { return view('contact'); })->name('contact');
 Route::get('/', ['as' => 'index', 'uses' => 'SiteController@index']);
 Route::get('post.{id}', 'SiteController@show')->name('postShow');
 Route::any('category.{categoryId}', 'SiteController@showByCategory')->name('showByCategory');
-Route::any('category', 'SiteController@postShowByCategory')->name('postShowByCategory');
+Route::any('category', 'SiteController@reSortPosts')->name('reSortPosts');
+Route::post('search', 'SiteController@searchPost')->name('searchPost');
 //Route::any('ajax_sort', 'SiteController@ajaxSort')->name('ajaxSort');
 
 //Comments
@@ -44,18 +45,17 @@ Route::get('comment{id}', 'CommentController@show')->name('commentShow');
 Route::post('post', 'CommentController@store')->name('commentStore');
 Route::delete('delete.{comment}', 'CommentController@delete')->name('commentDelete');
 
-
 Route::any('ajax_captcha_refresh', 'PostController@ajaxCaptchaRefresh')->name('ajaxCaptchaRefresh');
+
 Route::group(['prefix' => 'post'], function() {
-    Route::get('search', 'PostController@searchForm')->name('postSearchForm');
     Route::get('index', 'PostController@index')->name('postIndex');
     Route::get('create', 'PostController@create')->name('postCreate');
-    Route::any('ajax_validate', 'PostController@ajaxValidate')->name('ajaxValidate');
     Route::post('store', 'PostController@store')->name('postStore');
     Route::get('show.{id}', 'PostController@show')->name('postShow');
     Route::get('update.{id}', 'PostController@edit')->name('postEdit');
     Route::post('update', 'PostController@update')->name('postUpdate');
     Route::delete('delete.{id}', 'PostControllerr@destroy')->name('postDelete');
+    Route::any('ajax_validate', 'PostController@ajaxValidate')->name('ajaxValidate');
 });
 
 // ======== AdminPanel =========================

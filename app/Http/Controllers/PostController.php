@@ -95,8 +95,9 @@ class PostController extends BaseController
         session(['captchaCode' => array_search($this->captchaImage, $this->captchaNumbers)]);
         $errorMessage = null;
         $successMessage = null;
-        $postId = null;
+        $postNew = null;
 
+        // Поиск такого же об-я
         $builderPostOld = Post::query()
             ->where('region_id', $request->input('region_id'))
             ->where('title', $request->input('title'))
@@ -117,13 +118,14 @@ class PostController extends BaseController
                     . StorePostRequest::MAX_POSTS_COUNT . ' шт.';
 
         } else {
-            $postNew = Post::query()->create( array_except( $request->all(), [
+            $requestAll = $request->all() + ['password' => $this->generatePassword()];
+            $postNew = Post::query()->create( array_except( $requestAll, [
                 '_token',
                 'captcha',
                 'MAX_FILE_SIZE',
                 'files',
             ]));
-            $this->uploadFile($postId = $postNew->id, $request->file('files'));
+            $this->uploadFile($postNew->id, $request->file('files'));
             $successMessage = 'Объявление успешно создано.';
         }
 
@@ -131,7 +133,7 @@ class PostController extends BaseController
             'categories' => $this->showCategories(),
             'regions' => Region::query()->orderBy('name')->get(),
             'captchaImage' => $this->captchaImage,
-            'postId' => $postId,
+            'post' => $postNew,
             'errorMessage' => $errorMessage,
             'successMessage' => $successMessage,
         ]);
@@ -261,6 +263,22 @@ class PostController extends BaseController
         return response()->json([
             'captcha' => $this->captchaImage,
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    protected function generatePassword()
+    {
+        $chars = "qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+        $maxCountChars = 7;
+
+        $password = null;
+        while($maxCountChars--) {
+            $password .= $chars[rand(0, strlen($chars) - 1)];
+        }
+
+        return $password;
     }
 
 }

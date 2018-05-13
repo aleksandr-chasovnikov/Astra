@@ -86,9 +86,9 @@ class Post extends BaseModel
      *
      * @var array
      */
-    protected $hidden = [
-        'password',
-    ];
+//    protected $hidden = [
+//        'password',
+//    ];
 
     /**
      * @return BelongsTo
