@@ -17,7 +17,22 @@
                         <a href="{{ route('postShow', ['id' => $post->id]) }}">
                             {{ url('post/show.' . $post->id) }}
                         </a></p>
-                    <p>Запишите пароль: {{ $post->password }}</p>
+                    <p>Запишите данные, с помощью которых вы сможете редактировать объявление:</p>
+                    <table class="table-password">
+                        <tr style="border: solid #222 1px;">
+                            <td class="text-right">ID:&nbsp;</td>
+                            <td>{{ $post->id }}</td>
+                        </tr>
+                        <tr>
+                            <td>Пароль:&nbsp;</td>
+                            <td>{{ $post->password }}</td>
+                        </tr>
+                    </table>
+                    <p>Или скачайте эти данные в файле:
+                        <a href="{{ route('downloadFile', ['filename' => $post->id . '.txt']) }}">
+                            Скачать
+                        </a>
+                    </p>
                 </div>
             @endif
 

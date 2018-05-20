@@ -22,27 +22,13 @@ class SiteController extends BaseController
      * Показать статьи по категории
      *
      * @param int    $categoryId
-     * @param string $type
-     * @param string $sort
      *
      * @return $this
      */
-    public function showByCategory($categoryId, $type = 'all', $sort = 'created_at')
+    public function showByCategory($categoryId)
     {
-        // Можно убрать, но тогда добавить дополнительную проверку в view на наличие $_REQUEST
-        $_REQUEST['type'] = null;
-        $_REQUEST['sort'] = null;
-        $direction = 'desc';
-        $type = ('all' === $type) ? [0, 1] : [$type, $type];
-        if ('price_asc' === $sort) {
-            $direction = 'asc';
-            $sort = 'price';
-        }
-
         return view('category')->with([
             'posts' => Post::query()->where('category_id', $categoryId)
-                ->whereIn('type', $type)
-                ->orderBy($sort, $direction)
                 ->paginate(self::PAGINATE),
             'subCategory' => Category::query()->find($categoryId),
             'categories' => $this->showCategories(),

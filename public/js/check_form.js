@@ -19,16 +19,22 @@
         });
 
         // всплывашка при попытке закрыть или перезгрузить окно
-        window.onbeforeunload = function (evt) {
-            $('button[type=submit]').click( function() {
-                $(this).data('clicked', true);
-            });
-
-            if ($('button[type=submit]').data('clicked')) {
-                return null;
+        $("input").change(function () {
+            window.onbeforeunload = function () {
+                return true;
             }
-            return true;
-        };
+        });
+        $("select").change(function () {
+            window.onbeforeunload = function () {
+                return true;
+            }
+        });
+        $(function () {
+            $('button[type=submit]').click(function (e) {
+                window.onbeforeunload = null;
+            });
+        });
+        // ~ всплывашка при попытке закрыть или перезгрузить окно
     }
 
     // Добавление фотографий

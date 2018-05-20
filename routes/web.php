@@ -56,6 +56,7 @@ Route::group(['prefix' => 'post'], function() {
     Route::post('update', 'PostController@update')->name('postUpdate');
     Route::delete('delete.{id}', 'PostControllerr@destroy')->name('postDelete');
     Route::any('ajax_validate', 'PostController@ajaxValidate')->name('ajaxValidate');
+    Route::get('download.{filename}', 'PostController@downloadFile')->name('downloadFile');
 });
 
 // ======== AdminPanel =========================

@@ -9,15 +9,15 @@ ads-img-container{ width:200px; border:solid }
 .ads .title{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
 .ads-content{ z-index:-1; margin-bottom:-1px; height:65px; overflow:hidden; text-overflow:ellipsis; word-wrap:break-word }
 .ads-text{ background-color:rgba(255, 255, 255, 0); margin-left:160px; position:relative; top:-155px }
-.ads > img{ max-height:150px }
+.ads > img{ max-height:150px; max-width:150px }
 @media screen and (max-width:600px){
     h4{ font-size:110% }
     .ads-text{ font-size:98%; margin-left:130px; top:-130px; line-height:100% }
-    .ads > img{ max-height:120px }
+    .ads > img{ max-height:120px; max-width:120px }
 }
 @media screen and (max-width:400px){
     .ads-text{ margin-left:100px; top:-120px }
-    .ads > img{ max-height:100px }
+    .ads > img{ max-height:100px; max-width:100px }
 }
 .ads-price{ font-size:120% }
 .ads-type{ font-size:90%; color:#999 }
@@ -93,3 +93,4 @@ ads-img-container{ width:200px; border:solid }
     width:7vw }
 .form-search-post{ padding:2px; margin-bottom: -5px}
 .btn-search-post{ margin-top:10px; width:100%}
+.table-password{color: black; border:solid #000 1px;margin-left: auto;margin-right:auto; padding:3px;}

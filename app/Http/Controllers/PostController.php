@@ -8,6 +8,7 @@ use App\Model\Post;
 use App\Model\Region;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -128,6 +129,11 @@ class PostController extends BaseController
             $this->uploadFile($postNew->id, $request->file('files'));
             $successMessage = 'Объявление успешно создано.';
         }
+
+        // Создание файла с информацией о новом объявлении
+        Storage::put('public/' . $postNew->id . '.txt',
+            'ID: ' . $postNew->id . '; Пароль: ' . $postNew->password . ';',
+            'public');
 
         return view('post.create')->with([
             'categories' => $this->showCategories(),
@@ -279,6 +285,44 @@ class PostController extends BaseController
         }
 
         return $password;
+    }
+
+    /**
+     * @param        $filename
+     * @param string $mimetype
+     */
+    public function downloadFile($filename, $mimetype='application/octet-stream')
+    {
+        $filename = storage_path('app/public/' . $filename);
+
+        if (file_exists($filename)) {
+            header($_SERVER["SERVER_PROTOCOL"] . ' 200 OK');
+            header('Content-Type: ' . $mimetype);
+            header('Last-Modified: ' . gmdate('r', filemtime($filename)));
+            header('ETag: ' . sprintf(
+                '%x-%x-%x',
+                fileinode($filename),
+                filesize($filename),
+                filemtime($filename)));
+            header('Content-Length: ' . (filesize($filename)));
+            header('Connection: close');
+            header('Content-Disposition: attachment; filename="' . basename($filename) . '";');
+
+            $f=fopen($filename, 'r');
+
+            // Читаем килобайтный блок, отдаем его в вывод и сбрасываем в буфер
+            while(!feof($f)) {
+                echo fread($f, 1024);
+                flush();
+            }
+
+            fclose($f);
+        } else {
+            header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+            header('Status: 404 Not Found');
+        }
+// Прерываем дальнейшее выполнение скрипта, чтобы не отправлять мусор в ответе клиенту
+        exit;
     }
 
 }

@@ -56,6 +56,19 @@
         <a class="navbar-brand" href="{{ url('/') }}"
             >{{-- <img src="{{ asset('images') }}" alt="{{ config('app.name', 'Astra') }}">--}}{{
                 config('app.name', 'Astra') }}</a>
+        <ul class="navbar-brand" style="list-style-type: none;margin-bottom:0px">
+            <li class=" dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    Помощь <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class=""><a href="#help.html">Вопросы и ответы</a></li>
+                    <li class=""><a href="#arbitrage.html">Разрешение споров</a></li>
+                    <li class=""><a href="#trade/info">Правила для продавцов</a></li>
+                </ul>
+            </li>
+        </ul>
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -65,19 +78,6 @@
             </button>
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class=" dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-question-circle" aria-hidden="true"></i>
-                        &nbsp;Помощь <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class=""><a href="#help.html">Вопросы и ответы</a></li>
-                        <li class=""><a href="#arbitrage.html">Разрешение споров</a></li>
-                        <li class=""><a href="#trade/info">Правила для продавцов</a></li>
-                    </ul>
-                </li>
-            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <form action="{{--{{ route('promoFilter') }}--}}" method="post"
